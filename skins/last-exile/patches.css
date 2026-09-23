@@ -147,19 +147,26 @@ body[data-ds-dark-theme] :is([data-chat-flow-kind="user"],[data-chat-flow-kind="
 
 /* Semi-transparent header and right sidebar */
 [data-slot="main.conversation"] header,
-[data-slot="rightbar.session"] > *,
-[data-sidebar-right-panel] {
+[data-slot="rightbar.session"] > [data-sidebar-right-open],
+[data-sidebar-right-panel][data-sidebar-right-open] {
   background: rgba(238, 240, 234, 0.82) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
 body[data-ds-dark-theme] [data-slot="main.conversation"] header,
-body[data-ds-dark-theme] [data-slot="rightbar.session"] > *,
-body[data-ds-dark-theme] [data-sidebar-right-panel] {
+body[data-ds-dark-theme] [data-slot="rightbar.session"] > [data-sidebar-right-open],
+body[data-ds-dark-theme] [data-sidebar-right-panel][data-sidebar-right-open] {
   background: rgba(12, 25, 43, 0.85) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+}
+
+[data-sidebar-right-panel]:not([data-sidebar-right-open]) {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none !important;
 }
 
 /* ── Thinking / Reasoning Disclosure (data-variant="think") ── */

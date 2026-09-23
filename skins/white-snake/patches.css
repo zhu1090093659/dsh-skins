@@ -350,19 +350,26 @@ body[data-dsh-tab-hidden] [data-slot="conversation.hero.brand.mark"]::before {
 
 /* ── UI 0.1.6 适配：半透明右侧栏与头部 ── */
 [data-slot="main.conversation"] header,
-[data-slot="rightbar.session"] > *,
-[data-sidebar-right-panel] {
+[data-slot="rightbar.session"] > [data-sidebar-right-open],
+[data-sidebar-right-panel][data-sidebar-right-open] {
   background: rgba(242, 246, 242, 0.78) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 body[data-ds-dark-theme] [data-slot="main.conversation"] header,
-body[data-ds-dark-theme] [data-slot="rightbar.session"] > *,
-body[data-ds-dark-theme] [data-sidebar-right-panel] {
+body[data-ds-dark-theme] [data-slot="rightbar.session"] > [data-sidebar-right-open],
+body[data-ds-dark-theme] [data-sidebar-right-panel][data-sidebar-right-open] {
   background: rgba(16, 26, 29, 0.82) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+[data-sidebar-right-panel]:not([data-sidebar-right-open]) {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none !important;
 }
 
 /* ── UI 0.1.6 适配：计划审阅与卡片 (PlanCards) ── */
