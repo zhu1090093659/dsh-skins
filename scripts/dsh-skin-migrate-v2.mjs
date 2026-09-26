@@ -312,9 +312,7 @@ const SEMANTIC_EXACT = new Map(Object.entries({
   'data-turn-tail': ['data-dsh-part', 'turn-tail'],
   'data-side': ['data-dsh-part', 'resize-handle'],
   'data-dsh-taskboard-view': ['data-dsh-plugin', 'task-board'],
-  'data-dsh-taskboard-entry': ['data-dsh-plugin', 'task-board'],
   'data-dsh-ssh-view': ['data-dsh-plugin', 'ssh'],
-  'data-dsh-ssh-entry': ['data-dsh-plugin', 'ssh'],
   'data-gitgraph-chip-anchor': ['data-dsh-part', 'chip'],
   'data-gitgraph-dialog': ['data-dsh-part', 'dialog'],
   'data-dsh-pet-root': ['data-dsh-plugin', 'pet'],
@@ -336,6 +334,16 @@ const SEMANTIC_TEXT_REWRITES = (() => {
     replacement: '[data-dsh-part="composer-input"]',
     label: 'textarea[data-phase] -> [data-dsh-part="composer-input"]',
   }]
+  // The family sidebar rows are shell-owned `sidebar.panellist` rows now (see
+  // contracts/semantic-attrs-v1.md): a legacy `[data-dsh-<plugin>-entry]`
+  // selector re-anchors on the row plus the plugin's own glyph identity.
+  for (const [attr, panel] of [['taskboard', 'task-board'], ['ssh', 'ssh'], ['skill-explorer', 'skill-explorer']]) {
+    rules.push({
+      re: new RegExp('\\[\\s*data-dsh-' + escapeRegExp(attr) + '-entry\\s*\\]', 'g'),
+      replacement: '[data-dsh-part="panel-row"]:has([data-dsh-panel-entry="' + panel + '"])',
+      label: '[data-dsh-' + attr + '-entry] -> [data-dsh-part="panel-row"]:has([data-dsh-panel-entry="' + panel + '"])',
+    })
+  }
   const entries = [...SEMANTIC_EXACT.entries()].sort((a, b) => b[0].length - a[0].length)
   for (const [key, [name, value]] of entries) {
     const eq = key.indexOf('=')
@@ -534,7 +542,7 @@ function splitSelectorList(prelude) {
   return parts.filter(Boolean)
 }
 
-const CORE_ATTRS = new Set(['data-dsh-surface', 'data-dsh-part', 'data-dsh-plugin'])
+const CORE_ATTRS = new Set(['data-dsh-surface', 'data-dsh-part', 'data-dsh-plugin', 'data-dsh-panel-entry'])
 const CORE_TYPES = new Set(['html', 'body'])
 const CORE_PSEUDOS = new Set([
   'root', 'hover', 'active', 'focus', 'focus-visible', 'focus-within',
