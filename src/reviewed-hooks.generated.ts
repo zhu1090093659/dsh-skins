@@ -52,7 +52,7 @@ export const REVIEWED_SKIN_HOOKS: Readonly<Record<string, ReviewedSkinHooksIdent
   "last-exile": {
     entry: "hooks.mjs",
     manifestSha256: "ce6f66c6da9f4ab6e350784f9a837f73caaeef492da97ad43f20beed4097d947",
-    hooksSha256: "8792d8b0ffe737dc458760ae1d203da9386c52a81adaf170043c3f4331416af8",
+    hooksSha256: "1472017007cc8c99385f27f287d1e42d8f0af07c93a4923bc96c461275173a03",
   },
   "maid-atelier": {
     entry: "hooks.mjs",
@@ -87,7 +87,7 @@ export const REVIEWED_SKIN_HOOKS: Readonly<Record<string, ReviewedSkinHooksIdent
   "porco-rosso": {
     entry: "hooks.mjs",
     manifestSha256: "2b556e8e7481859be70b3123031607a4819b2e63d5173846954db1ffb4b364ab",
-    hooksSha256: "2ce98cb1accf3c7babb26f84ff87889736d0f6c91697134e27f2ceb114b04671",
+    hooksSha256: "41c0a7ba9af1360a6e9427db34a0bc0da4d61bba04d5cbf6ba613831475b1474",
   },
   "starry-nocturne": {
     entry: "hooks.mjs",
@@ -127,7 +127,7 @@ export const REVIEWED_SKIN_HOOKS: Readonly<Record<string, ReviewedSkinHooksIdent
   "white-snake": {
     entry: "hooks.mjs",
     manifestSha256: "8ccc4052918b0796e731d0211ccf8ee769240bea0f07374e1740d6572dbcd97b",
-    hooksSha256: "8143f2379080e2aacd26c0ff4dce44a1826230c2be8473ad1810e6fdbf4f18b0",
+    hooksSha256: "b8df769405646e50bab4fd3993896d81e0db28201dd2c79480c89002efaca9e9",
   },
   "xp": {
     entry: "hooks.mjs",

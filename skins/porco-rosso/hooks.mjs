@@ -16,6 +16,8 @@ export default function defineSkinHooks() {
       // WS-08：登记所有定时器，确保 dispose 后可取消
       let disposed = false;
       const timers = new Set();
+      const backgroundStyles = new Map();
+      const backgroundNodes = new Set();
       const later = (fn, ms) => {
         const id = setTimeout(() => {
           timers.delete(id);
@@ -83,6 +85,9 @@ export default function defineSkinHooks() {
           if (disposed) return;
           const bgLayer = ctx.layers?.background || document.querySelector('[data-dsh-skin-layer="background"]');
           if (bgLayer) {
+            if (!backgroundStyles.has(bgLayer)) {
+              backgroundStyles.set(bgLayer, bgLayer.style.cssText);
+            }
             bgLayer.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;z-index:-2;pointer-events:none;overflow:hidden;';
 
             let imgA = bgLayer.querySelector('.porco-bg-a');
@@ -91,6 +96,7 @@ export default function defineSkinHooks() {
 
             if (!imgA) {
               imgA = document.createElement('img');
+              backgroundNodes.add(imgA);
               imgA.className = 'porco-bg-a';
               imgA.alt = '';
               imgA.setAttribute('aria-hidden', 'true');
@@ -99,6 +105,7 @@ export default function defineSkinHooks() {
             }
             if (!imgB) {
               imgB = document.createElement('img');
+              backgroundNodes.add(imgB);
               imgB.className = 'porco-bg-b';
               imgB.alt = '';
               imgB.setAttribute('aria-hidden', 'true');
@@ -107,6 +114,7 @@ export default function defineSkinHooks() {
             }
             if (!scrimOverlay) {
               scrimOverlay = document.createElement('div');
+              backgroundNodes.add(scrimOverlay);
               scrimOverlay.className = 'porco-scrim-overlay';
               scrimOverlay.setAttribute('aria-hidden', 'true');
               scrimOverlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:3;transition:background 0.4s ease;';
@@ -729,10 +737,12 @@ export default function defineSkinHooks() {
         popover.remove();
         tipBubble.remove();
         
-        const bgLayer = ctx.layers?.background || (typeof document !== 'undefined' ? document.querySelector('[data-dsh-skin-layer="background"]') : null);
-        if (bgLayer) {
-          bgLayer.querySelectorAll('.porco-bg-a, .porco-bg-b, .porco-scrim-overlay').forEach((el) => el.remove());
+        for (const node of backgroundNodes) node.remove();
+        backgroundNodes.clear();
+        for (const [bgLayer, cssText] of backgroundStyles) {
+          bgLayer.style.cssText = cssText;
         }
+        backgroundStyles.clear();
 
         container.remove();
         styleTag.remove();
