@@ -12,6 +12,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
 import { resolveSelection, type WallpaperDescriptor, type WallpaperHandle } from './wallpaper.ts'
+import { DirBrowserDialog } from './DirBrowserDialog.tsx'
 import css from './skin-center.module.css'
 import { SliderControl } from './SliderControl.tsx'
 
@@ -121,6 +122,7 @@ export function WallpaperPanel({ t, wallpaper }: { t: PropsLocale<'skinCenter'>[
   const [shownVolume, setShownVolume] = useLiveValue(volume)
   const [dirInput, setDirInput] = useState('')
   const [picking, setPicking] = useState(false)
+  const [browsing, setBrowsing] = useState(false)
   const [page, setPage] = useState(1)
   const [ratingFilter, setRatingFilter] = useState<'g' | 'pg13' | 'r18'>('g')
   const [jumpInput, setJumpInput] = useState('')
@@ -180,23 +182,36 @@ export function WallpaperPanel({ t, wallpaper }: { t: PropsLocale<'skinCenter'>[
     })
   }
 
-  /** Open the host's native folder picker and add the chosen directory. */
+  /**
+   * Add one picked folder. A native-capability host opens the OS chooser; a
+   * browse-capability host (the adaptive chooser picks it whenever the web
+   * server binds beyond loopback, e.g. LAN remote access) refuses the pick
+   * and gets the in-app browser over the picker's own listing primitives.
+   * Without either capability the manual input stays the fallback.
+   */
   const browseDir = (): void => {
     const pick = wallpaper.pickDir
     if (pick === undefined) return
     setActionError(null)
     setPicking(true)
     void pick()
-      .then(path => {
+      .then(outcome => {
         if (!mounted.current) return
         setPicking(false)
-        if (path === null || path.trim() === '') return // cancelled
-        wallpaper.addDir(path)
-        load()
+        if (outcome.kind === 'picked') {
+          if (outcome.path.trim() === '') return
+          wallpaper.addDir(outcome.path)
+          load()
+          return
+        }
+        if (outcome.kind === 'cancelled') return
+        if (wallpaper.listDir !== undefined) {
+          setBrowsing(true)
+          return
+        }
+        setActionError(t('wallpaperDirBrowseFailed'))
       })
       .catch((error: unknown) => {
-        // Non-loopback (paired remote) or a host without the native
-        // capability: the manual input stays the fallback.
         if (!mounted.current) return
         setPicking(false)
         setActionError(t('wallpaperDirBrowseFailed') + ': ' + (error instanceof Error ? error.message : String(error)))
@@ -660,6 +675,18 @@ export function WallpaperPanel({ t, wallpaper }: { t: PropsLocale<'skinCenter'>[
             <p className={css.backgroundHintMuted}>{t('wallpaperEmpty')}</p>
           )}
         </>
+      )}
+      {browsing && wallpaper.listDir !== undefined && (
+        <DirBrowserDialog
+          t={t}
+          listDir={wallpaper.listDir}
+          onPick={(path) => {
+            setBrowsing(false)
+            wallpaper.addDir(path)
+            load()
+          }}
+          onClose={() => { setBrowsing(false) }}
+        />
       )}
     </div>
   )

@@ -47,9 +47,11 @@ existing macOS user who had toggled the feature keeps that choice.
 **The picker namespace is declared.** `inject` gains
 `'remote.directoryPicker'`, matching the official `dsh-client-ui-workspace`
 client, which injects the same name before reading `ctx.remote.directoryPicker`.
-Naming it parks this plugin until the namespace is really mounted, so
-`pickDir` exists precisely when the Host serves it and the browse button stays
-hidden where it does not.
+Naming it parks this plugin until the namespace is really mounted, so the browse
+button stays hidden on a deployment that mounts no picker at all. Which
+interaction that picker serves is a separate question: both backends register
+the same namespace, so a mounted namespace does not promise a native chooser
+(see [the folder-browser note](../bug-fix/2026-09-26-wallpaper-folder-picker-follows-host-capability.md)).
 
 ## Alternatives considered
 

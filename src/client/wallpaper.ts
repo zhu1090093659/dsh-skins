@@ -66,6 +66,64 @@ export interface WallpaperSection {
   weLibraryDirs?: string[]
 }
 
+/** One row of a host directory listing (the picker's browse capability). */
+export interface WallpaperDirEntry {
+  /** Base name shown in a browser row (a root crumb carries its full path). */
+  name: string
+  /** Absolute host path; the client never joins path segments itself. */
+  path: string
+  /** Hidden by the host platform's convention (dot-prefixed on POSIX). */
+  hidden: boolean
+}
+
+/** One directory level plus its ancestry, as the host's browse picker reports it. */
+export interface WallpaperDirListing {
+  /** Absolute path of the listed directory. */
+  path: string
+  /** The host account's home directory (the breadcrumb root). */
+  home: string
+  /** Ancestor chain from the filesystem root to the listed directory inclusive. */
+  crumbs: WallpaperDirEntry[]
+  /** Direct child directories, name-sorted. */
+  entries: WallpaperDirEntry[]
+  /** True when the backend cut the entries at its complete-result bound. */
+  truncated: boolean
+}
+
+/**
+ * One picker request's outcome. A 'native'-capability host answers 'picked'
+ * (the chosen absolute path) or 'cancelled'; a 'browse'-capability host serves
+ * no OS chooser at all and answers 'unavailable', which is the caller's signal
+ * to browse through {@link WallpaperHandle.listDir} instead.
+ */
+export type WallpaperDirPick =
+  | { kind: 'picked'; path: string }
+  | { kind: 'cancelled' }
+  | { kind: 'unavailable' }
+
+/**
+ * Map one remote.directoryPicker.pick result onto the outcome the panel
+ * switches on. The composed picker refuses the verb with
+ * directory-picker/unavailable when it serves the browse capability, so
+ * that code is a capability answer, not a failure; every other error still
+ * rejects (a transport or assembly fault must never look like a cancel).
+ * @param result - the Remote result of the pick call.
+ * @returns the pick outcome; throws the Host's message on any other failure.
+ */
+export function mapDirPickResult(
+  result:
+    | { ok: true; value: string | null }
+    | { ok: false; error: { code: string; message: string } },
+): WallpaperDirPick {
+  if (result.ok) {
+    return result.value === null
+      ? { kind: 'cancelled' }
+      : { kind: 'picked', path: result.value }
+  }
+  if (result.error.code === 'directory-picker/unavailable') return { kind: 'unavailable' }
+  throw new Error(result.error.message)
+}
+
 /** The face the skin-center card injects for the wallpaper feature. */
 export interface WallpaperHandle {
   enabled(): boolean
@@ -89,14 +147,24 @@ export interface WallpaperHandle {
   /** Remove a manual library folder and persist. */
   removeDir(dir: string): void
   /**
-   * Open the host's native directory picker (the SDK's loopback-only
-   * host.pickDirectory: Finder on macOS, Explorer on Windows). Resolves to
-   * the chosen absolute path, or null when the user cancelled. Rejects when
-   * the native capability is unavailable (e.g. a paired remote client), in
-   * which case the manual input remains the fallback. Optional: faces
-   * without host access omit it and the panel hides the browse button.
+   * Ask the host for a folder through its directory picker. A host that
+   * composes the native backend opens the OS chooser (Finder on macOS,
+   * Explorer on Windows) and answers 'picked' or 'cancelled'; a host that
+   * composes the browse backend (the adaptive dsh-host-directory-picker-auto
+   * row picks it whenever the web server binds beyond loopback, e.g. LAN
+   * remote access) serves no
+   * OS chooser and answers 'unavailable', which is the panel's signal to
+   * browse through {@link listDir} instead. Rejects only on a real transport
+   * fault. Optional: faces without host access omit it and the panel hides
+   * the browse button.
    */
-  pickDir?(): Promise<string | null>
+  pickDir?(): Promise<WallpaperDirPick>
+  /**
+   * List one host directory level through the picker's browse capability
+   * (`remote.directoryPicker.list`); an absent path lists the host account's
+   * home. Optional: omitted faces keep the manual input as the only fallback.
+   */
+  listDir?(path?: string): Promise<WallpaperDirListing>
   /** The currently mounted wallpaper id (try-on included), or null. */
   activeId(): string | null
   /** True while a try-on mount is up. */
