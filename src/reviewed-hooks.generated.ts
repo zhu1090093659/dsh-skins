@@ -66,7 +66,7 @@ export const REVIEWED_SKIN_HOOKS: Readonly<Record<string, ReviewedSkinHooksIdent
   },
   "miku": {
     entry: "hooks.mjs",
-    manifestSha256: "a1c713e59ed31eaf43f136205e1326d35419d83d613107423099cef2c992c621",
+    manifestSha256: "e02a59faf78b487e19f9f46d20a04ffc97ae483f67296f5a0bae315eba548a15",
     hooksSha256: "1c4052d328ac6e1ede3115395e8823c4f6acecd3b4508b85615006a88f7cbdd1",
   },
   "minecraft": {
@@ -77,7 +77,7 @@ export const REVIEWED_SKIN_HOOKS: Readonly<Record<string, ReviewedSkinHooksIdent
   "orca-link": {
     entry: "hooks.mjs",
     manifestSha256: "48b9c76b6f8fc4fad1473d987c0ebd8c10f4734e2eff2091bbb9040c9a5ce089",
-    hooksSha256: "dcf08fb50b419c2515eec6a630e7a0da2ceeb214b5e2a33642dd7dfe649b7d55",
+    hooksSha256: "2ac62ba6a000e21a09f1ba0c55a9a2d0546e9d86f17f1ce47842e8bec8ed3d05",
   },
   "phoebe-atelier": {
     entry: "hooks.mjs",
