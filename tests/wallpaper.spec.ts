@@ -11,6 +11,7 @@ import {
   WallpaperController,
   defaultWallpaperSurface,
   installBootRestore,
+  mapDirPickResult,
   resolveSelection,
   type WallpaperDescriptor,
   type WallpaperHandle,
@@ -1473,5 +1474,27 @@ describe('wallpaper iframe sandbox (T1-1)', () => {
     fire(contentWindow, 'null')
     expect(writes.length).toBeGreaterThanOrEqual(1)
     controller.dispose()
+  })
+})
+
+describe('mapDirPickResult', () => {
+  it('answers picked, cancelled and unavailable, and rethrows other failures', () => {
+    // Given the three answers the composed directory picker can give
+    // When each Remote result is mapped onto the panel's outcome
+    // Then the chosen path, the cancel and the browse signal stay distinct
+    expect(mapDirPickResult({ ok: true, value: '/Users/me/wallpapers' }))
+      .toEqual({ kind: 'picked', path: '/Users/me/wallpapers' })
+    expect(mapDirPickResult({ ok: true, value: null })).toEqual({ kind: 'cancelled' })
+    // A browse-composed host refuses the native verb: that is a capability
+    // answer about the Host, never a cancel and never a broken picker.
+    expect(mapDirPickResult({
+      ok: false,
+      error: { code: 'directory-picker/unavailable', message: 'directoryPicker.pick needs the native capability' },
+    })).toEqual({ kind: 'unavailable' })
+    // Any other failure must surface as one, not read as a cancellation.
+    expect(() => mapDirPickResult({
+      ok: false,
+      error: { code: 'gateway/internal', message: 'the carrier broke' },
+    })).toThrow('the carrier broke')
   })
 })

@@ -33,7 +33,7 @@ import { SkinCenterSection, type SkinCenterInjected } from './SkinCenter.tsx'
 import { BackgroundController, SKIN_BACKGROUND_NS } from './background.ts'
 import type { SkinBackgroundConfig } from '../core/background.ts'
 import { initialSkinBackgroundReconcileState, reconcileSkinBackgroundPublication } from '../core/background-scope.ts'
-import { SKIN_WALLPAPER_NS, WallpaperController, installBootRestore, type WallpaperSection } from './wallpaper.ts'
+import { SKIN_WALLPAPER_NS, WallpaperController, installBootRestore, mapDirPickResult, type WallpaperSection } from './wallpaper.ts'
 import { en, zh, type SkinCenterKey } from './locales.ts'
 import { bootSkinRuntime } from './runtime/boot.ts'
 import { PreviewCoordinator } from './preview-coordinator.ts'
@@ -149,6 +149,12 @@ function bindConfigForm(ctx: ClientContext): ConfigForm<SkinCenterSettings> {
  * plugin until the picker namespace is really mounted, which is what makes
  * `pickDir` available on a Host that serves it (and keeps the browse button
  * off a deployment that does not).
+ *
+ * Both composed backends register the same namespace, so the namespace's
+ * presence says nothing about which interaction the Host serves: a native
+ * backend opens the OS chooser, a browse backend refuses `pick` and serves
+ * listing primitives instead. The panel decides on the answer, not on
+ * presence (see WallpaperPanel's folder browser).
  */
 export const inject = ['slots', 'locale', 'theme', 'configForms', 'connection', 'remote', 'remote.directoryPicker']
 
@@ -363,8 +369,9 @@ export function apply(ctx: ClientContext): void {
       dirs: () => wallpaper.dirs(),
       addDir: dir => wallpaper.addDir(dir),
       removeDir: dir => wallpaper.removeDir(dir),
-      pickDir: async () => {
-        const result = await ctx.remote.directoryPicker.pick()
+      pickDir: async () => mapDirPickResult(await ctx.remote.directoryPicker.pick()),
+      listDir: async (path?: string) => {
+        const result = await ctx.remote.directoryPicker.list(path)
         if (!result.ok) throw new Error(result.error.message)
         return result.value
       },

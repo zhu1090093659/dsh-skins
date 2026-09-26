@@ -10,7 +10,7 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { WallpaperPanel } from '../src/client/WallpaperPanel.tsx'
 import { zh, type SkinCenterKey } from '../src/client/locales.ts'
-import type { WallpaperHandle } from '../src/client/wallpaper.ts'
+import type { WallpaperDirListing, WallpaperHandle } from '../src/client/wallpaper.ts'
 
 ;((globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT) = true
 
@@ -34,7 +34,7 @@ const stubWallpaper = (overrides: Partial<WallpaperHandle> = {}): WallpaperHandl
   dirs: () => NO_DIRS,
   addDir: () => {},
   removeDir: () => {},
-  pickDir: async () => null,
+  pickDir: async () => ({ kind: 'cancelled' }),
   activeId: () => null,
   writeError: () => null,
   trying: () => false,
@@ -55,6 +55,24 @@ const stubWallpaper = (overrides: Partial<WallpaperHandle> = {}): WallpaperHandl
   exitTryOn: () => {},
   recoverScenePlayer: () => {},
   dispose: () => {},
+  ...overrides,
+})
+
+/** One host directory level as the browse capability reports it. */
+const dirListing = (overrides: Partial<WallpaperDirListing> = {}): WallpaperDirListing => ({
+  path: '/Users/demo',
+  home: '/Users/demo',
+  crumbs: [
+    { name: '/', path: '/', hidden: false },
+    { name: 'Users', path: '/Users', hidden: false },
+    { name: 'demo', path: '/Users/demo', hidden: false },
+  ],
+  entries: [
+    { name: 'Movies', path: '/Users/demo/Movies', hidden: false },
+    { name: 'Pictures', path: '/Users/demo/Pictures', hidden: false },
+    { name: '.cache', path: '/Users/demo/.cache', hidden: true },
+  ],
+  truncated: false,
   ...overrides,
 })
 
@@ -96,6 +114,12 @@ async function render(wallpapers: unknown[], wallpaper: WallpaperHandle = stubWa
 function browseButton(): HTMLButtonElement | null {
   const buttons = Array.from(host.querySelectorAll('button'))
   return (buttons.find((button) => button.textContent === zh.wallpaperDirBrowse) ?? null) as HTMLButtonElement | null
+}
+
+/** One rendered button by its visible label (dialog rows and actions). */
+function buttonWith(label: string): HTMLButtonElement | null {
+  const buttons = Array.from(host.querySelectorAll('button'))
+  return (buttons.find((button) => button.textContent === label) ?? null) as HTMLButtonElement | null
 }
 
 describe('WallpaperPanel thumbs', () => {
@@ -143,7 +167,7 @@ describe('WallpaperPanel directory picker', () => {
   it('adds the picked folder directly through the native picker', async () => {
     const added: string[] = []
     await render([], stubWallpaper({
-      pickDir: async () => '/Users/demo/Pictures/wallpapers',
+      pickDir: async () => ({ kind: 'picked', path: '/Users/demo/Pictures/wallpapers' }),
       addDir: (dir) => { added.push(dir) },
     }))
     const button = browseButton()
@@ -155,7 +179,7 @@ describe('WallpaperPanel directory picker', () => {
   it('does nothing when the picker is cancelled', async () => {
     const added: string[] = []
     await render([], stubWallpaper({
-      pickDir: async () => null,
+      pickDir: async () => ({ kind: 'cancelled' }),
       addDir: (dir) => { added.push(dir) },
     }))
     await act(async () => { browseButton()!.click() })
@@ -163,14 +187,31 @@ describe('WallpaperPanel directory picker', () => {
     expect(host.textContent).not.toContain(zh.wallpaperDirBrowseFailed)
   })
 
-  it('shows the fallback error when the native picker is unavailable', async () => {
+  it('reports a failed pick and keeps the manual input', async () => {
+    // Given a Host whose pick call rejects (a transport or assembly fault)
     await render([], stubWallpaper({
-      pickDir: async () => { throw new Error('directory picker failed: no native capability') },
+      pickDir: async () => { throw new Error('the carrier broke') },
     }))
+
+    // When the user clicks Browse
     await act(async () => { browseButton()!.click() })
+
+    // Then the failure is reported and the manual input stays usable
     expect(host.textContent).toContain(zh.wallpaperDirBrowseFailed)
-    // The manual input remains usable as the fallback.
+    expect(host.textContent).toContain('the carrier broke')
     expect(host.querySelector('input')).not.toBeNull()
+  })
+
+  it('falls back to the manual hint when nothing serves the browse capability', async () => {
+    // Given a Host that refuses the pick and offers no listing primitives
+    await render([], stubWallpaper({ pickDir: async () => ({ kind: 'unavailable' }) }))
+
+    // When the user clicks Browse
+    await act(async () => { browseButton()!.click() })
+
+    // Then the panel asks for a typed path instead of opening an empty browser
+    expect(host.textContent).toContain(zh.wallpaperDirBrowseFailed)
+    expect(host.textContent).not.toContain(zh.wallpaperDirBrowseTitle)
   })
 
   it('hides the browse button when the face provides no picker', async () => {
@@ -178,6 +219,99 @@ describe('WallpaperPanel directory picker', () => {
     delete (stub as { pickDir?: unknown }).pickDir
     await render([], stub)
     expect(browseButton()).toBeNull()
+  })
+})
+
+describe('WallpaperPanel in-app folder browser', () => {
+  it('browses the host when the composed picker serves the browse capability', async () => {
+    // Given a Host whose picker refuses the native verb but lists directories
+    const added: string[] = []
+    const listed: (string | undefined)[] = []
+    await render([], stubWallpaper({
+      pickDir: async () => ({ kind: 'unavailable' }),
+      listDir: async (path?: string) => { listed.push(path); return dirListing() },
+      addDir: (dir) => { added.push(dir) },
+    }))
+
+    // When the user clicks Browse
+    await act(async () => { browseButton()!.click() })
+
+    // Then the in-app browser opens on the host home instead of failing
+    await vi.waitFor(() => { expect(host.textContent).toContain(zh.wallpaperDirBrowseTitle) })
+    expect(host.textContent).toContain('Movies')
+    expect(listed).toEqual([undefined])
+
+    // And choosing the listed level adds that absolute host path
+    await act(async () => { buttonWith(zh.wallpaperDirBrowseChoose)!.click() })
+    expect(added).toEqual(['/Users/demo'])
+    expect(host.textContent).not.toContain(zh.wallpaperDirBrowseTitle)
+  })
+
+  it('navigates one level and hides dot-folders until asked', async () => {
+    // Given a listing whose child level is empty and a hidden entry at home
+    const added: string[] = []
+    const listed: (string | undefined)[] = []
+    await render([], stubWallpaper({
+      pickDir: async () => ({ kind: 'unavailable' }),
+      listDir: async (path?: string) => {
+        listed.push(path)
+        if (path === undefined) return dirListing()
+        const parent = dirListing()
+        return dirListing({
+          path,
+          crumbs: [...parent.crumbs, { name: 'Movies', path, hidden: false }],
+          entries: [],
+        })
+      },
+      addDir: (dir) => { added.push(dir) },
+    }))
+    await act(async () => { browseButton()!.click() })
+    await vi.waitFor(() => { expect(host.textContent).toContain(zh.wallpaperDirBrowseTitle) })
+
+    // Dot-folders stay hidden until the toggle is on
+    expect(host.textContent).not.toContain('.cache')
+    const toggle = host.querySelector('input[type="checkbox"]') as HTMLInputElement
+    await act(async () => { toggle.click() })
+    expect(host.textContent).toContain('.cache')
+
+    // Entering a row lists the absolute child path the Host reported
+    await act(async () => { buttonWith('Movies')!.click() })
+    expect(listed).toEqual([undefined, '/Users/demo/Movies'])
+
+    // Then the level now shown is what gets added
+    await act(async () => { buttonWith(zh.wallpaperDirBrowseChoose)!.click() })
+    expect(added).toEqual(['/Users/demo/Movies'])
+  })
+
+  it('closes the browser on Escape', async () => {
+    // Given an open in-app browser
+    await render([], stubWallpaper({
+      pickDir: async () => ({ kind: 'unavailable' }),
+      listDir: async () => dirListing(),
+    }))
+    await act(async () => { browseButton()!.click() })
+    await vi.waitFor(() => { expect(host.textContent).toContain(zh.wallpaperDirBrowseTitle) })
+
+    // When Escape is pressed
+    await act(async () => { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })) })
+
+    // Then the browser is gone
+    expect(host.textContent).not.toContain(zh.wallpaperDirBrowseTitle)
+  })
+
+  it('reports a failed host listing inside the browser', async () => {
+    // Given a Host whose listing call rejects
+    await render([], stubWallpaper({
+      pickDir: async () => ({ kind: 'unavailable' }),
+      listDir: async () => { throw new Error('directory-unreadable') },
+    }))
+
+    // When the user clicks Browse
+    await act(async () => { browseButton()!.click() })
+
+    // Then the browser stays open and names the failure
+    await vi.waitFor(() => { expect(host.textContent).toContain('directory-unreadable') })
+    expect(host.textContent).toContain(zh.wallpaperDirBrowseFailed)
   })
 })
 
