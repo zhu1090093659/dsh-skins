@@ -810,6 +810,7 @@ export default function defineSkinHooks() {
       // --- 6. Mount Container into Sidebar Footer ---
       let mounted = false;
       const mountIntoSidebar = () => {
+        if (disposed || typeof document === 'undefined') return false;
         if (mounted) return true;
         const footer = document.querySelector('div:has(> [data-slot="sidebar.footer.action"])');
         if (footer && footer.parentElement) {
@@ -863,11 +864,12 @@ export default function defineSkinHooks() {
         timers.forEach((id) => clearTimeout(id));
         timers.clear();
 
-        document.removeEventListener('visibilitychange', syncTabHidden);
-        document.body.removeAttribute('data-dsh-tab-hidden');
-        document.removeEventListener('click', handleClickOutside);
-        document.removeEventListener('keydown', handleKeyDown);
-        document.removeEventListener('keydown', handleMusicHotkeys);
+        if (typeof document !== 'undefined') {
+          document.removeEventListener('visibilitychange', syncTabHidden);
+          document.body.removeAttribute('data-dsh-tab-hidden');
+          document.removeEventListener('click', handleClickOutside);
+          document.removeEventListener('keydown', handleKeyDown);
+        }
 
         unsubTheme();
         if (observer) {
@@ -875,7 +877,10 @@ export default function defineSkinHooks() {
           observer = null;
         }
 
-        
+        const bgLayer = ctx.layers?.background || (typeof document !== 'undefined' ? document.querySelector('[data-dsh-skin-layer="background"]') : null);
+        if (bgLayer) {
+          bgLayer.querySelectorAll('.snake-bg-a, .snake-bg-b, .snake-scrim-overlay').forEach((el) => el.remove());
+        }
 
         if (popover.parentNode) popover.parentNode.removeChild(popover);
         if (tipBubble.parentNode) tipBubble.parentNode.removeChild(tipBubble);

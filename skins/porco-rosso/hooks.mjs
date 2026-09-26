@@ -729,6 +729,11 @@ export default function defineSkinHooks() {
         popover.remove();
         tipBubble.remove();
         
+        const bgLayer = ctx.layers?.background || (typeof document !== 'undefined' ? document.querySelector('[data-dsh-skin-layer="background"]') : null);
+        if (bgLayer) {
+          bgLayer.querySelectorAll('.porco-bg-a, .porco-bg-b, .porco-scrim-overlay').forEach((el) => el.remove());
+        }
+
         container.remove();
         styleTag.remove();
       });
