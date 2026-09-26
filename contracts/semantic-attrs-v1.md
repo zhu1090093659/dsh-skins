@@ -65,7 +65,7 @@ family / 插件区域：
 
 | data-dsh-part | owner | 含义 / 锚定方式 |
 | --- | --- | --- |
-| `sidebar-entry` | family | 插件注入的侧栏入口行；`[data-dsh-*-entry]` |
+| `sidebar-entry` | shell（行盒）+ 注册插件（身份） | 插件经 `sidebar.panellist` 注册的侧栏面板行（任务看板 / ssh / 技能中心；官方 Plugins / Schedule 行不属此值）。行盒归 shell，兼容适配器按 `[class*="panelRow"]:has([data-dsh-panel-entry])` 补打——CSS-module 后缀 + 插件字形身份，同 `new-session` 手法；上游诉求见下文脆弱点 2 |
 | `header` | task-board | 看板头；`[data-dsh-taskboard-board] > header` |
 | `column` | task-board | 状态列；`section[data-status]` |
 | `card` | task-board | 任务卡；列内 `[data-status]` 条目 |
@@ -136,18 +136,33 @@ family / 插件区域：
 | `lever-burst` | liangshen | 拨下命中后的中奖特效浮层（闪光 / 冲击环 / 火花 / 横幅）；`[data-dsh-part="lever-burst"]`，`prefers-reduced-motion` 下退化为淡出 |
 | `lever-banner` | liangshen | 特效中的梁神横幅（模式名 + 文言文/二进制/摩斯三行）；burst 内 `[data-dsh-part="lever-banner"]` |
 
+### 面板行身份锚点 `data-dsh-panel-entry`（owner: 各注册面板的插件）
+
+`sidebar.panellist` 的行盒、标签与选中态归 shell，插件的客户端代码在这行里**只**
+拥有自己的字形（`renderSlot('sidebar.panellist', …, { only: id })` 的返回值，落在
+shell 的 `[class*="panelGlyph"]` 内）。shell 目前不把 entry id 透传到 DOM，因此行身份
+由**字形自带**该属性，皮肤用 `:has()` 从行反查归属：
+
+| 属性 | owner | 取值 / 锚定方式 |
+| --- | --- | --- |
+| `data-dsh-panel-entry` | task-board / ssh / skill-explorer | 面板行字形的 `id`（与注册进 `sidebar.panellist` 的 entry id、`main` 槽的 key 同源），即 `task-board` / `ssh` / `skill-explorer`；行级选择器形如 `[data-dsh-part="sidebar-entry"]:has([data-dsh-panel-entry="ssh"])` |
+
+该属性独立于 surface / part / plugin 三组（与 `data-dsh-usage-foot-card` 同类，见纪律节），
+不进 `data-dsh-plugin`：plugin 属性标记插件面板根，皮肤里已有
+`[data-dsh-plugin="ssh"] [class*="panel"]` 一类把根当作面板子树起点的规则，把字形也算进去会误伤。
+
 ## plugin 组（14 个）
 
 | data-dsh-plugin | owner | 锚定方式 |
 | --- | --- | --- |
-| `task-board` | dsh-task-board | `[data-dsh-taskboard-view]` / `[data-dsh-taskboard-entry]` / slot entry id |
-| `ssh` | dsh-ssh | `[data-dsh-ssh-view]` / `[data-dsh-ssh-entry]` |
+| `task-board` | dsh-task-board | `[data-dsh-taskboard-view]` / 面板行字形 `[data-dsh-panel-entry="task-board"]` / `sidebar.panellist` entry id |
+| `ssh` | dsh-ssh | `[data-dsh-ssh-view]` / 面板行字形 `[data-dsh-panel-entry="ssh"]` |
 | `git-graph` | dsh-git-graph | slot entry id `git-graph`；`[data-gitgraph-chip-anchor]` / `[data-gitgraph-dialog]` |
 | `pet` | dsh-pet | `[data-dsh-pet-root]`；一级设置分区 settings.section id `pet`（只列内置与已安装宠物） |
 | `remote-web-ui` | dsh-remote-web-ui | slot entry id `remote-web-ui` |
 | `update` | dsh-update | footer action slot entry id `update`；`[data-dsh-plugin="update"]`（面板根 + 入口触发器） |
 | `web-ui-settings` | dsh-web-settings | settings.section id `web-ui-plugins` |
-| `skill-explorer` | dsh-skill-explorer | `[data-dsh-skill-explorer-view]` / `[data-dsh-skill-explorer-entry]` |
+| `skill-explorer` | dsh-skill-explorer | `[data-dsh-skill-explorer-view]` / 面板行字形 `[data-dsh-panel-entry="skill-explorer"]` |
 | `dsh-web-ui-market` | dsh-market | 创意工坊商店一级页（settings.section id `dsh-web-ui-market`），商店卡与目录条目容器 |
 | `skin-center` | skins/skin-center | 一级设置分区 settings.section id `skin-center`（列已安装皮肤，属内置源时显式标记） |
 | `session-id` | dsh-session-id | footer action slot entry id `session-id`；`[data-dsh-plugin="session-id"]`（面板 overlay 根 + 入口触发器） |
@@ -159,6 +174,6 @@ family / 插件区域：
 ## 已知脆弱点（上游主题缝 PR 诉求）
 
 1. AppFrame 三列容器本体只有 hash 类，列级钩子缺失 → 诉求：三列自带稳定 data 钩子。
-2. 侧栏导航行无官方 slot，插件靠 DOM 注入 → 诉求：sidebar 导航 list slot。
+2. 侧栏导航行已有官方 list slot（`sidebar.panellist`，2026-09 面板家族迁移后插件不再注入 DOM），但行盒本体仍只有 CSS-module 类、无稳定 data 钩子 → 诉求：`sidebar.panellist` 的行盒自带稳定属性（现由兼容适配器从 `[class*="panelRow"]:has([data-dsh-panel-entry])` 补打 `sidebar-entry`，见 part 组）。
 3. 设置模态只有 `role="dialog"`（与其他对话框撞车）→ 诉求：设置 dialog 根专属标识。
-4. list slot 的单 entry 无 DOM 归属标识 → 诉求：slot entry 渲染透传 entry id 到 DOM。
+4. list slot 的单 entry 无 DOM 归属标识 → 诉求：slot entry 渲染透传 entry id 到 DOM（现由各插件字形自带的 `data-dsh-panel-entry` 代偿，见 part 组末尾）。

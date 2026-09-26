@@ -113,6 +113,25 @@ describe('semantic adapter', () => {
     adapter.stop()
   })
 
+  it('stamps only the plugin rows of the shell panel list as sidebar entries', () => {
+    // Given a shell-owned panel list whose rows are plain shell buttons, one of
+    // them carrying the registering plugin's own glyph identity anchor
+    document.body.innerHTML = `
+      <nav class="shell_panelList_hash">
+        <button class="shell_panelRow_hash"><span class="shell_panelGlyph_hash"><svg data-dsh-panel-entry="ssh"></svg></span></button>
+        <button class="shell_panelRow_hash"><span class="shell_panelGlyph_hash"><svg></svg></span></button>
+      </nav>
+    `
+    // When the semantic adapter starts
+    const adapter = createSemanticAdapter(document)
+    adapter.start()
+    // Then the plugin's row is a sidebar entry and the shell's own row is not
+    const rows = document.querySelectorAll('[class*="panelRow"]')
+    expect(rows[0]!.getAttribute('data-dsh-part')).toBe('sidebar-entry')
+    expect(rows[1]!.hasAttribute('data-dsh-part')).toBe(false)
+    adapter.stop()
+  })
+
   it('user on dsh 0.1.7 gets conversation, details and composer-input anchors stamped', () => {
     // Given a 0.1.7 shell that exposes only the CSS-module centerCol class, the
     // official rightbar-col attribute, and a Lexical composer input

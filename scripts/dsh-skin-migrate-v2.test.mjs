@@ -212,6 +212,7 @@ test('classifySelector separates L1/L2 core selectors from L3 free selectors', (
     'body[data-ds-dark-theme]',
     '[data-dsh-surface="composer"]',
     '[data-dsh-plugin="ssh"] [data-dsh-part="terminal"]',
+    '[data-dsh-part="panel-row"]:has([data-dsh-panel-entry="ssh"])',
     'body::-webkit-scrollbar-thumb',
   ]
   for (const sel of core) {
@@ -228,6 +229,30 @@ test('classifySelector separates L1/L2 core selectors from L3 free selectors', (
   for (const [sel, why] of patch) {
     assert.equal(classifySelector(sel).core, false, sel + ' should be a patch (' + why + ')')
   }
+})
+
+test('normalizeStylesheet re-anchors retired family sidebar-row attributes', () => {
+  const stats = normalizeStylesheet(
+    'body[data-dsh-x] [data-dsh-taskboard-entry]{color:#fff}'
+    + 'body[data-dsh-x] [data-dsh-ssh-entry]:hover{color:#111}'
+    + 'body[data-dsh-x] [data-dsh-skill-explorer-entry]{margin:0}',
+    { bodyAttr: 'data-dsh-x' },
+  )
+  assert.ok(
+    stats.css.includes('[data-dsh-part="panel-row"]:has([data-dsh-panel-entry="task-board"])'),
+    stats.css,
+  )
+  assert.ok(
+    stats.css.includes('[data-dsh-part="panel-row"]:has([data-dsh-panel-entry="ssh"]):hover'),
+    stats.css,
+  )
+  assert.ok(
+    stats.css.includes('[data-dsh-part="panel-row"]:has([data-dsh-panel-entry="skill-explorer"])'),
+    stats.css,
+  )
+  assert.ok(!stats.css.includes('data-dsh-taskboard-entry'), stats.css)
+  assert.ok(!stats.css.includes('data-dsh-ssh-entry'), stats.css)
+  assert.ok(!stats.css.includes('data-dsh-skill-explorer-entry'), stats.css)
 })
 
 test('normalizeStylesheet renames --dsw-skin-* and strips the scope', () => {

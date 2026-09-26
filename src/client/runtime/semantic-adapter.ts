@@ -80,14 +80,14 @@ export const SEMANTIC_RULES_V1: readonly SemanticRule[] = [
   },
   // ---- plugin roots (plugins without stable anchors opt in via AGENTS.md) ----
   {
-    selector: '[data-dsh-taskboard-view], [data-dsh-taskboard-board], [data-dsh-taskboard-entry]',
+    selector: '[data-dsh-taskboard-view], [data-dsh-taskboard-board]',
     attrs: [['data-dsh-plugin', 'task-board']],
-    note: 'task-board panel/board/sidebar entry',
+    note: 'task-board panel/board (the sidebar row is shell-owned: its glyph carries data-dsh-panel-entry and the family rule below stamps the row)',
   },
   {
-    selector: '[data-dsh-ssh-view], [data-dsh-ssh-entry]',
+    selector: '[data-dsh-ssh-view]',
     attrs: [['data-dsh-plugin', 'ssh']],
-    note: 'ssh panel/sidebar entry',
+    note: 'ssh panel (the sidebar row is shell-owned: its glyph carries data-dsh-panel-entry and the family rule below stamps the row)',
   },
   {
     selector: '[data-gitgraph-chip-anchor], [data-gitgraph-dialog]',
@@ -101,9 +101,9 @@ export const SEMANTIC_RULES_V1: readonly SemanticRule[] = [
   },
   // ---- family parts ----
   {
-    selector: '[data-dsh-taskboard-entry], [data-dsh-ssh-entry]',
+    selector: '[class*="panelRow"]:has([data-dsh-panel-entry])',
     attrs: [['data-dsh-part', 'sidebar-entry']],
-    note: 'shared injected sidebar entry rows',
+    note: 'a plugin-registered sidebar row (sidebar.panellist): the shell owns the row box and stamps no hook of its own, so the row is recognised by its css-module class plus the glyph identity the registering plugin outputs — same compat technique as newSession',
   },
 ]
 
