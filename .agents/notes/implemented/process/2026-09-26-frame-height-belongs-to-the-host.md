@@ -108,3 +108,8 @@ identical block was removed before merge.
   that document the ban and the six merged in this round; a headless Chrome probe
   of the host's frame rules confirmed that `min-height: 100dvh` has no effect on
   a frame whose containing block is already the viewport.
+- Verification: both held skins complied later the same day. black-gold (`#5`)
+  and cafe-roastery (`#7`) each replaced the block with the ban in their own
+  device-adaptation comment, were re-run through the full local gate on the
+  then-current `main` before merging, and now carry `[data-dsh-frame]` only
+  inside that comment.
