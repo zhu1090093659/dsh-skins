@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.linxin666.org/dsh-skin/v2.json",
+  "skinManifestVersion": 2,
+  "id": "endfield-baker",
+  "name": "终末地 · BAKER",
+  "nameEn": "Endfield Baker",
+  "version": "0.9.0",
+  "author": "Yuji6278（基于 blue-fantasy / powerdog996 DreamSkin 社区作品改作）",
+  "tagline": "《明日方舟：终末地》工业终端 · BAKER 会话界面 · 信号青与警示黄",
+  "description": "把 dsh Web GUI 改造成终末地现场终端：会话区按 BAKER 通讯界面重做（青色标头竖条、信号黄选中行、切角控制台卡片、白色胶囊输入条、磨砂灰聊天底板），其余壳层用终末地的工业语汇补齐——细网格与斜纹信号条、等宽微标签、单像素浅灰描边。浅色与深色模式共用同一套终端配色。",
+  "tags": [
+    "endfield",
+    "arknights",
+    "industrial",
+    "baker",
+    "terminal",
+    "cyan"
+  ],
+  "accent": "#17c3e6",
+  "order": 1052,
+  "license": "CC BY-NC-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "sourceUrl": "https://github.com/Yuji6278/endfield-skin-release",
+  "attribution": "皮肤工程（skin.css / patches.css / assets/）由 Yuji6278 完成，按 CC BY-NC-SA 4.0 发布；底色与骨架改作自 blue-fantasy（powerdog996 / DreamSkin 社区）。《明日方舟：终末地》名称与设定归鹰角网络（Hypergryph）所有，本皮肤为非商业同人作品。",
+  "preview": {
+    "light": "preview/light.jpg",
+    "dark": "preview/dark.jpg"
+  },
+  "contributes": {
+    "stylesheet": "skin.css",
+    "patches": "patches.css",
+    "backgroundMedia": {
+      "light": {
+        "type": "image",
+        "src": "assets/endfield-dark.jpg",
+        "scrim": "linear-gradient(rgba(8, 10, 12, 0.30) 0%, rgba(10, 13, 16, 0.42) 60%, rgba(12, 16, 19, 0.50) 100%)"
+      },
+      "dark": {
+        "type": "image",
+        "src": "assets/endfield-dark.jpg",
+        "scrim": "linear-gradient(rgba(8, 10, 12, 0.30) 0%, rgba(10, 13, 16, 0.42) 60%, rgba(12, 16, 19, 0.50) 100%)"
+      }
+    }
+  }
+}
