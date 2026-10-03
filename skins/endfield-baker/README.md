@@ -42,10 +42,12 @@ Applied locally through the skin center and checked in both skins-visible states
 
 ## Credits and license
 
-- Base theme rewritten from **blue-fantasy** (`powerdog996` / DreamSkin community).
-- Skin engineering (`skin.css`, `patches.css`, `assets/`) by **Yuji6278**, released under
-  [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/); see [LICENSE](LICENSE).
-- *Arknights: Endfield* names and settings belong to Hypergryph. This is a non-commercial fan work.
+- Skin engineering by **Yuji6278**; the base theme is adapted from **blue-fantasy** (`powerdog996` / DreamSkin community). Base code remains subject to its original license.
+- All visual assets were obtained from https://chat.peilika.beer/ through page screenshots or browser developer tools, then cropped, adjusted or processed for this skin. The contributor cannot determine whether the site's assets were redrawn or extracted/adapted from game resources, and does not claim them as contributor-original or AI-generated assets.
+- The site's intellectual-property statement attributes *Arknights: Endfield*-related images and other game intellectual property to Shanghai Hypergryph Network Technology Co., Ltd. Other rights remain with their respective holders. This identifies the source and its stated ownership; it is not a redistribution authorization.
+- **CC BY-NC-SA 4.0** applies only to new contributions that the contributor has the right to license. It excludes third-party visual assets and does not override the base code's original license. The license text is in `LICENSE`.
+- This is an **unofficial fan work**, with no affiliation, partnership or endorsement from Hypergryph, the source website or this repository. It is intended **only for personal, non-commercial use**. The contributor assumes copyright and compliance responsibility for this contribution.
+- Permission to redistribute the third-party assets has **not been confirmed**. Neither this statement nor the non-commercial designation represents authorization or a guarantee of the right to redistribute.
 
 ## Known limitations
 
