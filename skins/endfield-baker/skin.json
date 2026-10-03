@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.linxin666.org/dsh-skin/v2.json",
+  "skinManifestVersion": 2,
+  "id": "endfield-baker",
+  "name": "终末地 · BAKER",
+  "nameEn": "Endfield Baker",
+  "version": "0.9.0",
+  "author": "Yuji6278（基于 blue-fantasy / powerdog996 DreamSkin 社区作品改作）",
+  "tagline": "《明日方舟：终末地》工业终端 · BAKER 会话界面 · 信号青与警示黄",
+  "description": "把 dsh Web GUI 改造成终末地现场终端：会话区按 BAKER 通讯界面重做（青色标头竖条、信号黄选中行、切角控制台卡片、白色胶囊输入条、磨砂灰聊天底板），其余壳层用终末地的工业语汇补齐——细网格与斜纹信号条、等宽微标签、单像素浅灰描边。浅色与深色模式共用同一套终端配色。",
+  "tags": [
+    "endfield",
+    "arknights",
+    "industrial",
+    "baker",
+    "terminal",
+    "cyan"
+  ],
+  "accent": "#17c3e6",
+  "order": 1052,
+  "license": "CC BY-NC-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "sourceUrl": "https://github.com/Yuji6278/endfield-skin-release",
+  "attribution": "皮肤工程由 Yuji6278 完成，底色与骨架改作自 blue-fantasy（powerdog996 / DreamSkin 社区），基底代码遵守原许可证。视觉素材均通过页面截图或浏览器开发者工具提取自 https://chat.peilika.beer/，再经裁切、调整与加工；无法确认网站素材是重新绘制还是提取、改编自游戏资源，不声明为贡献者原创或 AI 生成。该网站声明将《明日方舟：终末地》相关图片等知识产权归上海鹰角网络科技有限公司（Hypergryph）所有，其他权利归相应权利人。CC BY-NC-SA 4.0 仅适用于贡献者有权许可的新增内容，不包含第三方素材或覆盖基底代码原许可证。本皮肤为非官方同人作品，与 Hypergryph、素材来源网站及本收录仓库无隶属、合作或背书关系，仅供个人非商业使用；版权与合规责任由贡献者承担。目前未确认第三方素材的再分发授权，本声明不代表已获授权或保证有权分发。",
+  "preview": {
+    "light": "preview/light.jpg",
+    "dark": "preview/dark.jpg"
+  },
+  "contributes": {
+    "stylesheet": "skin.css",
+    "patches": "patches.css",
+    "backgroundMedia": {
+      "light": {
+        "type": "image",
+        "src": "assets/endfield-dark.jpg",
+        "scrim": "linear-gradient(rgba(8, 10, 12, 0.30) 0%, rgba(10, 13, 16, 0.42) 60%, rgba(12, 16, 19, 0.50) 100%)"
+      },
+      "dark": {
+        "type": "image",
+        "src": "assets/endfield-dark.jpg",
+        "scrim": "linear-gradient(rgba(8, 10, 12, 0.30) 0%, rgba(10, 13, 16, 0.42) 60%, rgba(12, 16, 19, 0.50) 100%)"
+      }
+    }
+  }
+}
