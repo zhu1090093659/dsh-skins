@@ -1,0 +1,244 @@
+/* ============================================================
+   Frutiger Aero · 结构级补丁 (L3) —— 气泡层彻底重做版
+   ------------------------------------------------------------
+   历史教训（保留，防止重犯）：
+     v4 18 层 background-position 动画  -> GPU 100% 掉帧
+     v5 will-change/translateZ 图层提升 -> 气泡糊成花斑
+     v7 20 层渐变 + 高光独立层          -> 高光层被 screen 加性混合叠成白墙
+     v9 彻底重做：6 枚气泡 x 1 层壳（无高光层、无 blend、无兜底气泡）
+   本轮原则：只保留验证过的单层渐变 + transform 动画。
+   ============================================================ */
+
+/* ---------- 气泡装饰层（重做版 v10） ---------- */
+/* ★★ 真正的根因（v10 定位）★★
+   之前所有"白色遮罩从下往上移"的版本，动画方式都是 transform（元素整体平移），
+   而元素只有视口大小（inset: 0）。元素向上平移后，它的底边离开视口下缘，
+   屏幕上就只剩一条"有气泡的带子"从下往上扫，扫完是空白，再循环 ——
+   这就是遮罩感的来源。background-position 版本元素不动、图案在内部滚动，
+   所以从没有这个问题（时间线证据：v1~v4 无此反馈，v5 起才有）。
+   修法：把元素【底部向下延长一个 tile 高度】。平移最多一个 tile，
+   任意时刻视口都被平铺图案覆盖：t<=500 时元素覆盖 [-t, V+500-t] ⊇ [0, V]。 */
+[data-dsh-skin-layer="background"]::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 -500px 0;   /* 底部多出 500px = 一个 tile，专为 transform 平移留的余量 */
+  pointer-events: none;
+
+  background-image:
+    /* ① 大 (原 14%,16% 圆心距 tile 左边 70px < 半径 84px -> 左半被 tile 边界切掉) */
+    radial-gradient(circle 84px at 23% 24%,
+      #ffffff14 0%, #ffffff14 55%, #ffffff26 70%, #ffffff40 82%,
+      #ffffff73 92%, #ffffff66 97%, #ffffff00 100%),
+    /* ② 中 */
+    radial-gradient(circle 60px at 58% 36%,
+      #ffffff12 0%, #ffffff12 55%, #ffffff24 70%, #ffffff3d 82%,
+      #ffffff6b 92%, #ffffff5e 97%, #ffffff00 100%),
+    /* ③ 大 */
+    radial-gradient(circle 92px at 33% 70%,
+      #ffffff16 0%, #ffffff16 55%, #ffffff29 70%, #ffffff45 82%,
+      #ffffff7d 92%, #ffffff70 97%, #ffffff00 100%),
+    /* ④ 小 */
+    radial-gradient(circle 44px at 80% 82%,
+      #ffffff10 0%, #ffffff10 55%, #ffffff21 70%, #ffffff38 82%,
+      #ffffff5e 92%, #ffffff52 97%, #ffffff00 100%),
+    /* ⑤ 中 (原 88%,22% 圆心 440px + 半径 56px = 496px，距右边仅 4px，一并挪开) */
+    radial-gradient(circle 56px at 82% 14%,
+      #ffffff11 0%, #ffffff11 55%, #ffffff23 70%, #ffffff3b 82%,
+      #ffffff66 92%, #ffffff59 97%, #ffffff00 100%),
+    /* ⑥ 小 */
+    radial-gradient(circle 48px at 48% 54%,
+      #ffffff13 0%, #ffffff13 55%, #ffffff25 70%, #ffffff3f 82%,
+      #ffffff6e 92%, #ffffff61 97%, #ffffff00 100%);
+
+  background-size: 500px 500px;
+  background-repeat: repeat;
+
+  /* transform 动画：合成器线程，GPU 只平移纹理，不触发重绘。
+     20s 平移 500px = 25px/s 上升；位移 = tile 整数倍，循环无缝。
+     底部已延长 500px，整个周期视口全覆盖，不会再有"带子"现象。 */
+  animation: aero-rise-v9 20s linear infinite;
+  /* 零消耗开关：animation-play-state 由 --aero-bubble-motion 控制。
+     running = 气泡上浮（有 GPU 合成开销）
+     paused  = 气泡冻结在当前位置，合成器零每帧工作，面板模糊也只需
+               采样一次静态背景 —— 观感不变只是停下来，几乎零消耗。
+     切换方法：skin.css 里把 --aero-bubble-motion 改为 paused 后刷新。 */
+  animation-play-state: var(--aero-bubble-motion, running);
+}
+
+@keyframes aero-rise-v9 {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, -500px, 0); }
+}
+
+/* 深色模式略微减淡 */
+body[data-ds-dark-theme] [data-dsh-skin-layer="background"]::after,
+[data-ds-dark-theme] [data-dsh-skin-layer="background"]::after {
+  opacity: .7;
+}
+
+/* 尊重系统"减少动态效果"设置 */
+@media (prefers-reduced-motion: reduce) {
+  [data-dsh-skin-layer="background"]::after { animation: none; }
+}
+
+/* 根容器不吃背景，让壁纸透上来 */
+[id="root"] {
+  background: none;
+}
+
+/* ---------- 玻璃水光：磨砂 + 高光描边 + 外发光 ----------
+   ★★ 选择器来源（改动时务必先读这段）★★
+   下面这些类名是从 app.asar 前端产物里挖出的【CSS Modules 真实类名】：
+     .{hash}_sidebarCol     左侧工作区列
+     .{hash}_centerCol      主内容区
+     .{hash}_rightbarCol    右侧工作区列（展开时才存在）
+     .{hash}_frame          窗口框架；其 ::before 就是顶部标题栏条
+                             （height: var(--dsh-windows-titlebar-height)）
+   哈希前缀（实测 BynINW_）随 DSH 版本变化，故一律用 [class*=] 通配匹配。
+   皮肤中心契约文档写的 [data-slot="sidebar"] 等语义选择器在真实 DOM 中【不存在】：
+     asar 里 data-slot 命中 0 处，红描边探针也确认没命中。
+   本文件早期版本挂在 [data-pane=...] / .aionui-* 上，那整套选择器同样
+   asar 命中 0 处 —— 也就是说"面板水光"在过去从未真正生效过。现已全部改正。
+
+   ★磨砂半径与性能★（实测数据见 桌面/消融实验记录.md）
+   主内容区 3px；左/右工作区与顶部标题栏 6px。
+   这四个区域同时开磨砂、背景还有全屏动态气泡时，GPU 3D 仍 < 0.3%（空闲）。
+   唯一昂贵的是窗口级巨型层 [data-dsh-part="dialog"] 的 blur(16px)：实测 +22%，
+   故 skin.css 中该行已删除。别再往巨型层上加整屏模糊。
+   兜底：系统开启"减少透明效果"时本段的磨砂自动失效。 */
+@media (prefers-reduced-transparency: no-preference) {
+  [class*="sidebarCol"] {
+    backdrop-filter: blur(4px) saturate(1.14);
+    -webkit-backdrop-filter: blur(4px) saturate(1.14);
+  }
+  [class*="centerCol"] {
+    /* 主聊天区：保持最轻的磨砂。4px 时因为面积最大，明亮天空被糊匀后
+       会呈现"一层极薄白雾"，故回落到 2px。 */
+    backdrop-filter: blur(2px) saturate(1.10);
+    -webkit-backdrop-filter: blur(2px) saturate(1.10);
+  }
+  [class*="rightbarCol"] {
+    /* 右侧工作区：比主聊天区更"实"一档（用户反馈它原本偏淡）。 */
+    backdrop-filter: blur(6px) saturate(1.16);
+    -webkit-backdrop-filter: blur(6px) saturate(1.16);
+  }
+  [class*="_frame"]::before {
+    backdrop-filter: blur(4px) saturate(1.13);
+    -webkit-backdrop-filter: blur(4px) saturate(1.13);
+    /* ★整窗唯一的顶边高光★ 光从上方落在这一整片玻璃的顶边上。
+       1px 亮线 + 约 12px 柔光渐隐（与面板用的是同一套衰减参数，观感统一）。 */
+    box-shadow:
+      inset 0 1px 0 #ffffff59,
+      inset 0 4px 7px -4px #ffffff3d;
+  }
+  body[data-ds-dark-theme] [class*="_frame"]::before {
+    box-shadow:
+      inset 0 1px 0 #ffffff2b,
+      inset 0 4px 7px -4px #ffffff1f;
+  }
+  [role="tooltip"] {
+    backdrop-filter: blur(4px) saturate(1.12);
+    -webkit-backdrop-filter: blur(4px) saturate(1.12);
+  }
+}
+
+/* 水光的"棱"：极淡轮廓 + 【方向性】光边 + 冷色外发光。
+   要点：真实玻璃边缘不是一圈等亮的白线，而是顶边最亮、左边微亮、底边微暗
+   （光从上方来，这样才有厚度感）。早期版本用一圈均匀 62% 白线，观感"很假"。 */
+/* ---------- 玻璃边缘：方案 A（整窗一片玻璃）----------
+   决策依据：接缝放大渲染对比（桌面 _seam_compare.png）+ 真实截图像素实测。
+   实测证据：给每个面板都加"左侧柔光"后，侧栏与内容区的接缝处亮度
+   从 193 突跳到 202（+9 的亮线）——读起来就是"多块玻璃拼接"。
+   结论：
+     · 内部接缝（中心区左缘、右侧栏左缘）一律不加边缘光、不加投影
+     · 只保留【整窗】的两处受光：顶边（_frame::before）与最左边缘（侧栏左缘）
+     · 三个区域磨砂半径统一为 4px（原先中心区 2px，导致接缝两侧模糊不一致）
+   ★不要恢复"每个面板各自描边/外发光"的写法，那正是接缝亮线的来源。 */
+[class*="sidebarCol"] {
+  box-shadow: inset 4px 0 7px -4px #ffffff26;      /* 整窗最左边缘受光 15% */
+}
+
+[class*="centerCol"],
+[class*="rightbarCol"] {
+  /* 极淡接缝：6% 柔光，只"暗示"分区存在，不形成亮线。
+     实测参考：15% 时接缝亮度跳 +9（明显亮线）；6% 约 +3.5，属于"看得见但不刺眼"。
+     如果觉得完全没有边界感，把这个 alpha 往上调；觉得又成亮线了，往下调或改成暗色接缝。 */
+  box-shadow: inset 4px 0 7px -4px #ffffff0f;
+}
+
+body[data-ds-dark-theme] [class*="sidebarCol"] {
+  box-shadow: inset 4px 0 7px -4px #ffffff12;
+}
+
+body[data-ds-dark-theme] [class*="centerCol"],
+body[data-ds-dark-theme] [class*="rightbarCol"] {
+  box-shadow: inset 4px 0 7px -4px #ffffff0a;
+}
+
+/* ---------- 发光按钮 ---------- */
+button,
+[role="button"],
+[role="tab"] {
+  transition: box-shadow .18s ease, background-color .18s ease, border-color .18s ease;
+}
+
+button:not(:disabled):hover,
+[role="button"]:not([aria-disabled="true"]):hover {
+  box-shadow:
+    0 0 0 1px #7FD0F066,
+    0 0 14px #5AC8F559,
+    0 1px 0 #ffffffb3 inset;
+}
+
+button:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active {
+  box-shadow:
+    0 0 0 1px #2E9BD880,
+    0 0 10px #2E9BD866 inset;
+}
+
+body[data-ds-dark-theme] button:not(:disabled):hover,
+body[data-ds-dark-theme] [role="button"]:not([aria-disabled="true"]):hover {
+  box-shadow:
+    0 0 0 1px #5AC8F573,
+    0 0 16px #5AC8F566,
+    0 1px 0 #ffffff1f inset;
+}
+
+/* 主按钮：冰蓝渐变 + 发光环 */
+[class*="primary"][class*="button"],
+button[data-variant="primary"] {
+  background-image: linear-gradient(180deg, #6FD0F5 0%, #2E9BD8 55%, #1E7FBF 100%);
+  border: 1px solid #ffffff8c;
+  text-shadow: 0 1px 0 #0B254033;
+}
+
+[class*="primary"][class*="button"]:hover,
+button[data-variant="primary"]:hover {
+  box-shadow:
+    0 0 0 1px #ffffffb3,
+    0 0 18px #5AC8F580,
+    0 1px 0 #ffffffd9 inset;
+}
+
+/* ---------- 焦点环 / 链接 / 提示 ---------- */
+:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
+}
+
+a { color: #1E7FBF; }
+a:visited { color: #6A5FA8; }
+
+body[data-ds-dark-theme] a { color: #7FD0F0; }
+body[data-ds-dark-theme] a:visited { color: #A58FDC; }
+
+[role="tooltip"] {
+  background: var(--dsw-alias-tooltip-bg);
+  color: var(--dsw-alias-tooltip-fg);
+  border: 1px solid #ffffff8c;
+}
+
+body[data-ds-dark-theme] [role="tooltip"] {
+  border-color: #5AC8F51f;
+}
