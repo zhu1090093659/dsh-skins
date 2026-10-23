@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.linxin666.org/dsh-skin/v2.json",
+  "skinManifestVersion": 2,
+  "id": "md3-blue",
+  "name": "物料三 · 深蓝",
+  "nameEn": "Material 3 · Abyss Blue",
+  "version": "1.1.4",
+  "author": "Little Code Sauce（自用皮肤）",
+  "tagline": "以 #4d6bfe 为种子的 MD3 色调体系 · 线框几何缓慢漂浮",
+  "description": "以 #4d6bfe（DeepSeek 站点主色）为种子，按 Material Design 3 的色调体系展开成整套角色：亮色 primary #4164f5（对白字 4.81:1），暗色 primary #799dff（对深色画布 7.14:1），surface 五级容器带一点蓝紫底味，按钮、链接、侧栏激活条、用户气泡全是同一套主色容器。底板是 20 秒无缝循环的线框几何动画，全部颜色取自本皮肤。",
+  "tags": [
+    "material",
+    "md3",
+    "material-3",
+    "tonal",
+    "blue",
+    "abyss-blue",
+    "light-and-dark",
+    "video-background",
+    "surface-containers"
+  ],
+  "accent": "#4164F5",
+  "order": 121,
+  "preview": {
+    "light": "preview/light.jpg",
+    "dark": "preview/dark.jpg"
+  },
+  "contributes": {
+    "stylesheet": "skin.css",
+    "patches": "patches.css",
+    "backgroundMedia": {
+      "light": {
+        "type": "video",
+        "src": "assets/float-blue-light.mp4",
+        "scrim": "linear-gradient(180deg, rgba(252, 252, 255, 0.06) 0%, rgba(250, 250, 255, 0.1) 55%, rgba(244, 242, 252, 0.14) 100%)"
+      },
+      "dark": {
+        "type": "video",
+        "src": "assets/float-blue-dark.mp4",
+        "scrim": "linear-gradient(180deg, rgba(20, 18, 26, 0.08) 0%, rgba(18, 16, 24, 0.12) 55%, rgba(15, 13, 20, 0.16) 100%)"
+      }
+    }
+  },
+  "license": "MIT",
+  "licenseUrl": "https://opensource.org/licenses/MIT",
+  "attribution": "原创素材：底板线框几何由脚本按 3D 顶点建模、透视投影后写成 SVG，再逐帧渲染（1440×810、10fps、200 帧 = 20 秒无缝循环，位移取 20s 的整数倍频正弦，ffmpeg libx264 crf 30 编码，亮/暗两段各约 190KB）。整套角色色由种子 #4d6bfe 在 CIELAB 色调空间算出（色域裁剪，写死对比度断言）。无第三方美术素材，无角色，无既有作品。"
+}
