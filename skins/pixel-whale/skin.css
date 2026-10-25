@@ -94,21 +94,48 @@ body {
   --dsw-alias-toast-fg: #d6ece9;
   --dsw-alias-tooltip-bg: #0e2436f2;
   --dsw-alias-tooltip-fg: #d6ece9;
-  --dsw-alias-shadow-lv1: 0 1px 2px #00000066;
-  --dsw-alias-shadow-lv2: 0 4px 14px #00000073;
-  --dsw-alias-shadow-lv3: 0 12px 36px #00000080;
-  --dsw-alias-specific-bubble: #12324a80;
-  --dsw-alias-specific-bubble-highlight: #3fb3a929;
-  --dsw-alias-specific-input-major: #08131fc9;
-  --dsw-alias-specific-login-input: #08131fd9;
-  --dsw-alias-specific-menu: #0a1826f2;
-  --dsw-alias-specific-selector: #123246cc;
-  --dsw-alias-specific-sidebar-fill: #050f1999;
-  --dsw-alias-specific-sidebar-nav-item-active: #3fb3a926;
-  --dsw-alias-specific-sidebar-nav-item-active-accent: #3fb3a9;
-  --dsw-alias-specific-sidebar-nav-item-hover: #7fd0c814;
-  --dsw-alias-specific-tip: #0b1a29e6;
+  --dsw-shadow-lv1: 0 1px 2px #00000066;
+  --dsw-shadow-lv2: 0 4px 14px #00000073;
+  --dsw-shadow-lv3: 0 12px 36px #00000080;
+  --dsw-specific-bubble: #12324a80;
+  --dsw-specific-bubble-highlight: #3fb3a929;
+  --dsw-specific-input-major: #08131fc9;
+  --dsw-specific-login-input: #08131fd9;
+  --dsw-specific-menu: #0a1826f5;
+  --dsw-specific-selector: #123246cc;
+  --dsw-specific-sidebar-fill: #050f1999;
+  --dsw-specific-sidebar-nav-item-active: #3fb3a926;
+  --dsw-specific-sidebar-nav-item-active-accent: #3fb3a9;
+  --dsw-specific-sidebar-nav-item-hover: #7fd0c814;
+  --dsw-specific-tip: #0b1a29e6;
   --dsw-alias-brand-primary-new-colorprimary-new-color: #3fb3a9;
+
+  /* ---- 官方后续新增、本皮肤原先没有重映射的 token ----------------------
+     最要命的一条是菜单表面：浅色主题里 --dsw-menu-surface-fill 是近白半透明
+     (#f8f9fa94)，而本皮肤把 --dsw-alias-label-primary 设成近白 #d6ece9，
+     两者叠在一起就是「白面白字」，模型选择下拉的对比度只有 1.6:1 上下。
+     注意：--dsw-menu-* 不带 alias/specific 前缀，loader 的 root→body 克隆
+     不会搬运它们，所以这两条实际写在 patches.css 里（见那边的注释）。
+     其余菜单、命令面板、组头、图标、链接、文档预览、变更视图都在这层落地。 */
+  --dsw-alias-menu-group-header-fill: #0d2030f7;
+  --dsw-alias-menu-icon: #9fb9b8;
+  --dsw-alias-link: #5fd3c6;
+  --dsw-alias-label-shimmer: #d6ece98c;
+  --dsw-alias-label-deep-diving: #a9d8e6;
+  --dsw-alias-label-deep-diving-shimmer: #c8e9f4;
+  --dsw-alias-state-idle-primary: #7c9a9c;
+  --dsw-alias-switch-thumb: #d6ece9;
+  --dsw-alias-bg-document-preview: #0e2131;
+  --dsw-alias-label-document-preview: #a9c4c4;
+  --dsw-alias-bg-document-selection: #3fb3a940;
+  --dsw-alias-code-diff-added: #4cc39a1f;
+  --dsw-alias-code-diff-deleted: #e2685f1f;
+  --dsw-alias-file-diff-added-bg: #12301f;
+  --dsw-alias-file-diff-added-gutter: #0e2318;
+  --dsw-alias-file-diff-added-marker: #4cc39a;
+  --dsw-alias-file-diff-deleted-bg: #351a18;
+  --dsw-alias-file-diff-deleted-gutter: #28100e;
+  --dsw-alias-file-diff-deleted-marker: #e2685f;
 }
 
 body[data-ds-dark-theme] {
@@ -193,19 +220,40 @@ body[data-ds-dark-theme] {
   --dsw-alias-toast-fg: #d6ece9;
   --dsw-alias-tooltip-bg: #0e2436f2;
   --dsw-alias-tooltip-fg: #d6ece9;
-  --dsw-alias-shadow-lv1: 0 1px 2px #00000066;
-  --dsw-alias-shadow-lv2: 0 4px 14px #00000073;
-  --dsw-alias-shadow-lv3: 0 12px 36px #00000080;
-  --dsw-alias-specific-bubble: #12324a80;
-  --dsw-alias-specific-bubble-highlight: #3fb3a929;
-  --dsw-alias-specific-input-major: #08131fc9;
-  --dsw-alias-specific-login-input: #08131fd9;
-  --dsw-alias-specific-menu: #0a1826f2;
-  --dsw-alias-specific-selector: #123246cc;
-  --dsw-alias-specific-sidebar-fill: #050f1999;
-  --dsw-alias-specific-sidebar-nav-item-active: #3fb3a926;
-  --dsw-alias-specific-sidebar-nav-item-active-accent: #3fb3a9;
-  --dsw-alias-specific-sidebar-nav-item-hover: #7fd0c814;
-  --dsw-alias-specific-tip: #0b1a29e6;
+  --dsw-shadow-lv1: 0 1px 2px #00000066;
+  --dsw-shadow-lv2: 0 4px 14px #00000073;
+  --dsw-shadow-lv3: 0 12px 36px #00000080;
+  --dsw-specific-bubble: #12324a80;
+  --dsw-specific-bubble-highlight: #3fb3a929;
+  --dsw-specific-input-major: #08131fc9;
+  --dsw-specific-login-input: #08131fd9;
+  --dsw-specific-menu: #0a1826f5;
+  --dsw-specific-selector: #123246cc;
+  --dsw-specific-sidebar-fill: #050f1999;
+  --dsw-specific-sidebar-nav-item-active: #3fb3a926;
+  --dsw-specific-sidebar-nav-item-active-accent: #3fb3a9;
+  --dsw-specific-sidebar-nav-item-hover: #7fd0c814;
+  --dsw-specific-tip: #0b1a29e6;
   --dsw-alias-brand-primary-new-colorprimary-new-color: #3fb3a9;
+
+  /* 与浅色块保持同一套深色落地值（本皮肤两模式同貌） */
+  --dsw-alias-menu-group-header-fill: #0d2030f7;
+  --dsw-alias-menu-icon: #9fb9b8;
+  --dsw-alias-link: #5fd3c6;
+  --dsw-alias-label-shimmer: #d6ece98c;
+  --dsw-alias-label-deep-diving: #a9d8e6;
+  --dsw-alias-label-deep-diving-shimmer: #c8e9f4;
+  --dsw-alias-state-idle-primary: #7c9a9c;
+  --dsw-alias-switch-thumb: #d6ece9;
+  --dsw-alias-bg-document-preview: #0e2131;
+  --dsw-alias-label-document-preview: #a9c4c4;
+  --dsw-alias-bg-document-selection: #3fb3a940;
+  --dsw-alias-code-diff-added: #4cc39a1f;
+  --dsw-alias-code-diff-deleted: #e2685f1f;
+  --dsw-alias-file-diff-added-bg: #12301f;
+  --dsw-alias-file-diff-added-gutter: #0e2318;
+  --dsw-alias-file-diff-added-marker: #4cc39a;
+  --dsw-alias-file-diff-deleted-bg: #351a18;
+  --dsw-alias-file-diff-deleted-gutter: #28100e;
+  --dsw-alias-file-diff-deleted-marker: #e2685f;
 }

@@ -17,7 +17,9 @@ rolling with each stroke.
   remap) + `patches.css` (L3 selectors) + generated GIF/SVG. No package.json, no build
   step, no hooks.
 - **A dark skin**: light and dark both render the same night sea; `skin.css` pins all 96
-  official alias tokens to the deep-sea palette, so the two modes cannot drift apart.
+  official alias tokens to the deep-sea palette, so the two modes cannot drift apart, and
+  it also covers the menu / document-preview / diff tokens the shell added later plus the
+  `--dsw-specific-*` family (see Contrast).
 
 ## Layers
 
@@ -53,6 +55,21 @@ The sidebar carries an 8 px dither grid, a stepped waterline along its bottom ed
 they always sit behind the content. The composer card is squared with a 1 px teal border,
 a 3 px hard drop shadow and four corner brackets; scrollbars become 6 px rails; every SVG
 drops its anti-aliasing and squares its stroke caps.
+
+## Contrast
+
+This is a single-look dark skin, so every surface the shell still takes from the light
+theme has to be pinned by hand. Three places do that in the current DSH build:
+
+| Where | What the shell uses | Fix |
+| --- | --- | --- |
+| Menu surface (model picker, command palette) | `--dsw-menu-surface-fill` = `#f8f9fa94` plus `blur(40px)` in light | set to `#0a1826f5` on `body` from `patches.css`, with `--dsw-menu-backdrop-filter: none`. Neither token carries the `alias` / `specific` prefix, so the loader's `:root → body` clone drops them — writing them in `skin.css` lets the shell's body value win |
+| Sidebar / composer / bubbles | `--dsw-specific-*`. The `--dsw-alias-specific-*` spelling occurs 0 times in the official theme, so it never applied | remapped under the correct names in `skin.css` |
+| Deliverables / changes / plan / schedule cards | the components branch on `body[data-ds-dark-theme]` instead of tokens and fall back to `neutral-50` in light | `patches.css` mirrors the dark branch into both modes, anchored on `data-presented-file` / `data-changed-files` / `data-plan-card` / `data-tool="schedule_create"` |
+
+Measured with WCAG on the composited background: menu 1.59:1 → 14.17:1, group header
+2.77:1 → 5.50:1, sidebar 1.18:1 → 10.51:1, composer 1.23:1 → 12.60:1, bubble
+1.11:1 → 7.13:1, file cards 1.18:1 → 12.53:1.
 
 ## Notice
 

@@ -95,23 +95,55 @@ body [data-slot="sidebar.workspaces"] {
   --dsw-alias-bg-layer-2: #0a1a29d9;
   --dsw-alias-bg-layer-3: #0e2131d9;
   --dsw-alias-bg-overlay: #071320d9;
-  --dsw-alias-specific-menu: #0a1826ee;
-  --dsw-alias-specific-sidebar-fill: #050f19b3;
+  --dsw-specific-menu: #0a1826ee;
+  --dsw-specific-sidebar-fill: #050f19b3;
 }
 
-/* ---- components that branch on body[data-ds-dark-theme] instead of tokens:
-       mirror their dark variant into light mode, so this skin stays one look */
-body:not([data-ds-dark-theme]) .kuvljq_card,
-body[data-ds-dark-theme] .kuvljq_card,
-.kuvljq_header {
-  --changes-fill: #0e2131;
-  --changes-hover: #16374d;
+/* ---- 组件自带的「深色主题分支」-------------------------------------------
+ *
+ * deliverables / changes / plan / schedule 这几张卡不用 token 判断深浅，而是
+ * 写死 `body[data-ds-dark-theme]` 下换一套 neutral 填充：浅色模式一律
+ * --dsw-static-neutral-50 (#fafafa)，图标位一律 50% 白。
+ * 皮肤是深色单貌，而本机主题偏好是 light —— 于是这些卡是白块 + 皮肤近白文字，
+ * 交付卡片（.cardPreview 那整张）就是其中最显眼的一处。
+ *
+ * 把深色分支镜像到两种模式。锚点优先用 data-*（presented-file / changed-files /
+ * plan-card / tool=schedule_create），图标位没有语义属性，只能跟官方 CSS Modules
+ * 的 hash 类名，官方重建后同步这几个名字（旧版 .kuvljq_* 已随重建失效）。
+ */
+body [data-presented-file],
+body [data-changed-files],
+body [data-plan-card],
+body [data-tool='schedule_create'] {
+  --deliverable-fill: #0b1a29d9;
+  --deliverable-hover: #123246e6;
+  --changes-fill: #0b1a29d9;
+  --changes-hover: #123246e6;
+  --plan-card-fill: #0b1a29d9;
+  --plan-card-hover: #123246e6;
+  --card-fill: #0b1a29d9;
+  --card-hover: #123246e6;
 }
 
-body:not([data-ds-dark-theme]) .kuvljq_tile,
-body[data-ds-dark-theme] .kuvljq_tile {
-  background: color-mix(in srgb, var(--dsw-static-neutral-00) 6%, transparent);
+body [data-presented-file] .K5rwea_fileIcon,
+body [data-changed-files] .HOHHba_tile,
+body [data-plan-card] .lLdGaq_cardIcon,
+body [data-tool='schedule_create'] .oT5lKa_leading,
+body .K5rwea_fileIcon,
+body .HOHHba_tile,
+body .lLdGaq_cardIcon,
+body .oT5lKa_leading {
+  background: color-mix(in srgb, #d6ece9 7%, transparent);
   border-color: #2b5a6880;
+}
+
+/* 账户设置页同理：官方深浅各备一张插画，浅色模式下拿到的是浅色插画 */
+body:not([data-ds-dark-theme]) .GAdqeW_lightIllustration {
+  display: none;
+}
+
+body:not([data-ds-dark-theme]) .GAdqeW_darkIllustration {
+  display: block;
 }
 
 /* ---- icons: drop anti-aliasing, square every cap and join, no pills */
@@ -162,4 +194,27 @@ body ::-webkit-scrollbar-thumb:hover {
 }
 body ::-webkit-scrollbar-track {
   background: #07132266;
+}
+
+/* ---- 菜单表面（模型选择下拉 / 命令面板 / 弹出菜单） ----------------------
+ *
+ * 官方的菜单底是 --dsw-menu-surface-fill：浅色主题是 #f8f9fa94 的近白半透明，
+ * 深色主题是 #43454a73 的灰。皮肤把 --dsw-alias-label-primary 设成近白 #d6ece9，
+ * 于是浅色主题下菜单 = 白面白字（叠在海面上实测 1.59:1），模型列表几乎读不出来。
+ *
+ * 这两条 token 不带 --dsw-alias- / --dsw-specific- 前缀，皮肤 loader 的
+ * 「:root → body 克隆」（bodyCloneProperty）不会搬运它们，写在 skin.css 的
+ * :root/body 块里会被 body 上的官方值反盖。所以必须从 L3 直接写在 body 上。
+ *
+ * 顺带把 backdrop-filter 关掉：皮肤是实心像素面，40px 高斯把背后的亮海水
+ * 揉进菜单里，只会再拉低一档对比度。
+ */
+body {
+  --dsw-menu-surface-fill: #0a1826f5;
+  --dsw-menu-backdrop-filter: none;
+}
+
+/* 深色海面上给弹层一道 1px 像素描边，免得和背景糊成一片 */
+body [data-menu-material] {
+  box-shadow: inset 0 0 0 1px #3fb3a966;
 }

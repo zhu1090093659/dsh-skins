@@ -13,7 +13,8 @@
 - **纯资产**：`skin.json`（v2 清单）+ `skin.css`（`--dsw-alias-*` token 全量重映射）+
   `patches.css`（L3 选择器）+ 生成的 GIF/SVG。无 package.json、无构建步骤、无 hooks。
 - **暗色皮肤**：浅色与暗色两套主题下呈现同一片夜海；`skin.css` 把 96 个官方别名 token
-  一起钉成深海配色，所以两个模式不会有色差。
+  一起钉成深海配色，所以两个模式不会有色差，另外补上了官方后续新增的菜单 / 文档预览 /
+  变更视图 token 与 `--dsw-specific-*` 系列（见「对比度」）。
 
 ## 画面
 
@@ -45,6 +46,21 @@
 侧边栏铺 8 像素抖动颗粒、底边一条阶梯水线、右下角一枚 20×10 像素鲸标，全在元素自身的
 `background-image` 上（永远在内容后面）。输入卡直角、1 像素青边、3 像素硬投影、四角括号；
 滚动条 6 像素直角细轨；所有 SVG 关掉抗锯齿并把线头改成方头。
+
+## 对比度
+
+皮肤是深色单貌，所以凡是绕过别名 token、在浅色偏好下退回近白的地方都得单独压住。
+新版 DSH 里有三处：
+
+| 位置 | 官方取色 | 处理 |
+| --- | --- | --- |
+| 菜单表面（模型选择下拉、命令面板） | `--dsw-menu-surface-fill`，浅色 `#f8f9fa94` + `blur(40px)` | 在 `patches.css` 的 `body` 上改成 `#0a1826f5`，并关掉 `--dsw-menu-backdrop-filter`。这两条不带 `alias` / `specific` 前缀，loader 的 `:root → body` 克隆不搬运它们，写进 `skin.css` 会被 body 上的官方值反盖 |
+| 侧栏 / 输入卡 / 气泡 | `--dsw-specific-*`。旧写法 `--dsw-alias-specific-*` 在官方主题包里出现 0 次，等于从未生效 | `skin.css` 用正确名字重映射 |
+| 交付卡 / 变更卡 / 计划卡 / 提醒卡 | 组件不看 token，只按 `body[data-ds-dark-theme]` 分支，浅色下是 `neutral-50` 近白 | `patches.css` 按 `data-presented-file` / `data-changed-files` / `data-plan-card` / `data-tool="schedule_create"` 锚点把深色分支镜像到两种模式 |
+
+对比度按 WCAG 在合成后的底色上算过：菜单面 1.59:1 → 14.17:1，组头 2.77:1 → 5.50:1，
+侧栏 1.18:1 → 10.51:1，输入卡 1.23:1 → 12.60:1，气泡 1.11:1 → 7.13:1，
+交付卡 1.18:1 → 12.53:1。
 
 ## 声明
 
