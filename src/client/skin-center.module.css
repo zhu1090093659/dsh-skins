@@ -153,7 +153,9 @@ body[data-dsh-skin-center] .delegatedBadge {
   border-radius: 999px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--dsw-alias-brand-primary, #1e63b8);
+  /* Body ink, not brand blue: the pill states what a row is, and a skin that
+     remaps the label tokens has to keep its own readable ink on this fill. */
+  color: var(--dsw-alias-label-primary);
   background: var(--dsw-alias-bg-layer-3);
   border: 1px solid var(--dsw-alias-border-l2);
 }
@@ -506,14 +508,27 @@ body[data-dsh-skin-center] .badge {
   border-radius: 999px;
 }
 
+/* A state pill keeps its semantic colour in the fill and the outline and takes
+   its text from the label token. Brand blue and the state colours are
+   affordance colours: as text they do not follow a skin's label remap, so they
+   lose the contrast that skin guarantees for ordinary primary text. */
 body[data-dsh-skin-center] .badgeActive {
-  color: var(--dsw-alias-state-success-primary, #0f6b3a);
-  background: var(--dsw-alias-state-success-tertiary, #dcf3e5);
+  color: var(--dsw-alias-label-primary);
+  background: var(--dsw-alias-state-success-tertiary);
+  border: 1px solid var(--dsw-alias-state-success-primary);
 }
 
 body[data-dsh-skin-center] .badgeTrying {
-  color: var(--dsw-alias-brand-primary, #1e63b8);
-  background: var(--dsw-alias-button-primary-dimmed, #e2edfc);
+  color: var(--dsw-alias-label-primary);
+  background: var(--dsw-alias-button-primary-dimmed);
+  border: 1px solid var(--dsw-alias-brand-primary);
+}
+
+/* The dimmed button fill is a mid-blue in dark themes, where the light label
+   ink falls below AA. Keep the semantic blue but use its darker business
+   tertiary plate instead; the light-theme pill keeps the dimmed fill. */
+body[data-ds-dark-theme][data-dsh-skin-center] .badgeTrying {
+  background: var(--dsw-alias-state-business-tertiary);
 }
 
 body[data-dsh-skin-center] .actions {
