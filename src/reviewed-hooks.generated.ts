@@ -31,7 +31,7 @@ export const REVIEWED_SKIN_HOOKS: Readonly<Record<string, ReviewedSkinHooksIdent
   },
   "diy-journal": {
     entry: "hooks.mjs",
-    manifestSha256: "3bb6ed40ad441fd0286fb8040ba4d8697f5c4a30a099ec4cbef8ba1aaddd68f1",
+    manifestSha256: "b3f200c5a34f6c3b65b78f5d5cb81d40d7a1c7d999bde1e412708210b889dd18",
     hooksSha256: "6a286d2191b2ffdf2bdec7f92ffb9896cd9dfd12055160118fc120dc8efa9572",
   },
   "dragon-heir": {
