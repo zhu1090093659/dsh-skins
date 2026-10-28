@@ -140,3 +140,52 @@ before scrolling past forty asset skins.
 - A delegated skin is only as independent as its plugin: an upgrade or
   removal of that plugin changes what the row does, and the row reports the
   live state rather than a stored guess.
+
+## Extension: explicit selection and independent install source (2026-10-24)
+
+With two delegated peers, absence of the asset stamp cannot distinguish stock,
+Claude Style, and DIY Journal. Add a center-owned `data-dsh-delegated-skin`
+selection, emitted at the atomic cut and first paint, cleared on stock,
+withholding and shutdown, and restored by existing preview/adopt logic.
+
+DIY opts into `selectionMode: 'explicit'`. It also receives its delegated ID as
+`data-dsh-skin`, making legacy peers yield without loading asset CSS for that ID.
+Its renderer permits its own claim but yields to any other claim and wallpaper.
+Legacy descriptors keep their old stamp behavior. This avoids changing another
+plugin's files or toggling plugin enablement. It cannot fix stock-mode handling
+inside an unmodified legacy peer; that remains the peer's responsibility.
+
+The installed package identity is separate from optional `installSpec`. DIY is
+installed from GitHub, while discovery and Manage still use its scoped package
+name. Validation admits only npm specs and GitHub owner/repository shorthand
+(optionally pinned by full commit hash), not arbitrary URLs or local paths.
+The registry is trusted code; installation still passes through the host manager.
+
+DIY's own live marker means runtime ready; actual painting has a separate marker.
+The center observes readiness/capability and never mutates either. No third-party
+artwork or executable payload is copied into this repository.
+
+## Main synchronization and release source (2026-10-29)
+
+This integration is synchronized by merging main v0.4.11, preserving its Web Extensions
+settings seat and compact card wording. Generated client output is rebuilt rather
+than selected from either side of the merge. The explicit selection protocol is
+unchanged and remains subject to maintainer review before merge.
+
+The registry intentionally retains the reviewed GitHub commit
+`965d5bfce8fd6874bbb04a34763f7ae36293214b` (plugin 1.3.0). GitHub Release 1.3.1 is
+available separately; a Release upload does not publish an npm package or update
+this pinned install source. This merge does not silently advance the executable
+payload under review.
+
+Until npm publication is available, use immutable GitHub commit pins with an
+explicit version/release correspondence and review each pin update. After the
+maintainer-controlled npm publication of `@alphazerolan/dsh-plugin-diy-journal`,
+verify a clean install of the published version and propose a separate registry
+change to an exact npm version. Package discovery and wiring identity remain
+unchanged. Do not claim npm installation works before that verification.
+
+中文：本次合并 main 保留新版 Web 扩展设置入口和精简卡片文案，不改变待审核的主动选择交接协议。
+安装源仍固定于上述 1.3.0 提交；已发布的 GitHub Release 1.3.1 不等于 npm 已发布，
+也不会自动更新本条目。npm 发布前，逐次审核固定提交的升级；具备发布条件后发布正式版本，
+通过干净环境安装验证，再另提 PR 将安装源迁移到明确的 npm 版本，包标识和配置身份不变。

@@ -23,6 +23,7 @@ export type SkinCenterKey =
   | 'externalWallpaperInstallFailed'
   | 'delegatedSkinBadge'
   | 'delegatedSkinDescriptionClaudeStyle'
+  | 'delegatedSkinDescriptionDiyJournal'
   | 'delegatedSkinNotRunning'
   | 'delegatedSkinManage'
   | 'delegatedSkinNoHandoff'
@@ -187,7 +188,8 @@ export const en: Record<SkinCenterKey, string> = {
   delegatedSkinBadge: 'Plugin theme',
   delegatedSkinDescriptionClaudeStyle: 'The whole interface as Claude Code Desktop, with its own settings page.',
   delegatedSkinNotRunning: 'Installed but not running. Enable it in Plugins, then reopen this page.',
-  delegatedSkinNoHandoff: 'This build cannot hand the page to another skin. Update dsh-claude-style.',
+  delegatedSkinNoHandoff: 'This build cannot hand the page to another skin. Update the plugin.',
+  delegatedSkinDescriptionDiyJournal: 'A journal-style interface with an integrated photo and layout editor. Customize tape, borders and captions; use video collages and an optional page-turning intro. The editor and your photos remain available when another skin is selected.',
   delegatedSkinInstall: 'Install now',
   delegatedSkinManage: 'Manage in Plugins',
   delegatedSkinInstalling: 'Installing...',
@@ -351,7 +353,8 @@ export const zh: Record<SkinCenterKey, string> = {
   delegatedSkinBadge: '插件皮肤',
   delegatedSkinDescriptionClaudeStyle: '整个界面换成 Claude Code Desktop 的样子，自带设置页。',
   delegatedSkinNotRunning: '插件已安装但没有运行。在「插件」里启用后刷新本页。',
-  delegatedSkinNoHandoff: '当前版本不能和别的皮肤交接页面，请更新 dsh-claude-style。',
+  delegatedSkinNoHandoff: '当前版本不能和别的皮肤交接页面，请更新此插件。',
+  delegatedSkinDescriptionDiyJournal: '手账本外观与照片布局编辑器一体化。可调整胶带、白边、题字与布局，使用视频拼贴和可选的翻书开场；切换其他皮肤后仍保留编辑器与个人照片。',
   delegatedSkinInstall: '一键安装',
   delegatedSkinManage: '在插件页管理',
   delegatedSkinInstalling: '安装中…',
