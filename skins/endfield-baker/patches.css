@@ -136,7 +136,7 @@ button[class*="newSession"]:hover,
 /* 右上角：BAKER 原版标头图形（自参考图裁切）—— 高度拉满整个顶栏，宽度按原图 504:70 走
    （2026-09-28 重裁：原 399×71 少截了右侧 105px，用户给了新范围参考；资产 = baker-ui.png (1835,139,504,70)，
      比例 7.2 与 skin.css 的 --ef-art-ratio 必须一致） */
-[data-slot="main.conversation"] header::after {
+[data-slot="main.conversation"] header:has([class*="_titleRow"])::after {
   content: "";
   position: absolute;
   right: 0;
@@ -285,7 +285,7 @@ button[role="tab"][aria-selected="true"] {
 /* ------------------------------------------------------------ 4 工具控制台 --- */
 
 [data-slot="tool.call.toolview"] > [data-tool],
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) {          /* 思考条：与代码/工具调用卡完全同一套设置（三类条统一） */
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) {          /* 思考条：与代码/工具调用卡完全同一套设置（三类条统一） */
   position: relative;
   background: rgba(41, 43, 42, .62);
   border: 1px solid var(--ef-line);
@@ -297,7 +297,7 @@ button[role="tab"][aria-selected="true"] {
   transition: background-color .14s, border-color .14s;
 }
 [data-slot="tool.call.toolview"] > [data-tool]:hover,
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]):hover {
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]):hover {
   background: rgb(var(--ef-cyan-rgb) / .08);
   border-color: rgb(var(--ef-cyan-rgb) / .45);
 }
@@ -309,11 +309,11 @@ button[role="tab"][aria-selected="true"] {
    第 12 节那套尺寸是给「裸行」用的，卡片里的行回到应用的 5px 内边距，
    缺的高度由卡片的上下内边距补（6 + 24 + 6 = 36），这样卡片内的行仍是 24px 高。 */
 [data-slot="tool.call.toolview"] > [data-tool] [data-disclosure-row],
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) [data-disclosure-row] {
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) [data-disclosure-row] {
   padding: 5px 10px;
   margin-left: 0;   /* 卡片自带左导轨，取消第 12 节给裸行补的 -5px */
 }
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) {
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) {
   box-sizing: border-box;
   min-height: 36px;
   /* 竖向不留内边距：卡片固定 36px，留 5px 会把 34px 的行推到 +6 —— 行里的文字与行尾
@@ -326,20 +326,20 @@ button[role="tab"][aria-selected="true"] {
   margin-left: -2px;
 }
 [data-slot="tool.call.toolview"] > [data-tool] [class*="title"],
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) [class*="title"] {
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) [class*="title"] {
   font-family: var(--ef-mono);
   font-size: 11.5px;
   letter-spacing: .08em;
 }
 [data-slot="tool.call.toolview"] > [data-tool] [class*="summary"],
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) [class*="summary"] {
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) [class*="summary"] {
   font-family: var(--ef-mono);
   font-size: 11.5px;
   letter-spacing: .01em;
 }
 [data-slot="tool.call.toolview"] > [data-tool] [class*="chevron"] { opacity: .65; }
 [data-slot="tool.call.toolview"] > [data-tool][data-state="ok"] [class*="iconIdle"],
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) [class*="iconIdle"] { color: var(--ef-cyan); }
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) [class*="iconIdle"] { color: var(--ef-cyan); }
 [data-slot="tool.call.toolview"] > [data-tool][data-state="error"] [class*="iconIdle"] { color: var(--ef-alert); }
 
 /* 子调用：虚线导轨 */
@@ -456,7 +456,7 @@ button[role="tab"][aria-selected="true"] {
 /* 通用弹窗外框。⚠ 提问窗（Mbwy4a_card）不吃这一条：它是 role=dialog 的 section，
    皮肤这个 4px 圆角的描边和卡片本体的圆角对不上（用户反馈的「灰色描边错位」），
    而且用户明确说「提问窗的描边直接用 DeepSeek 预设的就行，留着青色提交键已经有皮肤味了」。 */
-[role="dialog"]:not(:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"])) {
+[role="dialog"]:not(:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"])) {
   border: 1px solid var(--ef-line-strong);
   border-radius: 4px;
   box-shadow: var(--ef-shadow-3);
@@ -464,8 +464,8 @@ button[role="tab"][aria-selected="true"] {
 /* 提问窗：皮肤只动底色与提交键，描边/圆角/阴影全都交回应用。
    应用自己在卡片上挂了一条 0.5px 的浅色环（box-shadow）—— 半像素环在缩放屏上会糊成
    一条错位的灰边，用户两次都指着它说「没去干净」，所以这里连它一起去掉。 */
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]),
-:is([class*="Mbwy4a_frame"], [class*="mAtvLq_frame"]) {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]),
+:is(:is([class*="Mbwy4a_frame"], [class*="wnLwla_frame"]), [class*="mAtvLq_frame"]) {
   border: 0 !important;
   box-shadow: none !important;
   border-radius: var(--ef-radius);
@@ -485,30 +485,30 @@ button[role="tab"][aria-selected="true"] {
    按钮行 `Mbwy4a_footer`；按钮走通用类 `_button_cfgyt_*` + `_primary_cfgyt_*`（提交）/
    `_outline_cfgyt_*`（跳过本题）。 */
 /* 只改卡片底色：头部那条青色装饰是 Mbwy4a_header::before 画的，一并去掉 */
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]),
-:is([class*="Mbwy4a_header"], [class*="mAtvLq_header"]) {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]),
+:is(:is([class*="Mbwy4a_header"], [class*="wnLwla_header"]), [class*="mAtvLq_header"]) {
   background-image: none !important;
   background-color: #1b1d1c !important;
 }
 /* ⚠ 必须连卡片一起限定：聊天页顶栏的类名里也含 "header"，
    只写 [class*="header"]::before 会把顶栏那条双青条一起删掉（上一版就是这个 bug） */
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) :is([class*="Mbwy4a_header"], [class*="mAtvLq_header"])::before,
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) :is([class*="Mbwy4a_header"], [class*="mAtvLq_header"])::after {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) :is(:is([class*="Mbwy4a_header"], [class*="wnLwla_header"]), [class*="mAtvLq_header"])::before,
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) :is(:is([class*="Mbwy4a_header"], [class*="wnLwla_header"]), [class*="mAtvLq_header"])::after {
   background-image: none !important;
 }
 /* 提交键 = 应用那套 _primary_ 按钮（旧配色是发暗的 #0E7D95），换亮青；
    「跳过本题」是 _outline_ 变体，显式恢复成描边样式（第一版把整排按钮都刷成青色了）。 */
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) button[class*="_primary_"] {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) button[class*="_primary_"] {
   background-image: none !important;
   background-color: var(--ef-cyan) !important;
   border-color: var(--ef-cyan) !important;
   color: #08171c !important;
   font-weight: 600;
 }
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) button[class*="_primary_"]:hover {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) button[class*="_primary_"]:hover {
   background-color: #3fdcff !important;
 }
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) button[class*="_outline_"] {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) button[class*="_outline_"] {
   background-image: none !important;
   background-color: transparent !important;
   border: 1px solid var(--ef-line-strong) !important;
@@ -516,17 +516,17 @@ button[role="tab"][aria-selected="true"] {
 }
 
 /* 主按钮（模型页「保存」、其它确定键…）：应用的旧配色是发暗的蓝，统一换成亮信号青 */
-[class*="VOzbGW_panel"] button:is([class*="primary"], [class*="Primary"], [class*="submit"], [class*="Submit"]),
-[class*="VOzbGW_panel"] button[class*="_primary_"],
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) button[class*="_primary_"] {
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) button:is([class*="primary"], [class*="Primary"], [class*="submit"], [class*="Submit"]),
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) button[class*="_primary_"],
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) button[class*="_primary_"] {
   background-image: none !important;
   background-color: var(--ef-cyan) !important;
   border-color: var(--ef-cyan) !important;
   color: #08171c !important;
   font-weight: 600;
 }
-[class*="VOzbGW_panel"] button:is([class*="primary"], [class*="Primary"]):hover,
-[class*="VOzbGW_panel"] button[class*="_primary_"]:hover {
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) button:is([class*="primary"], [class*="Primary"]):hover,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) button[class*="_primary_"]:hover {
   background-color: #3fdcff !important;
 }
 
@@ -655,9 +655,9 @@ button[role="tab"][aria-selected="true"] {
 }
 
 /* 输入区「待发送附件」缩略图：应用给的是 999px（近圆），这里压回全局 12px */
-[data-slot="conversation.input.attachments"] [class*="_54WpYG_thumbnail"],
-[data-slot="conversation.input.attachments"] [class*="_54WpYG_imageItem"],
-[data-slot="conversation.input.attachments"] [class*="JVDQca_item"] {
+[data-slot="conversation.input.attachments"] :is([class*="_54WpYG_thumbnail"], [class*="yTDIAG_thumbnail"]),
+[data-slot="conversation.input.attachments"] :is([class*="_54WpYG_imageItem"], [class*="yTDIAG_imageItem"]),
+[data-slot="conversation.input.attachments"] :is([class*="JVDQca_item"], [class*="Onur9G_item"]) {
   border-radius: var(--ef-radius) !important;
   overflow: hidden;
 }
@@ -672,7 +672,7 @@ button[role="tab"][aria-selected="true"] {
    桌面端（DesktopUI）的 ConversationRoot.module.css 哈希是 Dc7zOa_*（web 是 wSkVaW_*）——
    实测 desktop 包里 wSkVaW_ 出现 0 次 → 本节四条规则在桌面端一条都不匹配，
    现象就是「聊天页整块底板（磨砂底/灰边/圆角/三色条）全都没有」。两类哈希并联即可两端通吃。 */
-:is([class*="wSkVaW_root"], [class*="Dc7zOa_root"]) {
+:is(:is([class*="wSkVaW_root"], [class*="an3WzG_root"]), [class*="Dc7zOa_root"]) {
   position: relative;
   margin: 8px 10px 10px 6px;
   border: 0;
@@ -683,7 +683,7 @@ button[role="tab"][aria-selected="true"] {
 }
 
 /* 聊天页：自己的浅灰近白描边 + BAKER 磨砂灰底板（顶边与顶栏那条青线分成两条横线） */
-:is([class*="wSkVaW_body"], [class*="Dc7zOa_body"]) {
+:is(:is([class*="wSkVaW_body"], [class*="an3WzG_body"]), [class*="Dc7zOa_body"]) {
   position: relative;
   margin-top: var(--ef-deck);
   border: 1px solid var(--ef-edge);
@@ -711,7 +711,7 @@ button[role="tab"][aria-selected="true"] {
 /* 黑色实体：压在三色条与滚动内容之间，下边缘就是聊天页真正的顶边——
    两端平齐，右端「三色条区」按 --ef-notch 整段下凹（BAKER 的凹槽），
    于是滚动的文字永远撞不到三色条上 */
-:is([class*="wSkVaW_body"], [class*="Dc7zOa_body"])::before {
+:is(:is([class*="wSkVaW_body"], [class*="an3WzG_body"]), [class*="Dc7zOa_body"])::before {
   content: "";
   position: absolute;
   left: -1px;
@@ -734,7 +734,7 @@ button[role="tab"][aria-selected="true"] {
 }
 
 /* 顶边描边 = 左平段 + 45° 斜边 + 凹槽底边 + 45° 斜边；三色条压在平齐高度上 */
-:is([class*="wSkVaW_body"], [class*="Dc7zOa_body"])::after {
+:is(:is([class*="wSkVaW_body"], [class*="an3WzG_body"]), [class*="Dc7zOa_body"])::after {
   content: "";
   position: absolute;
   left: -1px;
@@ -976,53 +976,53 @@ button[class*="_panelRow"]:hover,
   box-shadow: 0 0 0 1px var(--ef-edge) !important;
   border-radius: var(--ef-radius);
 }
-:is([class*="bOPqQW_pill"], [class*="iq1doa_pill"]) {
+:is(:is([class*="bOPqQW_pill"], [class*="hNGZaa_pill"]), [class*="iq1doa_pill"]) {
   border-radius: calc(var(--ef-radius) - 3px);
 }
 
 /* (7) 发送键：改用顶栏同款亮青 */
-:is([class*="uV2eYG_primary"], [class*="RlGAzG_primary"]) {
+:is(:is([class*="uV2eYG_primary"], [class*="GRgSLq_primary"]), [class*="RlGAzG_primary"]) {
   background: var(--ef-cyan);
   color: #0b1416;
 }
-:is([class*="uV2eYG_primary"], [class*="RlGAzG_primary"]):hover {
+:is(:is([class*="uV2eYG_primary"], [class*="GRgSLq_primary"]), [class*="RlGAzG_primary"]):hover {
   background: var(--ef-cyan-bright);
   color: #0b1416;
 }
 
 /* (6) 灰色聊天框内的文字层级提亮 */
 [class*="Sh0Q9G_triggerLabel"],
-:is([class*="_7KE1Ra_triggerLabel"], [class*="wq12jW_triggerLabel"]) {
+:is(:is([class*="_7KE1Ra_triggerLabel"], [class*="_9r0rkG_triggerLabel"]), [class*="wq12jW_triggerLabel"]) {
   color: var(--dsw-alias-label-primary);
 }
-:is([class*="_7KE1Ra_triggerEffort"], [class*="wq12jW_triggerEffort"]) {
+:is(:is([class*="_7KE1Ra_triggerEffort"], [class*="_9r0rkG_triggerEffort"]), [class*="wq12jW_triggerEffort"]) {
   color: var(--dsw-alias-label-secondary);
 }
-:is([class*="JObwrW_trigger"], [class*="_2WTFBq_trigger"]) {
+:is(:is([class*="JObwrW_trigger"], [class*="A6Bq1a_trigger"]), [class*="_2WTFBq_trigger"]) {
   color: var(--dsw-alias-label-secondary);
 }
-:is([class*="JObwrW_track"], [class*="_2WTFBq_track"]) {
+:is(:is([class*="JObwrW_track"], [class*="A6Bq1a_track"]), [class*="_2WTFBq_track"]) {
   stroke: rgba(233, 235, 234, .42);
 }
-:is([class*="JObwrW_fill"], [class*="_2WTFBq_fill"]) {
+:is(:is([class*="JObwrW_fill"], [class*="A6Bq1a_fill"]), [class*="_2WTFBq_fill"]) {
   stroke: #e9ebea;
 }
-:is([class*="uV2eYG_tools"], [class*="RlGAzG_tools"]) button {
+:is(:is([class*="uV2eYG_tools"], [class*="GRgSLq_tools"]), [class*="RlGAzG_tools"]) button {
   color: var(--dsw-alias-label-secondary);
 }
 
 /* (3)(4) 右侧栏卡片：圆角对齐全局 + 图标垂直居中 */
-[class*="geFEbW_entry"] {
+:is([class*="geFEbW_entry"], [class*="p2k40q_entry"]) {
   border-radius: var(--ef-radius);
 }
-[class*="geFEbW_entry"] [class*="entryIcon"],
-[class*="geFEbW_entry"] [class*="entryIcon"] > span {
+:is([class*="geFEbW_entry"], [class*="p2k40q_entry"]) [class*="entryIcon"],
+:is([class*="geFEbW_entry"], [class*="p2k40q_entry"]) [class*="entryIcon"] > span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 0;
 }
-[class*="geFEbW_entry"] svg {
+:is([class*="geFEbW_entry"], [class*="p2k40q_entry"]) svg {
   display: block;
 }
 
@@ -1034,11 +1034,11 @@ button[class*="_panelRow"]:hover,
      视口 1264 → 正好压住聊天窗右半），无条件刷黑底就把聊天区右一半直接盖黑了（用户报的「右边一半被黑块盖住」）。
      判展开只能用正向 :has(右侧栏自己的 data-sidebar-right-open)：展开态 data-rightbar-collapsed 是被整个摘掉的，
      不能靠 :not([data-rightbar-collapsed="true"]) 反推。 */
-:is([data-dsh-frame], [data-dsh-surface="root"]):has([data-sidebar-right-open="true"]) :is([class*="P3OORG_panel"], [class*="OUqwTW_panel"]),
-:is([data-dsh-frame], [data-dsh-surface="root"]):has([data-sidebar-right-open="true"]) :is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) {
+:is([data-dsh-frame], [data-dsh-surface="root"]):has([data-sidebar-right-open="true"]) :is(:is([class*="P3OORG_panel"], [class*="acoR2W_panel"]), [class*="OUqwTW_panel"]),
+:is([data-dsh-frame], [data-dsh-surface="root"]):has([data-sidebar-right-open="true"]) :is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) {
   background: rgba(19, 21, 20, .97);
 }
-:is([data-dsh-frame], [data-dsh-surface="root"]):has([data-sidebar-right-open="true"]) :is([class*="P3OORG_panel"], [class*="OUqwTW_panel"]) {
+:is([data-dsh-frame], [data-dsh-surface="root"]):has([data-sidebar-right-open="true"]) :is(:is([class*="P3OORG_panel"], [class*="acoR2W_panel"]), [class*="OUqwTW_panel"]) {
   border-left: 1px solid var(--ef-edge-dark);
 }
 
@@ -1365,7 +1365,7 @@ button[class*="_panelRow"]:hover,
    clip-path 会把这些行提成合成层，悬停重绘之后留下一块白框残影——
    用户点名过多次的 bug，这里连同卡片本身一起去掉 clip-path。 ---- */
 [data-slot="tool.call.toolview"] > [data-tool],
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]),
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]),
 [data-chat-flow-kind="context"] > div > [class*="root"],
 [data-chat-flow-kind="system-prompt"] > div > [class*="root"] {
   background-image:
@@ -1375,30 +1375,30 @@ button[class*="_panelRow"]:hover,
   background-size: var(--ef-cut) var(--ef-cut);
 }
 [data-slot="tool.call.toolview"] > [data-tool]:hover,
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]):hover {
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]):hover {
   background-image:
     linear-gradient(to bottom left, #1f2b2e calc(var(--ef-cut) * .7071), transparent 0);
 }
 
 /* 纯思考的助手步骤：它自己的青导轨 + 行首方块与「思考卡」的左导轨重复，
    去掉后思考卡左缘正好和代码/工具卡对齐（同为内容列 425） */
-[data-chat-flow-kind="assistant-step"]:has(:is([class*="lcKema_root"], [class*="_3GBCTG_root"])):not(:has([class*="markdown"])) {
+[data-chat-flow-kind="assistant-step"]:has(:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"])):not(:has([class*="markdown"])) {
   border-left-color: transparent;
   padding-left: 0;
 }
-[data-chat-flow-kind="assistant-step"]:has(:is([class*="lcKema_root"], [class*="_3GBCTG_root"])):not(:has([class*="markdown"]))::before {
+[data-chat-flow-kind="assistant-step"]:has(:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"])):not(:has([class*="markdown"]))::before {
   display: none;
 }
 
 /* 思考行的行首：应用展开时会把图标换成下拉箭头，这里一律换成同一张图标
    （下拉标识已经挪到行尾了，左边随时随地都是图标） */
-:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"]) {
+:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"]) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"]) svg { display: none; }
-:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"])::before {
+:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"]) svg { display: none; }
+:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"])::before {
   content: "";
   width: 14px;
   height: 14px;
@@ -1418,7 +1418,7 @@ button[class*="_panelRow"]:hover,
    [444,100,662,108]，重叠 34px）。
    皮肤不给这行上底色（贴一条色带反而更难看，已否决），改为取消这行的悬停固定：行随卡片一起
    滚走，正文自然不会再从它底下穿过去。折叠、悬停、行尾下拉键都不受影响。 */
-:is([class*="lcKema_row"], [class*="_3GBCTG_row"])[data-disclosure-row] {
+:is(:is([class*="lcKema_row"], [class*="VJlF5q_row"]), [class*="_3GBCTG_row"])[data-disclosure-row] {
   position: static !important;
 }
 
@@ -1445,7 +1445,7 @@ button[class*="_panelRow"]:hover,
 }
 
 /* 聊天/侧栏宽度拖拽把手（应用给 z-index 8）会浮在三色条与黑实体上面，压回内容层 */
-[class*="wSkVaW_widthHandle"], [class*="Dc7zOa_widthHandle"] { z-index: 1 !important; }
+:is([class*="wSkVaW_widthHandle"], [class*="an3WzG_widthHandle"]), [class*="Dc7zOa_widthHandle"] { z-index: 1 !important; }
 
 /* --------------- 12b 开始页右侧的入口卡（文件 / 终端 / 浏览器…） --- */
 
@@ -1512,7 +1512,7 @@ button[class*="_panelRow"]:hover,
 
 /* 设置页里的卡片（插件卡 / 终端 / Agent 循环 / 网页搜索…）统一：
    同一条描边 + 同一个圆角（跟设置页自己的 12px 对齐，不然就像图 6 图 7 那样看着很怪） */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) :is(
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) :is(
   [class*="card"],
   [class*="_card"],
   [class*="Card"],
@@ -1523,11 +1523,11 @@ button[class*="_panelRow"]:hover,
 }
 /* 宠物 / 创意工坊：用户明确不要补框，这两个页签的内容样式一律不动
    （kKk9aW = 宠物、RcIGlq + bkhjFa = 创意工坊及其卡片） */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) :is([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"], [class*="bkhjFa"]) {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) :is([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"], [class*="bkhjFa"]) {
   box-shadow: none !important;
   border-color: var(--dsw-alias-border-l2) !important;
 }
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) :is([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"], [class*="bkhjFa"]) [class*="body"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) :is([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"], [class*="bkhjFa"]) [class*="body"] {
   border-color: var(--dsw-alias-border-l2) !important;
 }
 
@@ -1537,13 +1537,13 @@ button[class*="_panelRow"]:hover,
    所有带这个属性的元素都框了一遍（用户点名的误加蓝边），现在改成按卡片结构限定。 */
 /* 展开态：整张卡只保留一圈蓝框（用卡片自己的 border），内容区不再套第二个框；
    头部与内容之间补一条蓝线当分隔（= 用户要的「整个大外圈 + 中间一行」）。 */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) li[class*="card"]:is([class*="_cardOpen"], [class*="--open"]):not([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"]),
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="dsh-ego-card--open"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) li[class*="card"]:is([class*="_cardOpen"], [class*="--open"]):not([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"]),
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="dsh-ego-card--open"] {
   border: 1px solid var(--ef-cyan) !important;
   border-radius: var(--ef-radius) !important;
 }
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) li[class*="card"]:is([class*="_cardOpen"], [class*="--open"]):not([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"]) > [class*="body"],
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="dsh-ego-card--open"] > [class*="__body"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) li[class*="card"]:is([class*="_cardOpen"], [class*="--open"]):not([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"]) > [class*="body"],
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="dsh-ego-card--open"] > [class*="__body"] {
   border: 0 !important;
   border-top: 1px solid var(--ef-cyan) !important;
   border-radius: 0 !important;
@@ -1554,45 +1554,45 @@ button[class*="_panelRow"]:hover,
    「大外圈只包住上面那半」。现在：
      · 未选中：完全没有蓝边（应用自己的常态描边），也不留中间那条线；
      · 选中（rtSEdW_cardActive）：整圈蓝框画在整个 card 上 + 中间一条蓝线（用户要的样式）。 */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="cardMain"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="cardMain"] {
   border-radius: var(--ef-radius) var(--ef-radius) 0 0 !important;
   margin-bottom: 0 !important;
   box-shadow: none !important;
 }
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="cardFoot"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="cardFoot"] {
   border-top: 0;
   margin-top: 0 !important;
   border-radius: 0 0 var(--ef-radius) var(--ef-radius) !important;
 }
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="cardActive"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="cardActive"] {
   border: 1px solid var(--ef-cyan) !important;
 }
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="cardActive"] [class*="cardFoot"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="cardActive"] [class*="cardFoot"] {
   border-top: 1px solid var(--ef-cyan);
 }
 
 /* 三选一这类小方框照旧给整圈蓝描边（皮肤页那张「当前激活」卡也在内） */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) :is([class*="themeCube"], [class*="pluginCard"], [class*="skinCard"], [class*="_card"]):is([aria-pressed="true"], [aria-selected="true"], [class*="_selected"], [class*="_cardOn"], [class*="_cardOpen"]):not([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"], [class*="bkhjFa"]),
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class~="eDzMgW_card"]:has([class*="badgeActive"]) {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) :is([class*="themeCube"], [class*="pluginCard"], [class*="skinCard"], [class*="_card"]):is([aria-pressed="true"], [aria-selected="true"], [class*="_selected"], [class*="_cardOn"], [class*="_cardOpen"]):not([class*="kKk9aW"], [class*="KApx_W"], [class*="RcIGlq"], [class*="bkhjFa"]),
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class~="eDzMgW_card"]:has([class*="badgeActive"]) {
   box-shadow: inset 0 0 0 1px var(--ef-cyan);
 }
 
 /* 皮肤卡 / 归档管理的会话卡：只给应用的常态描边，别再加蓝边 */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="eDzMgW_card"],
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="dsh-session-archive"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="eDzMgW_card"],
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="dsh-session-archive"] {
   box-shadow: none;
 }
 /* 侧边卡片页：用户要求这一页里所有带蓝的东西都去掉蓝 */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="_2vuxea_"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="_2vuxea_"] {
   box-shadow: none !important;
 }
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="_2vuxea_"] :is([class*="card"], [class*="cardMain"], [class*="icon"], button, [class*="badge"]) {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="_2vuxea_"] :is([class*="card"], [class*="cardMain"], [class*="icon"], button, [class*="badge"]) {
   box-shadow: none !important;
   border-color: var(--ef-line) !important;
 }
 /* 侧边卡片页：连「打开」状态的青底也去掉 —— 用户要这一页完全没有蓝色，
    回到应用自己的卡片底色（原来的青底是皮肤给 cardOn 加的） */
-:is([class*="VOzbGW_panel"], [data-dsh-surface="settings"]) [class*="_2vuxea_"] [class*="cardOn"] {
+:is(:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]), [data-dsh-surface="settings"]) [class*="_2vuxea_"] [class*="cardOn"] {
   background-color: transparent !important;
   background-image: none !important;
 }
@@ -1621,7 +1621,7 @@ button[class*="_panelRow"]:hover,
 /* 设置弹窗直接沿用聊天页资产：同一个磨砂底（底色 + 截图纹理 + soft-light + blur）、
    同一条 --ef-edge 描边、同一个 --ef-radius —— 区别只有「四边都给圆角」，
    于是顶边三色条与它上方的黑实体也整体留在面板内部，并且往里挪一点避开圆角。 */
-[class*="VOzbGW_panel"] {
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) {
   position: relative;
   border: 1px solid var(--ef-edge);
   border-radius: var(--ef-radius);
@@ -1645,8 +1645,8 @@ button[class*="_panelRow"]:hover,
 }
 /* 黑实体（覆盖）+ 顶边描边 + 三色条：画法与聊天页 ::before / ::after 完全一致，
    只是画在面板内部；两者都给上圆角，免得从面板的圆角处冒出去 */
-[class*="VOzbGW_panel"]::before,
-[class*="VOzbGW_panel"]::after {
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"])::before,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"])::after {
   content: "";
   position: absolute;
   left: 0;
@@ -1655,7 +1655,7 @@ button[class*="_panelRow"]:hover,
   height: var(--ef-set-recess);
   pointer-events: none;
 }
-[class*="VOzbGW_panel"]::before {
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"])::before {
   background: #060807;
   z-index: 2;
   /* 只填凹槽（两道斜边之间），顶框那条线仍由面板自己的 border-top 画 ——
@@ -1667,7 +1667,7 @@ button[class*="_panelRow"]:hover,
     calc(100% - var(--ef-set-flat)) 0
   );
 }
-[class*="VOzbGW_panel"]::after {
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"])::after {
   z-index: 3;
   background-image:
     linear-gradient(#e202e2, #e202e2),
@@ -1699,27 +1699,27 @@ button[class*="_panelRow"]:hover,
    加平台无关的 [data-dsh-surface="settings"] 作用域 + _navCell/_active 后缀匹配，与原 VOzbGW 并联，
    两端都命中。实测 desktop 选中态原为宿主默认 rgb(23,50,58) 无青环、hover 原为宿主灰 rgb(35,37,36)。 */
 [data-dsh-surface="settings"] [class*="navCell"][class*="_active"],
-[class*="VOzbGW_navCell"][class*="VOzbGW_active"] {
+:is([class*="VOzbGW_navCell"], [class*="AnXs9G_navCell"]):is([class*="VOzbGW_active"], [class*="AnXs9G_active"]) {
   background: rgb(22, 52, 58);
   box-shadow: inset 0 0 0 1px var(--ef-cyan);
 }
 [data-dsh-surface="settings"] [class*="navCell"]:not([class*="_active"]):hover,
-[class*="VOzbGW_navCell"]:not([class*="VOzbGW_active"]):hover {
+:is([class*="VOzbGW_navCell"], [class*="AnXs9G_navCell"]):not(:is([class*="VOzbGW_active"], [class*="AnXs9G_active"])):hover {
   background: rgb(var(--ef-cyan-rgb) / .10);
 }
 
 /* 设置页里所有可点的方框（下拉、选择、卡片…）：悬停统一走侧栏按钮那支青蓝，
    原来各自是一片灰 —— 见用户点名的「光标挪上去显示同样的蓝色」。
    ★ D5：同样补 [data-dsh-surface="settings"] 作用域（desktop 的设置页根不是 VOzbGW_panel）。 */
-[class*="VOzbGW_panel"] button:hover,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) button:hover,
 [data-dsh-surface="settings"] button:hover,
-[class*="VOzbGW_panel"] [role="button"]:hover,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) [role="button"]:hover,
 [data-dsh-surface="settings"] [role="button"]:hover,
-[class*="VOzbGW_panel"] [role="radio"]:hover,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) [role="radio"]:hover,
 [data-dsh-surface="settings"] [role="radio"]:hover,
-[class*="VOzbGW_panel"] [role="switch"]:hover,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) [role="switch"]:hover,
 [data-dsh-surface="settings"] [role="switch"]:hover,
-[class*="VOzbGW_panel"] [role="combobox"]:hover,
+:is([class*="VOzbGW_panel"], [class*="AnXs9G_panel"]) [role="combobox"]:hover,
 [data-dsh-surface="settings"] [role="combobox"]:hover {
   background-color: rgb(var(--ef-cyan-rgb) / .12);
 }
@@ -1759,11 +1759,11 @@ button[class*="_panelRow"]:hover,
    于是「图标没了、箭头跑到了左边」。这里把箭头藏掉，用同一枚图标按卡片根的 data-tool 补回来
    （遮罩染色，颜色跟着 currentColor 走；思考行已由 lcKema_leading 那套负责，排除掉）。 */
 [data-disclosure-row][aria-expanded="true"] > span:first-child > svg { display: none !important; }
-[data-disclosure-row][aria-expanded="true"] > span:first-child:not(:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"])) {
+[data-disclosure-row][aria-expanded="true"] > span:first-child:not(:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"])) {
   color: var(--ef-cyan);
   --ef-row-icon: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.1%203.1Q6.6%207.8%2011.3%208.3Q6.6%208.8%206.1%2013.5Q5.6%208.8%200.9%208.3Q5.6%207.8%206.1%203.1Z%22%20fill%3D%22%23000%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11.9%201Q12.2%203.7%2014.9%204Q12.2%204.3%2011.9%207Q11.6%204.3%208.9%204Q11.6%203.7%2011.9%201Z%22%20fill%3D%22%23000%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M12.5%209.4Q12.7%2011.4%2014.7%2011.6Q12.7%2011.8%2012.5%2013.8Q12.3%2011.8%2010.3%2011.6Q12.3%2011.4%2012.5%209.4Z%22%20fill%3D%22%23000%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E");
 }
-[data-disclosure-row][aria-expanded="true"] > span:first-child:not(:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"]))::before {
+[data-disclosure-row][aria-expanded="true"] > span:first-child:not(:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"]))::before {
   content: "";
   /* 必须和折叠态同尺寸：折叠态那枚 svg 被第 12 节撑到 16px，这里给 14px 就变成「一展开图标变小」 */
   flex: 0 0 16px;
@@ -1821,8 +1821,8 @@ button[class*="_panelRow"]:hover,
 /* 14f 思考行行首：应用那枚图标盒（span 包着的 iconIdle）里的 svg 已被第 12 节藏掉，
    空盒子仍占 16px，把 ::before 那枚图标挤到左边 7px —— 整个盒子一起藏掉，图标回到正中；
    同时把 ::before 从 14px 提到 16px，与其它行的 16px 图标同尺寸。 */
-:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"]) > span { display: none !important; }
-:is([class*="lcKema_leading"], [class*="_3GBCTG_leading"])::before {
+:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"]) > span { display: none !important; }
+:is(:is([class*="lcKema_leading"], [class*="VJlF5q_leading"]), [class*="_3GBCTG_leading"])::before {
   flex: 0 0 16px;
   width: 16px;
   height: 16px;
@@ -1839,8 +1839,8 @@ button[class*="_panelRow"]:hover,
    行内再叠一层就比卡片内边距那一圈深 ——「上下文条悬停蓝块没填满、右边留一条缝」就是这么来的。
    现在颜色完全交给卡片，整张卡均匀一块。 */
 [data-slot="tool.call.toolview"] > [data-tool] [data-disclosure-row]:hover,
-:is([class*="lcKema_root"], [class*="_3GBCTG_root"]) [data-disclosure-row]:hover,
-:is([class*="o3BgMG_root"], [class*="pFy1Ka_root"]) [data-disclosure-row]:hover,
+:is(:is([class*="lcKema_root"], [class*="VJlF5q_root"]), [class*="_3GBCTG_root"]) [data-disclosure-row]:hover,
+:is(:is([class*="o3BgMG_root"], [class*="hKdVjq_root"]), [class*="pFy1Ka_root"]) [data-disclosure-row]:hover,
 [data-chat-flow-kind="context"] > div > [class*="root"] [data-disclosure-row]:hover,
 [data-chat-flow-kind="system-prompt"] > div > [class*="root"] [data-disclosure-row]:hover {
   background-color: transparent;
@@ -2024,9 +2024,9 @@ div.cvtkAW_footCard button.cvtkAW_footToggle:hover {
 /* ---------------------------------------------------------------------
    ws: frame | 条目: A1R | 依赖: 无
    before（Lead 活体实测，1264×805、data-rightbar-collapsed="true"、grid 第三列 0px）:
-     :is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) rect [695,0,569,805]、pointer-events:none、
+     :is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) rect [695,0,569,805]、pointer-events:none、
        border-left: 1px solid rgba(255,255,255,.11)      ← 应用自带，不是皮肤写的
-     :is([class*="P3OORG_panel"], [class*="OUqwTW_panel"])     rect [694,0,570,805]
+     :is(:is([class*="P3OORG_panel"], [class*="acoR2W_panel"]), [class*="OUqwTW_panel"])     rect [694,0,570,805]
      design/wip/r3/p0-collapsed.png 逐点扫：y=200 / 400 / 600 在 x=695 各有 1 个孤立亮像素
        （y=400 实测 (56,61,58)；左邻 x=694 与右邻 x=696 均为 (31,37,34)）
    after(期望): 收起态两个元素的 border-left 宽度 = 0px（只把颜色改 transparent 会留下
@@ -2037,10 +2037,10 @@ div.cvtkAW_footCard button.cvtkAW_footToggle:hover {
      ② :not(:has([data-sidebar-right-open="true"]))（无「展开」标记，正向判定）
      展开态 = 有 open 标记 ⇒ 两条都不命中 ⇒ 保持 patches.css 第 11 节的 1px 描边
    --------------------------------------------------------------------- */
-:is([data-dsh-frame][data-rightbar-collapsed="true"], [data-dsh-surface="root"]:has([data-rightbar-collapsed="true"])) :is([class*="P3OORG_panel"], [class*="OUqwTW_panel"]),
-:is([data-dsh-frame][data-rightbar-collapsed="true"], [data-dsh-surface="root"]:has([data-rightbar-collapsed="true"])) :is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]),
-:is([data-dsh-frame], [data-dsh-surface="root"]):not(:has([data-sidebar-right-open="true"])) :is([class*="P3OORG_panel"], [class*="OUqwTW_panel"]),
-:is([data-dsh-frame], [data-dsh-surface="root"]):not(:has([data-sidebar-right-open="true"])) :is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) {
+:is([data-dsh-frame][data-rightbar-collapsed="true"], [data-dsh-surface="root"]:has([data-rightbar-collapsed="true"])) :is(:is([class*="P3OORG_panel"], [class*="acoR2W_panel"]), [class*="OUqwTW_panel"]),
+:is([data-dsh-frame][data-rightbar-collapsed="true"], [data-dsh-surface="root"]:has([data-rightbar-collapsed="true"])) :is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]),
+:is([data-dsh-frame], [data-dsh-surface="root"]):not(:has([data-sidebar-right-open="true"])) :is(:is([class*="P3OORG_panel"], [class*="acoR2W_panel"]), [class*="OUqwTW_panel"]),
+:is([data-dsh-frame], [data-dsh-surface="root"]):not(:has([data-sidebar-right-open="true"])) :is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) {
   border-left-width: 0 !important;
   border-left-style: none !important;
 }
@@ -2362,42 +2362,42 @@ body {
      cvtkAW_footMain / cvtkAW_footToggle（B2 青色卡片内层）一律不在本块选择器内 —— 不碰。 */
 [data-pane="sidebar"] button.hHd-Xa_brand:hover,
 [data-pane="sidebar"] button.hHd-Xa_iconButton:hover,
-[data-pane="sidebar"] button:is([class*="bhn1Oq_searchButton"], [class*="_9lTDKa_searchButton"]):hover,
-[data-pane="sidebar"] button:is([class*="bhn1Oq_iconButton"], [class*="_9lTDKa_iconButton"]):hover,
-[data-pane="sidebar"] button:is([class*="YDXeBa_iconButton"], [class*="hIlkoa_iconButton"]):hover,
+[data-pane="sidebar"] button:is(:is([class*="bhn1Oq_searchButton"], [class*="GAkraW_searchButton"]), [class*="_9lTDKa_searchButton"]):hover,
+[data-pane="sidebar"] button:is(:is([class*="bhn1Oq_iconButton"], [class*="GAkraW_iconButton"]), [class*="_9lTDKa_iconButton"]):hover,
+[data-pane="sidebar"] button:is(:is([class*="YDXeBa_iconButton"], [class*="wnFoaW_iconButton"]), [class*="hIlkoa_iconButton"]):hover,
 [data-pane="sidebar"] button[class*="WYT-ka_trigger"]:hover,
 [data-pane="sidebar"] button[class*="fThDlq_trigger"]:hover,
-[data-pane="sidebar"] button[class*="VOzbGW_trigger"]:hover {
+[data-pane="sidebar"] button:is([class*="VOzbGW_trigger"], [class*="AnXs9G_trigger"]):hover {
   background-color: var(--ef-hover-plate);
   color: var(--ef-hover-fg);
 }
 [data-pane="sidebar"] button.hHd-Xa_brand:hover svg,
 [data-pane="sidebar"] button.hHd-Xa_iconButton:hover svg,
 [data-pane="sidebar"] button[class*="bhn1Oq_"]:hover svg,
-[data-pane="sidebar"] button:is([class*="YDXeBa_iconButton"], [class*="hIlkoa_iconButton"]):hover svg,
+[data-pane="sidebar"] button:is(:is([class*="YDXeBa_iconButton"], [class*="wnFoaW_iconButton"]), [class*="hIlkoa_iconButton"]):hover svg,
 [data-pane="sidebar"] button[class*="WYT-ka_trigger"]:hover svg,
 [data-pane="sidebar"] button[class*="fThDlq_trigger"]:hover svg,
-[data-pane="sidebar"] button[class*="VOzbGW_trigger"]:hover svg {
+[data-pane="sidebar"] button:is([class*="VOzbGW_trigger"], [class*="AnXs9G_trigger"]):hover svg {
   color: var(--ef-hover-fg);
 }
 
-/* ---- R3-hover-3 右侧边栏（:is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) 内，覆盖 5 个；浏览器页签条 3 个 + 面板头 2 个）----
+/* ---- R3-hover-3 右侧边栏（:is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) 内，覆盖 5 个；浏览器页签条 3 个 + 面板头 2 个）----
    before: 页签关闭/新标签页/分栏/全屏/收起右侧边栏 全是 rgba(255,255,255,.06)
    after(期望): bg rgba(255,255,255,.14) + color/svg #fff，rect 不变
    ★ 边界：.dsh-ego-side-*（ego 浏览器插件 UI，patches.css 已用 !important 给青底/灰底，不属于「没有蓝底 hover」）
      与 aria-selected="true" 的选中页签，显式排除。 */
-:is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) button:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]),
-:is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) [role="button"]:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]) {
+:is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) button:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]),
+:is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) [role="button"]:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]) {
   background-color: var(--ef-hover-plate);
   color: var(--ef-hover-fg);
 }
-:is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) button:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]) svg,
-:is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) button:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]) [class*="Glyph"],
-:is([class*="P3OORG_panelBody"], [class*="OUqwTW_panelBody"]) [role="button"]:hover:not([aria-selected="true"]) svg {
+:is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) button:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]) svg,
+:is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) button:hover:not([aria-selected="true"]):not([class*="dsh-ego-side"]) [class*="Glyph"],
+:is(:is([class*="P3OORG_panelBody"], [class*="acoR2W_panelBody"]), [class*="OUqwTW_panelBody"]) [role="button"]:hover:not([aria-selected="true"]) svg {
   color: var(--ef-hover-fg);
 }
 
-/* ---- R3-hover-4 输入区（[data-composer-card] + :is([class*="uV2eYG_row"], [class*="RlGAzG_row"])，覆盖 3 个：＋ / 访问模式 / 选择模型）----
+/* ---- R3-hover-4 输入区（[data-composer-card] + :is(:is([class*="uV2eYG_row"], [class*="GRgSLq_row"]), [class*="RlGAzG_row"])，覆盖 3 个：＋ / 访问模式 / 选择模型）----
    before: 「访问模式」「选择模型」rgba(255,255,255,.06)；「＋」自带的深底板 rgba(35,37,36,.85) hover 只到 rgb(43,45,44)，
            文字/图标 rgb(176,183,181) 完全不变
    after(期望): bg rgba(255,255,255,.14)（合成到灰输入卡上 = 明显更浅）+ color/svg #fff，rect 不变
@@ -2405,13 +2405,13 @@ body {
    坑：patches.css 876 给 [data-composer-card] button 定过 border-radius:999px，本块**不碰圆角**（几何零变化）。 */
 [data-composer-card] button:hover:not([class*="primary"]),
 [data-composer-card] [role="button"]:hover:not([class*="primary"]),
-:is([class*="uV2eYG_row"], [class*="RlGAzG_row"]) button:hover:not([class*="primary"]) {
+:is(:is([class*="uV2eYG_row"], [class*="GRgSLq_row"]), [class*="RlGAzG_row"]) button:hover:not([class*="primary"]) {
   background-color: var(--ef-hover-plate);
   color: var(--ef-hover-fg);
 }
 [data-composer-card] button:hover:not([class*="primary"]) svg,
 [data-composer-card] button:hover:not([class*="primary"]) [class*="Glyph"],
-:is([class*="uV2eYG_row"], [class*="RlGAzG_row"]) button:hover:not([class*="primary"]) svg {
+:is(:is([class*="uV2eYG_row"], [class*="GRgSLq_row"]), [class*="RlGAzG_row"]) button:hover:not([class*="primary"]) svg {
   color: var(--ef-hover-fg);
 }
 
@@ -2461,10 +2461,10 @@ body {
      两者 rect 完全相同 (346,y,14,14) → 箭头盖在图标上（用户看到的「左边是箭头、图标没了」）；行尾也没有箭头。
    参照：带 [data-disclosure-row] 的行由 patches.css 1360/1361/1364 那套处理，技能行不带该属性 → 吃不到。
    after(期望)：行首只剩技能图标（含 hover 全程可见），行尾出现与其他折叠行同款的 7×7 箭头、展开时翻转。 */
-:is([class*="iWrAna_row"], [class*="Xpfrra_row"]) svg[class*="chevron"],
-:is([class*="iWrAna_row"], [class*="Xpfrra_row"]) [class*="chevronHover"] { display: none !important; }
-:is([class*="iWrAna_row"], [class*="Xpfrra_row"]) [class*="iconIdle"] { opacity: 1 !important; }
-:is([class*="iWrAna_row"], [class*="Xpfrra_row"])[data-expandable="true"]::after {
+:is(:is([class*="iWrAna_row"], [class*="iJmaOG_row"]), [class*="Xpfrra_row"]) svg[class*="chevron"],
+:is(:is([class*="iWrAna_row"], [class*="iJmaOG_row"]), [class*="Xpfrra_row"]) [class*="chevronHover"] { display: none !important; }
+:is(:is([class*="iWrAna_row"], [class*="iJmaOG_row"]), [class*="Xpfrra_row"]) [class*="iconIdle"] { opacity: 1 !important; }
+:is(:is([class*="iWrAna_row"], [class*="iJmaOG_row"]), [class*="Xpfrra_row"])[data-expandable="true"]::after {
   content: "";
   flex: 0 0 auto;
   width: 7px;
@@ -2477,10 +2477,10 @@ body {
   transition: transform .15s, border-color .15s;
   opacity: .7;
 }
-:is([class*="iWrAna_row"], [class*="Xpfrra_row"])[data-expandable="true"][aria-expanded="true"]::after {
+:is(:is([class*="iWrAna_row"], [class*="iJmaOG_row"]), [class*="Xpfrra_row"])[data-expandable="true"][aria-expanded="true"]::after {
   transform: rotate(-135deg) translate(-1px, -1px);
 }
-:is([class*="iWrAna_row"], [class*="Xpfrra_row"])[data-expandable="true"]:hover::after {
+:is(:is([class*="iWrAna_row"], [class*="iJmaOG_row"]), [class*="Xpfrra_row"])[data-expandable="true"]:hover::after {
   border-color: var(--ef-cyan);
   opacity: 1;
 }
@@ -2614,21 +2614,29 @@ body {
 }
 
 /* Question takeover: keep its header plain, not conversation artwork. */
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]),
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) header {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]),
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) header {
   background: #060807 !important;
 }
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) header::before,
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) header::after {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) header::before,
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) header::after {
   content: none !important;
   background: none !important;
 }
 
 /* One outer question card border, with a header/body separator. */
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) {
   border: 1px solid var(--ef-line-strong) !important;
 }
-:is([class*="Mbwy4a_card"], [class*="mAtvLq_card"]) > header {
+:is(:is([class*="Mbwy4a_card"], [class*="wnLwla_card"]), [class*="mAtvLq_card"]) > header {
   border: 0 !important;
   border-bottom: 1px solid var(--ef-line-strong) !important;
+}
+
+/* Layout collapse wins over stale right-sidebar open markers after a session switch. */
+:is([data-dsh-frame], [data-dsh-surface="root"]):is([data-rightbar-collapsed="true"], :has([data-rightbar-collapsed="true"]), :not(:has([data-sidebar-right-open="true"])), [style*="minmax(0px, 0px)"], :has([style*="minmax(0px, 0px)"])) :is([class*="P3OORG_panel"], [class*="OUqwTW_panel"], [class*="acoR2W_panel"]) {
+  background: transparent !important;
+  background-image: none !important;
+  border-left-width: 0 !important;
+  border-left-style: none !important;
 }
