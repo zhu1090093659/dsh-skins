@@ -71,7 +71,7 @@
 皮肤中心不写委托插件的任何属性，委托插件不写 `data-dsh-skin`，双方都无法把
 对方卡死。委托皮肤的选择会照常持久化、开机采纳与试穿还原；让路暂停的是
 视觉，不是插件的设置页与偏好。
-## part 组（90 行，含各 owner 行）
+## part 组（100 行，含各 owner 行）
 
 shell 区域（owner: shell）：
 
@@ -175,6 +175,13 @@ family / 插件区域：
 | `empty` | browser-view | 尚未收到画面时的空态占位；panel 内 `[data-dsh-part="empty"]` |
 | `error` | browser-view | 宿主上报错误时的错误态占位；panel 内 `[data-dsh-part="error"]` |
 | `tab-title` | browser-view | 右栏 chip 内本插件自有部分（图标 + 标题），chip 行盒归 shell；`[data-dsh-plugin="browser-view"] [data-dsh-part="tab-title"]` |
+| `update-toolbar` | dsh-plugin-manager | 官方「插件」页「已安装插件」组标题行内的检查更新工具条（页面不声明该席位，容器插进 `[data-plugin-group="bundles"]` 的首个子元素并随页面重绘复位）；`[data-dsh-plugin-manager-toolbar]` |
+| `builtin-group` | dsh-plugin-manager | 官方「插件」页列表底部追加的内置插件分组根（页面不声明该席位，作为已安装面板的后续兄弟挂载）；`data-builtin-state` 为 `loading` / `unavailable` / `failed` / `ready`，`data-builtin-bundles` 为 `confirmed` / `unconfirmed` |
+| `builtin-row` | dsh-plugin-manager | 内置插件分组内的一行：标题、模块名、锁定原因与启停开关；`data-entry-id` 为 loader 行 id，`data-write` 为 `writable` / `management-required` / `unaddressable` / `unknown` |
+| `builtin-notice` | dsh-plugin-manager | 内置插件分组标题下的操作反馈行；失败为 `role="alert"`，其余为 `role="status"` |
+| `preset-group` | dsh-plugin-manager | 内置插件分组下方的只读 Agent 预设区块根（预设行由组合决定，不提供开关） |
+| `preset` | dsh-plugin-manager | 一个 Agent 预设卡；`data-preset-id` 为预设 id，`data-default` 为 `yes` / `no` |
+| `preset-row` | dsh-plugin-manager | 预设组合中的一行（模块名 + 状态）；`data-preset-state` 为 `on` / `off` / `conditional`，条件行同时给出表达式 |
 
 ### 面板行身份锚点 `data-dsh-panel-entry`（owner: 各注册面板的插件）
 
@@ -191,7 +198,7 @@ shell 的 `[class*="panelGlyph"]` 内）。shell 目前不把 entry id 透传到
 不进 `data-dsh-plugin`：plugin 属性标记插件面板根，皮肤里已有
 `[data-dsh-plugin="ssh"] [class*="panel"]` 一类把根当作面板子树起点的规则，把字形也算进去会误伤。
 
-## plugin 组（16 个）
+## plugin 组（17 个）
 
 | data-dsh-plugin | owner | 锚定方式 |
 | --- | --- | --- |
@@ -211,6 +218,7 @@ shell 的 `[class*="panelGlyph"]` 内）。shell 目前不把 entry id 透传到
 | `preset-center` | dsh-preset-center | 创意工坊卡片的「预设」标签页面板（`dsh-workshop.panel` keyed 槽 key `preset`）；`[data-dsh-plugin="preset-center"]` |
 | `liangshen` | dsh-liangshen | 首页输入框内的梁神模式拨杆；`[data-dsh-plugin="liangshen"][data-dsh-part="lever"]`，slot entry id `liangshen-lever` |
 | `browser-view` | dsh-browser-view | 右栏标签页类型 id `@linxin666/dsh-client-ui-browser-view`（`sidebar.right.pane.tab` 与 `.title` 的 key）；`[data-dsh-plugin="browser-view"]`（面板根 + 会话头触发器）；chip 内自有部分 `[data-dsh-part="tab-title"]` |
+| `plugin-manager` | dsh-plugin-manager | 官方「插件」页上本插件的两处注入：检查更新工具条根与内置插件分组根；`[data-dsh-plugin="plugin-manager"]` |
 
 ## 已知脆弱点（上游主题缝 PR 诉求）
 
