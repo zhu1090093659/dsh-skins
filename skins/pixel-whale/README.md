@@ -16,10 +16,14 @@ rolling with each stroke.
 - **Pure assets**: `skin.json` (v2 manifest) + `skin.css` (full `--dsw-alias-*` token
   remap) + `patches.css` (L3 selectors) + generated GIF/SVG. No package.json, no build
   step, no hooks.
-- **A dark skin**: light and dark both render the same night sea; `skin.css` pins all 96
-  official alias tokens to the deep-sea palette, so the two modes cannot drift apart, and
-  it also covers the menu / document-preview / diff tokens the shell added later plus the
-  `--dsw-specific-*` family (see Contrast).
+- **A single-look dark skin**: there is no light variant. `skin.json` points **both**
+  `contributes.backgroundMedia` entries at the same `assets/sea.gif` with the same scrim,
+  and `skin.css` pins all 96 official alias tokens to the deep-sea palette, so a shell in
+  light mode still renders the night sea — the two modes cannot drift apart because there
+  is only one look. It also covers the menu / document-preview / diff tokens the shell
+  added later plus the `--dsw-specific-*` family (see Contrast). This is the light-only
+  precedent read the other way round, and it is declared here and in the manifest rather
+  than left for a reader to infer from two identical previews.
 
 ## Layers
 
@@ -70,6 +74,15 @@ theme has to be pinned by hand. Three places do that in the current DSH build:
 Measured with WCAG on the composited background: menu 1.59:1 → 14.17:1, group header
 2.77:1 → 5.50:1, sidebar 1.18:1 → 10.51:1, composer 1.23:1 → 12.60:1, bubble
 1.11:1 → 7.13:1, file cards 1.18:1 → 12.53:1.
+
+## Evidence
+
+`preview/{light,dark}.jpg` and the two files under `evidence/` are **the same capture**,
+not a frame of the background animation: a 1680×1000 DSH shell with this skin applied
+through the skin center, one short conversation in it, the preview-notice dialog
+dismissed, once with `data-ds-dark-theme` absent and once with it set, and the frame
+sampled out of the live `<img>` to confirm the GIF was playing when the shot was taken.
+Both themes land on the same night sea because that is what the skin is.
 
 ## Notice
 
