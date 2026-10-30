@@ -11,6 +11,7 @@
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./css-safety": "./lib/css-safety.js",
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
