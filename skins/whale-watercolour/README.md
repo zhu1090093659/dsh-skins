@@ -62,6 +62,27 @@ interactive edges are sky/jade.** Ice blue over any of these veils measures only
 | `--bk-veil-sheet` | 0.38 | 62 % | conversation sheet (the blur sits on its `::before`) |
 | `--bk-veil-menu` | 0.80 | 20 % | overlays |
 
+## Composition: the picture stays, the interface moves aside
+
+The illustration is 2560x1437 and the shell sits near 16:9, so `object-fit: cover`
+has **no slack on either axis** - `object-position` cannot move her. Landing at the
+shell's aspect puts the character exactly where the interface is densest: the
+empty-session title crosses her eyes, the branch chip sits on the left iris, the
+composer cuts through her nose (2026-10-28 intake note).
+
+Re-framing the asset is the other way out and the wrong one: her face is the densest
+area of this 2.1 MB illustration, so moving it anywhere in the viewport only swaps one
+high-detail region for another under the text - a zoomed-out recentre still leaves
+65 % of the face inside the interface column and opens an unfilled band at the edges.
+
+So the picture keeps its composition and the **interface gets its own local scrim**:
+the conversation column, the composer and the header band carry one extra cream layer
+(radial 0.62 -> 0.42 -> 0.10 -> 0, over a 0.30 / 0.14 / 0.34 vertical wash) that fades
+out toward the right edge and the picture-only corner. Gaussian high-pass detail
+energy inside the interface column drops from 17.45 to 7.23; the picture-only upper
+right corner measures 0.4 under the same instrument, so where she is left alone she
+stays as clear as before.
+
 Each value was **reverse-solved** against real pixels, and the sampling method
 matters: taking "the darkest 1 % of the box" as the paper reads **the text itself**
 (or the dark mass of her hair) rather than the paper under the glyphs, which forced

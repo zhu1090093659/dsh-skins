@@ -46,6 +46,44 @@ body[data-ds-dark-theme] {
   --sk-bubble: #f7f8f4;
   --sk-bubble-edge: #1b5d9a47;
   --sk-approval-edge: #b4525e80;
+  --bk-frame: 50% 50%;
+}
+
+/* ── the illustration: a local scrim where the interface lands ───────────── */
+/*
+ * The manifest background fills a fixed layer with `object-fit: cover`. The
+ * illustration is 2560x1437 and the shell is about 16:9, so the crop budget is
+ * zero on both axes: `object-position` cannot move her. At the shell's aspect
+ * the picture lands exactly where the interface is densest, and that is a real
+ * defect rather than a look: the empty-session title crosses her eyes, the
+ * branch chip sits on the left iris, the composer cuts through her nose
+ * (2026-10-28 intake note).
+ *
+ * Re-framing the asset was the other way out and is the wrong one: her face is
+ * the densest area of a busy 2.1 MB illustration, so shifting it anywhere in
+ * the viewport only swaps one high-detail region for another under the text
+ * (a zoomed-out recentre still leaves 65 % of the face inside the interface
+ * column and opens an unfilled band at the edges).
+ *
+ * So the picture keeps its composition and the *interface* gets its own local
+ * scrim: the same cream veil as everywhere else, painted above the media and
+ * under the text, thick over the conversation column, the composer and the
+ * header band, faded out toward the right edge and the picture-only corners.
+ * No new colour enters the palette.
+ */
+body [data-dsh-skin-layer='background'] > img,
+body [data-dsh-skin-layer='background'] > video {
+  object-position: var(--bk-frame);
+}
+
+body [data-dsh-skin-layer='background']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 92% at 46% 46%, rgba(250, 249, 245, 0.62) 0%, rgba(250, 249, 245, 0.42) 46%, rgba(250, 249, 245, 0.10) 74%, rgba(250, 249, 245, 0) 88%),
+    linear-gradient(180deg, rgba(250, 249, 245, 0.30) 0%, rgba(250, 249, 245, 0.14) 22%, rgba(250, 249, 245, 0.14) 78%, rgba(250, 249, 245, 0.34) 100%);
 }
 
 /* ── canvas: the theme's ground ──────────────────────────────────────────── */
