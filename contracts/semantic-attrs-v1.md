@@ -71,7 +71,7 @@
 皮肤中心不写委托插件的任何属性，委托插件不写 `data-dsh-skin`，双方都无法把
 对方卡死。委托皮肤的选择会照常持久化、开机采纳与试穿还原；让路暂停的是
 视觉，不是插件的设置页与偏好。
-## part 组（100 行，含各 owner 行）
+## part 组（103 行，含各 owner 行）
 
 shell 区域（owner: shell）：
 
@@ -182,6 +182,8 @@ family / 插件区域：
 | `preset-group` | dsh-plugin-manager | 内置插件分组下方的只读 Agent 预设区块根（预设行由组合决定，不提供开关） |
 | `preset` | dsh-plugin-manager | 一个 Agent 预设卡；`data-preset-id` 为预设 id，`data-default` 为 `yes` / `no` |
 | `preset-row` | dsh-plugin-manager | 预设组合中的一行（模块名 + 状态）；`data-preset-state` 为 `on` / `off` / `conditional`，条件行同时给出表达式 |
+| `builtin-scope` | dsh-plugin-manager | 内置插件分组标题右侧的展开/收起控件，切换「只列无所属组合包的行」与「追加全部 Loader 行」两态；`aria-expanded` 表示当前是否展开，`aria-controls` 指向它切换的列表元素，`[data-dsh-part="builtin-scope"]` |
+| `builtin-owner` | dsh-plugin-manager | 展开态中已归属行内的次要文本，写明这一行同时属于哪个已安装组合包（文案形如「来自 <包名>」）；行内 `[data-dsh-part="builtin-owner"]` |
 
 ### 面板行身份锚点 `data-dsh-panel-entry`（owner: 各注册面板的插件）
 
