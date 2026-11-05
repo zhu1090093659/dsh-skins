@@ -238,6 +238,7 @@ export function makeSkinCenterV2Routes(deps: RoutesV2Deps = {}): WebRoute[] {
       // nothing it can act on beyond the one-click install.
       delegated: {
         package: row.descriptor.package,
+        selectionMode: row.descriptor.selectionMode,
         repository: row.descriptor.repository,
         installCommand: row.descriptor.installCommand,
         bodyAttr: row.descriptor.bodyAttr,

@@ -51,6 +51,8 @@ export interface DelegatedSkinDescriptor {
   id: string
   /** npm package spec the one-click install hands to the plugin manager. */
   package: string
+  /** Opt in to exclusive rendering when this delegated ID is selected. */
+  selectionMode?: 'explicit'
   /** Upstream repository (docs, issues, changelog). */
   repository: string
   /** The command the card copies when no management face is published. */

@@ -224,3 +224,9 @@ shell 的 `[class*="panelGlyph"]` 内）。shell 目前不把 entry id 透传到
 2. 侧栏导航行已有官方 list slot（`sidebar.panellist`，2026-09 面板家族迁移后插件不再注入 DOM），但行盒本体仍只有 CSS-module 类、无稳定 data 钩子 → 诉求：`sidebar.panellist` 的行盒自带稳定属性（现由兼容适配器从 `[class*="panelRow"]:has([data-dsh-panel-entry])` 补打 `sidebar-entry`，见 part 组）。
 3. 设置模态只有 `role="dialog"`（与其他对话框撞车）→ 诉求：设置 dialog 根专属标识。
 4. list slot 的单 entry 无 DOM 归属标识 → 诉求：slot entry 渲染透传 entry id 到 DOM（现由各插件字形自带的 `data-dsh-panel-entry` 代偿，见 part 组末尾）。
+
+## Proposed opt-in delegated selection
+
+Skin Center owns `html[data-dsh-delegated-skin]`. Its value is the displayed delegated ID, including during try-on. Cancelling restores the committed selection. Stock, assets, wallpaper withholding and shutdown clear it. An explicit delegate also receives its ID in `data-dsh-skin` so older plugins observing that attribute yield. The center skips asset CSS for delegated IDs. The same rules apply to first paint.
+
+皮肤中心在试穿和正式应用时标记实际显示的插件 ID。取消试穿恢复原选择。主动启用此协议的插件还占用 `data-dsh-skin`，让监听旧标记的插件退出。默认外观、素材皮肤、壁纸接管及关闭时清除插件选择。
