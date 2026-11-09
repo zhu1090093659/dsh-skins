@@ -92,6 +92,12 @@ layout, same frame:
 | picture column, left 0-150 px | 9.53 | 9.56 | 7.74 |
 | picture column, right 1140-1280 px | 4.88 | 4.94 | 3.96 |
 
+The conversation sheet and its frost sit on that same band (2026-11-07 intake note: a
+full-width sheet and a full-width `backdrop-filter` turned the two picture columns into
+blue-white fog and hid the scrim boundary). Measured on the same frame, same viewport,
+high-pass per pixel: picture column left 0-150 px `6.59 -> 12.04` (home frame `10.77`),
+right 1140-1280 px `0.81 -> 5.10` (home frame `4.80`).
+
 The interface lands at the same softening the review accepted, while the picture columns
 sit on the no-scrim baseline instead of losing a fifth of their detail, and the scrim's
 own edge is now visible in the frame.
@@ -134,7 +140,7 @@ set of values under `body[data-ds-dark-theme]`:
 
 Because the skin is light-only, a store's dark tier shows two preview images that
 are **the same bytes** — `preview/light.jpg` and `preview/dark.jpg` share a sha256
-(`9ED3843B…12999D`) — and a dark-mode user who switches to it gets the same light
+(`F586C5C2…EDF705`) — and a dark-mode user who switches to it gets the same light
 interface. That is the intent, not a missing file.
 
 ## Evidence
