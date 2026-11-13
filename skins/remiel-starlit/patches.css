@@ -173,6 +173,87 @@ body[data-ds-dark-theme] :global(.aionui-menu-item:not(.aionui-menu-item-disable
   background: rgba(232, 145, 179, 0.16);
 }
 
+/* --- git-graph commit lanes: cherry pink / sage / amber / ice ramp -------- */
+
+[data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+1),
+[data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+1) { color: #d75b8d; }
+[data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+2),
+[data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+2) { color: #3d9369; }
+[data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+3),
+[data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+3) { color: #ce9038; }
+[data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+4),
+[data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+4) { color: #667b8b; }
+[data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+5),
+[data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+5) { color: #926e7d; }
+[data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n),
+[data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n) { color: #a9cbb6; }
+
+/* Night variant: the same hue family, lifted for the indigo night. */
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+1),
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+1) { color: #e891b3; }
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+2),
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+2) { color: #7ed9a5; }
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+3),
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+3) { color: #f0bf67; }
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+4),
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+4) { color: #94a7b4; }
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n+5),
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n+5) { color: #ad91a0; }
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='node']:nth-child(6n),
+body[data-ds-dark-theme] [data-gitgraph-lanes] > [data-gitgraph-glyph='merge']:nth-child(6n) { color: #5dbd85; }
+
+/* Dialog frame: frosted glass like the panel columns. */
+[data-gitgraph-dialog] {
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-color: rgba(242, 207, 229, 0.4);
+}
+
+body[data-ds-dark-theme] [data-gitgraph-dialog] {
+  border-color: rgba(242, 207, 229, 0.22);
+}
+
+/* Ref badges (non-current): translucent cherry chips. */
+[data-gitgraph-ref]:not([data-gitgraph-ref-current]) {
+  background: rgba(215, 91, 141, 0.12);
+  border: 1px solid rgba(104, 66, 98, 0.2);
+}
+
+body[data-ds-dark-theme] [data-gitgraph-ref]:not([data-gitgraph-ref-current]) {
+  background: rgba(232, 145, 179, 0.14);
+  border-color: rgba(242, 207, 229, 0.2);
+}
+
+/* --- composer selector row: crisp frosted chips --------------------------- */
+
+div:has(> div > [data-gitgraph-chip]) {
+  --dsw-alias-button-tool-bar-fill: rgba(255, 250, 254, 0.72);
+  --dsw-alias-border-l2: rgba(104, 66, 98, 0.3);
+  --dsw-alias-label-secondary: #594357;
+  --dsw-alias-label-tertiary: #806e80;
+  --dsw-alias-interactive-bg-hover: rgba(215, 91, 141, 0.16);
+  --dsw-alias-interactive-bg-active: rgba(215, 91, 141, 0.2);
+}
+
+body[data-ds-dark-theme] div:has(> div > [data-gitgraph-chip]) {
+  --dsw-alias-button-tool-bar-fill: rgba(73, 48, 82, 0.78);
+  --dsw-alias-border-l2: rgba(242, 207, 229, 0.3);
+  --dsw-alias-label-secondary: #decad8;
+  --dsw-alias-label-tertiary: #b9a6b7;
+  --dsw-alias-interactive-bg-hover: rgba(232, 145, 179, 0.16);
+  --dsw-alias-interactive-bg-active: rgba(232, 145, 179, 0.22);
+}
+
+div:has(> div > [data-gitgraph-chip]) > button[aria-expanded='true'],
+[data-gitgraph-chip][aria-expanded='true'] {
+  background-color: rgba(215, 91, 141, 0.16);
+}
+
+body[data-ds-dark-theme] div:has(> div > [data-gitgraph-chip]) > button[aria-expanded='true'],
+body[data-ds-dark-theme] [data-gitgraph-chip][aria-expanded='true'] {
+  background-color: rgba(232, 145, 179, 0.18);
+}
+
 /* --- composer seat: frosted fade band over the art ------------------------ */
 
 [data-phase='active'] [class*='composerSeat'] {
@@ -249,6 +330,92 @@ body[data-ds-dark-theme] [role="dialog"] {
 body[data-ds-dark-theme] [role="dialog"] * {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
+}
+
+/* --- 平台一致性：锁死面板透明度（0.1.2）---------------------------------
+
+   目标：无论宿主是 macOS 还是 Windows，侧栏 / 顶栏 / 中栏 / 底栏的表面
+   观感必须与作者本机完全一致。只锁不透明度，不改毛玻璃强度。
+
+   根因（逐条核对官方 shell 的 AppFrame.module.css 常量）：
+
+     macOS 侧栏  [data-platform=darwin] .sidebarCol:not(抽屉)
+        background: linear-gradient(...),
+                    color-mix(in srgb, color-mix(in srgb, var(--fill) 97%, #7a9bf0) 40%, transparent)
+        => 有效 alpha = 0.74 × 0.40 ≈ 0.299
+
+     Windows 侧栏  .sidebarCol
+        background: var(--fill)                       => alpha = 0.74（未稀释）
+
+     帧本体  [data-platform=darwin] .frame { background: 0 0 }   ← 透明
+             Windows 上 .frame 直接铺 var(--fill)                => 0.74
+
+   于是同一份皮肤：作者看到的中栏 = 0.62；Windows 上 = 0.62 叠在 0.74 之上
+   ≈ 0.90。这正是对方“整屏发白、背景几乎看不见”的来源，且靠调滑杆救不回来
+   ——滑杆只动 backgroundMedia 的 scrim，动不了这两处面板底。
+
+   本段三个动作：
+   1) 侧栏锁定为作者本机的实际合成值；
+   2) 帧本体底色中和为透明（Windows 独有，macOS 本就是 0 0，设置无害），
+      使两边中栏/底栏都回到 bg-base 的 0.62 / 0.48；
+   3) Windows 标题栏拖拽条的 ::before 同步锁值，否则顶栏会比侧栏更实。
+
+   锚点说明：本 build 的侧栏 DOM 只有 CSS-Modules 哈希类名，没有 data-slot /
+   data-dsh-surface；稳定的钩子是 dsh-web-all 兼容层补打的 [data-pane='sidebar']
+   （由 [class*="sidebarCol"] 映射而来），故两套写法并行兜底。 */
+
+/* 1) 侧栏：锁定到作者本机（macOS）的实际合成值 */
+[data-pane='sidebar'],
+[data-dsh-surface='sidebar'],
+[class*='sidebarCol'] {
+  background-color: rgba(250, 242, 251, 0.3) !important;
+  background-image: none !important;
+}
+
+body[data-ds-dark-theme] [data-pane='sidebar'],
+body[data-ds-dark-theme] [data-dsh-surface='sidebar'],
+body[data-ds-dark-theme] [class*='sidebarCol'] {
+  background-color: rgba(31, 20, 39, 0.29) !important;
+  background-image: none !important;
+}
+
+/* 2) 帧本体：Windows 上多出的一层 0.74 底，中和为透明（与 darwin 分支对齐）。
+      不加这条，中栏会合成到 0.90 而整屏发白。
+      锚点 [data-dsh-frame] 由 dsh-web-all 兼容层打在 .frame（侧栏父元素）上，
+      不用 [class*='frame']——那会误伤 body 等含 "frame" 的字样。 */
+[data-dsh-frame] {
+  background: transparent !important;
+}
+
+/* 3) Windows 标题栏拖拽条：独立实色块（inset:0 0 auto），单列锁值。
+      仅 Windows 存在（[data-windows-titlebar] 只在 Windows build 上置位）。 */
+[data-windows-titlebar]::before {
+  background-color: rgba(250, 242, 251, 0.3) !important;
+  background-image: none !important;
+}
+
+body[data-ds-dark-theme] [data-windows-titlebar]::before {
+  background-color: rgba(31, 20, 39, 0.29) !important;
+  background-image: none !important;
+}
+
+/* 4) 中栏 / 右栏 / 底栏：钉住 bg-base 的定值，防止宿主改 token 或叠帧底后偏移 */
+[data-pane='conversation'],
+[data-dsh-surface='conversation'],
+[class*='centerCol'],
+[class*='bottomRow'],
+[data-rightbar-col] {
+  background-color: rgba(255, 248, 252, 0.62) !important;
+  background-image: none !important;
+}
+
+body[data-ds-dark-theme] [data-pane='conversation'],
+body[data-ds-dark-theme] [data-dsh-surface='conversation'],
+body[data-ds-dark-theme] [class*='centerCol'],
+body[data-ds-dark-theme] [class*='bottomRow'],
+body[data-ds-dark-theme] [data-rightbar-col] {
+  background-color: rgba(25, 16, 31, 0.48) !important;
+  background-image: none !important;
 }
 
 /* --- Motion: short appearance-only transitions, folded under reduced-motion */
