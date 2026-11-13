@@ -1,0 +1,110 @@
+{
+  "kind": "unmodified-upstream-focused-baseline",
+  "date": "2026-11-08",
+  "upstreamCommit": "5f51988d1249173509c77129670e3be5cfd514a8",
+  "platform": "Windows",
+  "node": "24.21.0",
+  "scope": "tests/css-safety-worker.spec.ts only; not the full upstream suite",
+  "whaleDeskPresent": false,
+  "passed": 23,
+  "failed": 1,
+  "tests": [
+    {
+      "name": "css safety worker: host isolation never reaches lightningcss from the host entry",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: host isolation ships a built host bundle without a lightningcss import",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: host isolation keeps lightningcss out of the host process while a skin is served",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: transform parity produces byte-identical output",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: transform parity maps a whitelist violation onto the safety error",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: transform parity maps a broken stylesheet onto a transform failure",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: transform parity answers the stylesheet route with 200 and 422",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: transform parity answers an overloaded pipeline with 503",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: error classification treats only the stable kind marker plus violations as a violation",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: pipeline resolves the worker from the module URL, not the working directory",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: pipeline serializes requests and holds at most eight in the pipeline",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: pipeline refuses the requests beyond the cap instead of parking them",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: pipeline times out a stuck worker and leaves no orphan",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: pipeline settles a request only after its worker exited",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: pipeline rejects queued work and terminates the active worker on dispose",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: lifecycle serves a new mount after the old one was disposed",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: lifecycle keeps overlapping mounts independent",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: lifecycle leaves no process exit listener behind after every mount is disposed",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: failure paths rejects promptly when the worker cannot be spawned",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: failure paths advances the pipeline after a spawn failure",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: failure paths rejects promptly when the spawn fails without an exit",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: failure paths bounds a request whose worker answered but never exits",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: failure paths ends the worker when the host closes the IPC channel",
+      "status": "passed"
+    },
+    {
+      "name": "css safety worker: windows addon mapping blocks a package rename while the addon is mapped, and frees it after exit",
+      "status": "failed"
+    }
+  ],
+  "conclusion": "The Windows mapped-addon rename assertion also fails without Whale Desk. This establishes it is not introduced by this skin; it does not establish the operating-system or dependency root cause. Two earlier timing failures did not recur in this focused baseline."
+}

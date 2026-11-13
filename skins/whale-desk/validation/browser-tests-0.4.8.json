@@ -1,0 +1,177 @@
+{
+  "kind": "isolated-browser-regression",
+  "cssPipeline": "0.4.8",
+  "browser": "155.0.8059.80",
+  "tests": [
+    {
+      "name": "font switches system -> WenKai without leaving input override",
+      "status": "PASS"
+    },
+    {
+      "name": "decoration toggle and title reclaim space at 1600",
+      "status": "PASS"
+    },
+    {
+      "name": "decoration toggle and title reclaim space at 1000",
+      "status": "PASS"
+    },
+    {
+      "name": "decoration toggle and title reclaim space at 700",
+      "status": "PASS"
+    },
+    {
+      "name": "collapsed native sidebar toggle stays visible and clickable: light",
+      "status": "PASS"
+    },
+    {
+      "name": "collapsed native sidebar toggle stays visible and clickable: dark",
+      "status": "PASS"
+    },
+    {
+      "name": "expanded legacy brand receives artwork without styling its toggle: light",
+      "status": "PASS"
+    },
+    {
+      "name": "expanded legacy brand receives artwork without styling its toggle: dark",
+      "status": "PASS"
+    },
+    {
+      "name": "wallpaper hide/replace/default survives light-dark toggle",
+      "status": "PASS"
+    },
+    {
+      "name": "dark opaque linen removed: account",
+      "status": "PASS"
+    },
+    {
+      "name": "dark opaque linen removed: question-pad",
+      "status": "PASS"
+    },
+    {
+      "name": "dark opaque linen removed: trigger-open",
+      "status": "PASS"
+    },
+    {
+      "name": "dark opaque linen removed: plugin-page",
+      "status": "PASS"
+    },
+    {
+      "name": "dark opaque linen removed: taskboard",
+      "status": "PASS"
+    },
+    {
+      "name": "conversation surface and header stay readable after first message: light",
+      "status": "PASS"
+    },
+    {
+      "name": "conversation surface and header stay readable after first message: dark",
+      "status": "PASS"
+    },
+    {
+      "name": "native task page text and field contrast: light",
+      "status": "PASS"
+    },
+    {
+      "name": "native task page text and field contrast: dark",
+      "status": "PASS"
+    },
+    {
+      "name": "native task creation dialog palette: light",
+      "status": "PASS"
+    },
+    {
+      "name": "native task creation dialog palette: dark",
+      "status": "PASS"
+    },
+    {
+      "name": "forced colors hides wallpaper with default and customized background",
+      "status": "PASS"
+    },
+    {
+      "name": "native account portal has readable surface: light",
+      "status": "PASS"
+    },
+    {
+      "name": "native account portal has readable surface: dark",
+      "status": "PASS"
+    },
+    {
+      "name": "reduced motion disables decorative animation",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: account",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: general",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: models",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: plugins",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: presets",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: archive",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: web",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: skins",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: pets",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: workshop",
+      "status": "PASS"
+    },
+    {
+      "name": "settings identity survives inserted/reordered plugin: usage",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown settings page does not borrow another section title or artwork",
+      "status": "PASS"
+    },
+    {
+      "name": "offline editor exports current settings and imports them back",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid JSON and corrupt image keep the current configuration",
+      "status": "PASS"
+    },
+    {
+      "name": "reset wins over an import still being read",
+      "status": "PASS"
+    },
+    {
+      "name": "newer manual edits win over an import still being read",
+      "status": "PASS"
+    },
+    {
+      "name": "hide image wins over a pending image decode",
+      "status": "PASS"
+    },
+    {
+      "name": "no missing assets or uncaught browser errors",
+      "status": "PASS"
+    }
+  ],
+  "notice": "Owned fixtures and offline editor only; not a native DSH compatibility claim.",
+  "status": "PASS"
+}

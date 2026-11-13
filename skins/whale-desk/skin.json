@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schemas.linxin666.org/dsh-skin/v2.json",
+  "skinManifestVersion": 2,
+  "id": "whale-desk",
+  "name": "鲸伴 · 水彩小书桌",
+  "nameEn": "Whale Desk",
+  "version": "1.1.2",
+  "author": "Xtsaixuexi",
+  "license": "See NOTICE; fonts: SIL OFL 1.1",
+  "tagline": "一盏暖灯，一张小书桌，陪你探索未至之境。",
+  "description": "奶油暖木、水彩鲸鱼娘与紫粉柔字。基于 DIY Journal 1.14.1 的独立适配：收窄书写托盘、水彩花饰顶栏、配套菜单、对话、代码、看板和设置。",
+  "tags": [
+    "watercolor",
+    "cozy",
+    "desk",
+    "whale",
+    "local"
+  ],
+  "accent": "#935b88",
+  "order": 1,
+  "contributes": {
+    "stylesheet": "skin.css",
+    "patches": "patches.css",
+    "backgroundMedia": {
+      "light": {
+        "type": "image",
+        "src": "assets/desk/home.png",
+        "scrim": "linear-gradient(#fffaf000,#fffaf008)"
+      },
+      "dark": {
+        "type": "image",
+        "src": "assets/desk/home.png",
+        "scrim": "linear-gradient(#221928bb,#221928cc)"
+      }
+    }
+  },
+  "preview": {
+    "light": "preview/light.jpg",
+    "dark": "preview/dark.jpg"
+  },
+  "attribution": "Custom watercolor desk generated with OpenAI image generation, 2026-10-21. Component adaptation derived from Alphazerolan/diy-journal-skin v1.14.1. Retained original NOTICE, licenses and artwork provenance. Community fan character, not official DeepSeek artwork.",
+  "sourceUrl": "https://github.com/Xtsaixuexi/dsh-skins/tree/feat/whale-desk/skins/whale-desk"
+}
