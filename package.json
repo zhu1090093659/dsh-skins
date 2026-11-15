@@ -13,6 +13,8 @@
     "./client": "./lib/client.js",
     "./css-safety": "./lib/css-safety.js",
     "./src/*": "./src/*",
+    "./locale/en.json": "./locale/en.json",
+    "./locale/zh.json": "./locale/zh.json",
     "./package.json": "./package.json"
   },
   "dsh": {
@@ -80,6 +82,7 @@
     "skins/blue-fantasy",
     "cordis.patch.yml",
     "README.md",
+    "locale",
     "icon.svg"
   ],
   "repository": {
