@@ -30,6 +30,7 @@
  */
 
 import type { EffectLedger } from './effect-ledger.ts'
+import { CLIENT_API_BASE } from '../../core/api-prefix.ts'
 import { buildBackgroundMedia, clearLayer, ensureDecorationLayers } from './decoration-layers.ts'
 import type { DecorationLayers } from './decoration-layers.ts'
 import { setSceneBackdropActive } from './backdrop-scene.ts'
@@ -91,7 +92,7 @@ export function isDelegatedEntry(entry: ControllerSkinEntry | null): boolean {
 export interface SkinControllerDeps {
   doc: Document
   ledger: EffectLedger
-  /** Same-origin base of the v2 API (default /api/skin-center/v2). */
+  /** Same-origin base of the v2 API (default: the document-relative CLIENT_API_BASE). */
   apiBase?: string
   /** fetch injection for tests. */
   fetchImpl?: typeof fetch
@@ -246,7 +247,7 @@ interface HooksModule {
 export function createSkinController(deps: SkinControllerDeps): SkinController {
   const doc = deps.doc
   const ledger = deps.ledger
-  const apiBase = deps.apiBase ?? '/api/skin-center/v2'
+  const apiBase = deps.apiBase ?? CLIENT_API_BASE
   const fetchImpl = deps.fetchImpl ?? fetch.bind(doc.defaultView)
   const layers = ensureDecorationLayers(doc)
   const onError = deps.onError ?? (() => {})

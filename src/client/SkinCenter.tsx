@@ -27,6 +27,7 @@ import type { CustomThemeController } from './custom-theme-controller.ts'
 import { ExternalWallpaperNotice } from './ExternalWallpaperNotice.tsx'
 import { DelegatedSkinCard } from './DelegatedSkinCard.tsx'
 import { createDelegatedSkinHandle, type DelegatedSkinHandle } from './delegated-skin-handle.ts'
+import { CLIENT_API_BASE } from '../core/api-prefix.ts'
 import { CustomThemeCard } from './CustomThemePanel.tsx'
 import { SegmentGroup } from './SegmentGroup.tsx'
 import { StepperControl } from './StepperControl.tsx'
@@ -277,7 +278,7 @@ export function SkinCenter({ t, runtime, theme, background, externalWallpaper, d
     setVerifying(true)
     setError(null)
     try {
-      const res = await fetch('/api/skin-center/v2/verify', {
+      const res = await fetch(`${CLIENT_API_BASE}/verify`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ autoRepair: true }),
@@ -329,7 +330,7 @@ export function SkinCenter({ t, runtime, theme, background, externalWallpaper, d
     setBulk({ phase: 'checking', done: 0, total: 0, failed: 0, note: '' })
     let targets: string[]
     try {
-      const res = await fetch('/api/skin-center/v2/skins/versions', { cache: 'no-store' })
+      const res = await fetch(`${CLIENT_API_BASE}/skins/versions`, { cache: 'no-store' })
       const json = (await res.json().catch(() => null)) as {
         ok?: boolean
         rows?: Array<{ id: string; outdated: boolean }>
@@ -355,7 +356,7 @@ export function SkinCenter({ t, runtime, theme, background, externalWallpaper, d
     for (const id of targets) {
       setBulk({ phase: 'updating', done, total: targets.length, failed, note: '' })
       try {
-        const res = await fetch(`/api/skin-center/v2/skins/${encodeURIComponent(id)}/repair`, { method: 'POST' })
+        const res = await fetch(`${CLIENT_API_BASE}/skins/${encodeURIComponent(id)}/repair`, { method: 'POST' })
         if (!res.ok) failed++
       } catch {
         failed++
@@ -407,7 +408,7 @@ export function SkinCenter({ t, runtime, theme, background, externalWallpaper, d
     for (const skin of targets) {
       setBulk({ phase: 'uninstalling', done, total: targets.length, failed, note: '' })
       try {
-        const res = await fetch(`/api/skin-center/v2/skins/${encodeURIComponent(skin.manifest.id)}/uninstall`, { method: 'POST' })
+        const res = await fetch(`${CLIENT_API_BASE}/skins/${encodeURIComponent(skin.manifest.id)}/uninstall`, { method: 'POST' })
         if (!res.ok) failed++
       } catch {
         failed++
@@ -439,7 +440,7 @@ export function SkinCenter({ t, runtime, theme, background, externalWallpaper, d
       if (activeId === id) {
         await preview.runSkin(restoreOfficialLook)
       }
-      const res = await fetch(`/api/skin-center/v2/skins/${encodeURIComponent(id)}/uninstall`, {
+      const res = await fetch(`${CLIENT_API_BASE}/skins/${encodeURIComponent(id)}/uninstall`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
       })
@@ -459,7 +460,7 @@ export function SkinCenter({ t, runtime, theme, background, externalWallpaper, d
   const dark = document.body.hasAttribute('data-ds-dark-theme')
   // Asset root for the preview thumbnails (the store exposes it; tests that
   // stub the store without it fall back to the default mount point).
-  const apiBase = runtime.apiBase ?? '/api/skin-center/v2'
+  const apiBase = runtime.apiBase ?? CLIENT_API_BASE
 
   /** One row: try-on control + apply button + optional uninstall. Shared by the official card and every skin card. */
   const actionButtons = (opts: {

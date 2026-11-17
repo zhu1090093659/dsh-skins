@@ -13,6 +13,7 @@
  */
 
 import { createEffectLedger } from './effect-ledger.ts'
+import { CLIENT_API_BASE } from '../../core/api-prefix.ts'
 import { createSemanticAdapter } from './semantic-adapter.ts'
 import type { SemanticAdapter } from './semantic-adapter.ts'
 import { installShellRenderingAdapter } from './shell-rendering.ts'
@@ -110,7 +111,7 @@ export interface BootOptions {
 
 export function bootSkinRuntime(options: BootOptions = {}): SkinRuntimeStore {
   const doc = options.doc ?? document
-  const apiBase = options.apiBase ?? '/api/skin-center/v2'
+  const apiBase = options.apiBase ?? CLIENT_API_BASE
   const fetchImpl = options.fetchImpl ?? fetch.bind(doc.defaultView)
 
   const ledger = createEffectLedger()

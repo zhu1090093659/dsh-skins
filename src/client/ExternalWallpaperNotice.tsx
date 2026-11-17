@@ -29,9 +29,10 @@ import {
   subscribeWallpaperInstallFaces,
 } from './external-wallpaper-install.ts'
 import css from './skin-center.module.css'
+import { CLIENT_API_BASE } from '../core/api-prefix.ts'
 
-/** Host base path of the probe (mirrors src/routes-v2.ts). */
-const EXTERNAL_WALLPAPER_API = '/api/skin-center/v2/external-wallpaper'
+/** Document-relative probe URL (the client base in src/core/api-prefix.ts). */
+const EXTERNAL_WALLPAPER_API = `${CLIENT_API_BASE}/external-wallpaper`
 
 /** The probe payload, as far as this pointer reads it. */
 interface ExternalWallpaperPayload {

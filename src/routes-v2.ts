@@ -42,8 +42,9 @@ import { MARKET_PROVENANCE_FILENAME } from './provenance.ts'
 import { detectExternalWallpaperEngine, type ExternalWallpaperReport } from './external-wallpaper.ts'
 import { delegatedSkinRows, findDelegatedSkin, type DelegatedSkinRow } from './core/delegated-skins.ts'
 import type { SkinCatalog, SkinCatalogEntry } from './skin-repo.ts'
+import { SKIN_CENTER_V2_PREFIX } from './core/api-prefix.ts'
 
-export const SKIN_CENTER_V2_PREFIX = '/api/skin-center/v2'
+export { SKIN_CENTER_V2_PREFIX }
 
 const MIME: Record<string, string> = {
   '.png': 'image/png',

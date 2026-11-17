@@ -53,6 +53,7 @@ import { CustomThemeController } from './custom-theme-controller.ts'
 import { SKIN_CUSTOM_THEME_NS, type CustomThemeConfig } from '../core/custom-theme.ts'
 import { settingsSection } from './settings-section.ts'
 import { boundConfigForm } from './settings-entry-id.ts'
+import { CLIENT_API_BASE } from '../core/api-prefix.ts'
 import { reportDailyHeartbeat } from './telemetry.ts'
 import { installSkinCenterSeat } from './extension-seat.ts'
 
@@ -145,7 +146,7 @@ const SELF_ITEM = [{ name: '@linxin666/dsh-client-ui-skin-center' }]
  */
 function beatHeartbeat(): void {
   reportDailyHeartbeat(SELF_ITEM)
-  void fetch('/api/skin-center/v2/catalog')
+  void fetch(`${CLIENT_API_BASE}/catalog`)
     .then((res) => (res.ok ? res.json() : null))
     .then((catalog) => {
       if (!catalog || !Array.isArray(catalog.skins)) return
@@ -193,7 +194,7 @@ export function apply(ctx: ClientContext): void {
   // The v2 state channel: GET backfills on boot, edits POST back debounced.
   // The remote proxy rewrites this path into the allow-listed channel, so it
   // works from paired desktops where the settings form is fenced (#996).
-  const V2_ACTIVE_URL = '/api/skin-center/v2/active'
+  const V2_ACTIVE_URL = `${CLIENT_API_BASE}/active`
   let persistTimer: ReturnType<typeof setTimeout> | null = null
   const postBackground = (next: SkinBackgroundConfig, keepalive = false): void => {
     void fetch(V2_ACTIVE_URL, {

@@ -20,7 +20,7 @@
 import type { IndexInjection } from '@deepseek-ai/dsh-host-webserver'
 import { findSkin, loadSkinCatalog } from './skin-repo.ts'
 import type { SkinCatalog } from './skin-repo.ts'
-import { SKIN_CENTER_V2_PREFIX } from './routes-v2.ts'
+import { CLIENT_API_BASE } from './core/api-prefix.ts'
 import { WALLPAPER_EXPECTED_ATTR } from './core/wallpaper-handoff.ts'
 import { isDelegatedSkinId } from './core/delegated-skins.ts'
 
@@ -88,7 +88,7 @@ export function stampSkinAttribute(html: string, skinId: string): string {
 /** Build the link tags injected before </head>. */
 export function skinLinkTags(skinId: string, hasPatches: boolean): string {
   if (!SKIN_ID.test(skinId)) throw new TypeError(`invalid skin id: ${skinId}`)
-  const base = `${SKIN_CENTER_V2_PREFIX}/skins/${skinId}`
+  const base = `${CLIENT_API_BASE}/skins/${skinId}`
   const links = [
     `<link rel="stylesheet" href="${base}/stylesheet" data-dsh-skin-link="stylesheet">`,
   ]

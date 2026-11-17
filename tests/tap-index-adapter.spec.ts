@@ -54,8 +54,10 @@ describe('stampSkinAttribute', () => {
 
 describe('skinLinkTags', () => {
   it('emits stylesheet only without patches', () => {
+    // Document-relative: no leading slash, so a sub-path mount resolves it under
+    // the prefix instead of against the origin (issue #2063).
     expect(skinLinkTags('harbor', false)).toBe(
-      '<link rel="stylesheet" href="/api/skin-center/v2/skins/harbor/stylesheet" data-dsh-skin-link="stylesheet">')
+      '<link rel="stylesheet" href="api/skin-center/v2/skins/harbor/stylesheet" data-dsh-skin-link="stylesheet">')
   })
 
   it('emits both links with patches', () => {
@@ -151,8 +153,8 @@ describe('makeSkinIndexTap', () => {
     const tap = makeSkinIndexTap({ readActiveId: () => 'harbor', loadCatalog: () => catalogWith(['harbor'], ['harbor']) })
     const out = tap(HTML)
     expect(out).toContain('data-dsh-skin="harbor"')
-    expect(out).toContain('/api/skin-center/v2/skins/harbor/stylesheet')
-    expect(out).toContain('/api/skin-center/v2/skins/harbor/patches')
+    expect(out).toContain('href="api/skin-center/v2/skins/harbor/stylesheet"')
+    expect(out).toContain('href="api/skin-center/v2/skins/harbor/patches"')
     expect(out.indexOf('data-dsh-skin-link')).toBeLessThan(out.indexOf('</head>'))
   })
 
@@ -230,6 +232,6 @@ describe('makeSkinIndexTap', () => {
     // Then the first paint is still the skin
     const out = tap(HTML)
     expect(out).toContain('data-dsh-skin="harbor"')
-    expect(out).toContain('/api/skin-center/v2/skins/harbor/stylesheet')
+    expect(out).toContain('href="api/skin-center/v2/skins/harbor/stylesheet"')
   })
 })
