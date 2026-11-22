@@ -412,7 +412,13 @@ export function createSkinController(deps: SkinControllerDeps): SkinController {
     if (!facet) return
     const importHooks = deps.importHooks ?? ((url: string) => import(/* @vite-ignore */ url))
     try {
-      const mod = (await importHooks(`${apiBase}/skins/${entry.manifest.id}/hooks.mjs`)) as HooksModule
+      // Issue #109: the document-relative apiBase is right for fetch() and
+      // <link href>, but import() treats a specifier without a leading
+      // `/`, `./`, `../` or a scheme as a bare package name. Resolve it
+      // against the document base first so sub-path mounts (dsh-app:///app/)
+      // and root mounts both get a real URL.
+      const hooksUrl = new URL(`${apiBase}/skins/${entry.manifest.id}/hooks.mjs`, doc.baseURI).href
+      const mod = (await importHooks(hooksUrl)) as HooksModule
       const factory = mod?.default
       if (typeof factory !== 'function') throw new Error('hooks.mjs must default-export defineSkinHooks()')
       const hooks = factory()

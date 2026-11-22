@@ -330,6 +330,7 @@ describe('skin controller', () => {
     hooks?: Record<string, unknown>
     failFetchFor?: string[]
     persist?: (id: string | null) => Promise<void>
+    importHooks?: (url: string) => Promise<unknown>
   } = {}) {
     document.head.innerHTML = ''
     document.body.innerHTML = ''
@@ -350,7 +351,7 @@ describe('skin controller', () => {
       doc: document,
       ledger,
       loadStylesheet,
-      importHooks: async () => options.hooks,
+      importHooks: options.importHooks ?? (async () => options.hooks),
       persist: options.persist ?? (async () => {}),
       onError: (m) => errors.push(m),
     })
@@ -437,6 +438,19 @@ describe('skin controller', () => {
     expect(result).toBe('hooked')
     expect(document.documentElement.getAttribute('data-dsh-skin')).toBe('hooked')
     expect(errors.some((m) => m.includes('hooks failed'))).toBe(true)
+  })
+
+  it('user on a sub-path mount gets hooks.mjs imported from an absolute URL, not a bare specifier (issue #109)', async () => {
+    const importHooks = vi.fn(async () => ({ default: () => ({ apply() {} }) }))
+    const { controller, errors } = harness({ importHooks })
+    const baseEl = document.createElement('base')
+    baseEl.href = 'http://127.0.0.1:3080/app/'
+    document.head.appendChild(baseEl)
+
+    await controller.switchTo('hooked', hookedEntry)
+
+    expect(importHooks).toHaveBeenCalledWith('http://127.0.0.1:3080/app/api/skin-center/v2/skins/hooked/hooks.mjs')
+    expect(errors).toEqual([])
   })
 
   it('hooks onCleanup runs on the next switch', async () => {
