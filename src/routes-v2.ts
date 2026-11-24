@@ -502,12 +502,12 @@ export function makeSkinCenterV2Routes(deps: RoutesV2Deps = {}): WebRoute[] {
   }
 
   return [
-    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/catalog`, handler: catalogHandler },
-    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/external-wallpaper`, handler: externalWallpaperHandler },
-    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/verify`, handler: verifyHandler },
-    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/skins/versions`, handler: versionsHandler },
-    { kind: 'prefix', path: skinPrefix.replace(/\/$/, ''), handler: skinsHandler },
-    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/active`, handler: (req, res) => {
+    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/catalog`, auth: 'anonymous', handler: catalogHandler },
+    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/external-wallpaper`, auth: 'anonymous', handler: externalWallpaperHandler },
+    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/verify`, auth: 'anonymous', handler: verifyHandler },
+    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/skins/versions`, auth: 'anonymous', handler: versionsHandler },
+    { kind: 'prefix', path: skinPrefix.replace(/\/$/, ''), auth: 'anonymous', handler: skinsHandler },
+    { kind: 'exact', path: `${SKIN_CENTER_V2_PREFIX}/active`, auth: 'anonymous', handler: (req, res) => {
       if (req.method === 'GET') return activeGetHandler(req, res)
       if (req.method === 'POST') return activePostHandler(req, res)
       writeJson(res, 405, { ok: false, error: 'method-not-allowed' })

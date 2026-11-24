@@ -955,4 +955,17 @@ describe('v2 external wallpaper plugin route (issue #39)', () => {
     expect(media.status).toBe(404)
     await server.close()
   })
+
+  it('declares auth anonymous on every skin-center v2 route so the plugin owns its guard', () => {
+    // Given the v2 route table registered with the host webserver
+    const routes = makeRoutes()
+
+    // When each route's auth policy is inspected
+    // Then every route explicitly opts into anonymous instead of inheriting the
+    // host webserver's default authenticated gate.
+    expect(routes.length).toBeGreaterThan(0)
+    for (const route of routes) {
+      expect(route.auth, route.path).toBe('anonymous')
+    }
+  })
 })
