@@ -194,6 +194,14 @@ export interface SkinControllerState {
 export interface SkinController {
   /** Current applied skin id (null = stock look). */
   readonly active: string | null
+  /**
+   * Count of activations that reached the atomic cut (a real paint/commit).
+   * Bumped only on success, never by a failed or stale switch, so a caller that
+   * wants to know whether "someone else took the page over meanwhile"
+   * (a user pick, or the persisted-selection follower adopting a newer value)
+   * compares this against the value it read before it started (issue #2085).
+   */
+  readonly activationCount: number
   /** The fixed decoration layer handles (component scope). */
   readonly layers: DecorationLayers
   /**
@@ -295,6 +303,13 @@ export function createSkinController(deps: SkinControllerDeps): SkinController {
   }))
 
   let latestRequest = 0
+  /**
+   * Successful activations (see {@link SkinController.activationCount}). Only
+   * the atomic cut bumps it; a failed stylesheet load or a stale switch does
+   * not, so boot's adopt retry can tell a real takeover from its own misses
+   * (issue #2085).
+   */
+  let activationCount = 0
   /**
    * True from the moment a switch begins until the newest switch settles. A
    * page that recovers its selection asynchronously (the desktop client boots
@@ -531,6 +546,7 @@ export function createSkinController(deps: SkinControllerDeps): SkinController {
       const previous = currentActivation
       currentActivation = activation
       active = id
+      activationCount += 1
       // Stood down is only ever the EXTERNAL verdict: a wallpaper rendering
       // over whatever is selected. A delegated skin on its own is not stood
       // down, it is simply painted by its plugin rather than here.
@@ -571,6 +587,13 @@ export function createSkinController(deps: SkinControllerDeps): SkinController {
     } catch (error) {
       ledger.disposeActivation(activation)
       if (error instanceof StaleSwitch) return active
+      // No current activation means there is no previous skin to keep: the
+      // page shows the official default. Saying "previous skin intact" there is
+      // false (issue #2085 - it is the boot adopt whose only skin just failed),
+      // so the message states what actually stays on screen. The user-initiated
+      // switch path, where a previous skin really does stay intact, keeps the
+      // original wording.
+      const hadPrevious = currentActivation !== null
       if (currentActivation === null) {
         active = null
         stoodDown = false
@@ -578,7 +601,12 @@ export function createSkinController(deps: SkinControllerDeps): SkinController {
         doc.documentElement.removeAttribute('data-dsh-skin')
         emit()
       }
-      onError(`switch to ${id ?? 'stock'} failed; previous skin intact`, error)
+      onError(
+        hadPrevious
+          ? `switch to ${id ?? 'stock'} failed; previous skin intact`
+          : `switch to ${id ?? 'stock'} failed; no previous skin to keep, the page stays on the official default`,
+        error,
+      )
       return active
     } finally {
       // Safety net for the paths that bail before the atomic cut (a stale
@@ -672,6 +700,9 @@ export function createSkinController(deps: SkinControllerDeps): SkinController {
   return {
     get active() {
       return active
+    },
+    get activationCount() {
+      return activationCount
     },
     get layers() {
       return layers

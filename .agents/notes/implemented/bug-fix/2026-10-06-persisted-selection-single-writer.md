@@ -57,6 +57,20 @@ differ another client wrote a newer choice while this page was loading, and that
 newer choice must still be converged on; the baseline now follows what the page
 actually shows, leaving the first tick to adopt the persisted value.
 
+Boot recovery retries the adopt with backoff (issue #2085). The first
+stylesheet request on a cold start can land on a cold CSS safety worker and
+answer HTTP 500 while the worker's `.node` addon maps (see the CSS-safety
+worker note); a single miss used to reset the page to the official default on
+every restart. Boot now re-adopts the persisted skin on the same controller up
+to three more times (1s, 3s, 6s apart by default), stands the retries down the
+moment the page stops being the boot activation's (a user pick or a newer
+adopted selection bumps the controller's activation counter, or the runtime is
+disposed), and only the last failure falls back to the official default. The
+controller's failure log states that outcome truthfully ("stays on the official
+default") when there is no previous skin to keep, instead of the "previous skin
+intact" wording it still uses on the user-initiated switch path where a painted
+skin really does survive a failed switch.
+
 ## Alternatives considered
 
 - **Send the observed revision with the write and reject stale ones.** Rejected:
@@ -89,3 +103,8 @@ actually shows, leaving the first tick to adopt the persisted value.
 - `SkinActivationOptions` and the controller's public surface both changed;
   `adopt` is additive, so the market try-on shell (which calls `switchTo`
   directly for a user-driven picker) is unaffected.
+- A cold-start first request that 500s now costs a short delay instead of the
+  user's skin: boot rides out the worker warm-up across 1s/3s/6s retries before
+  falling back, and `controller.activationCount` exposes successful activations
+  so the retry loop can tell a real takeover (user pick / newer adoption) from
+  its own transient misses.

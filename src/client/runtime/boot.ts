@@ -92,10 +92,33 @@ export interface SkinRuntimeStore {
   shutdown(): void
 }
 
+/**
+ * Default backoff for re-adopting the persisted skin after a failed cold-start
+ * load (issue #2085). The first stylesheet request on a cold worker can exceed
+ * SKIN_CSS_REQUEST_TIMEOUT_MS and answer 500; one miss must not reset the page to
+ * the official default. Three retries after the initial attempt, 1s / 3s / 6s
+ * apart, ride out that window; override with {@link BootOptions.adoptRetryDelaysMs}.
+ */
+export const DEFAULT_ADOPT_RETRY_DELAYS_MS: readonly number[] = [1000, 3000, 6000]
+
 export interface BootOptions {
   doc?: Document
   apiBase?: string
   fetchImpl?: typeof fetch
+  /**
+   * Override the boot adopt-retry backoff, in milliseconds (issue #2085). The
+   * value is the list of waits BETWEEN attempts, so N waits allow N+1 attempts;
+   * an empty list disables the retry and keeps the single old attempt. Tests
+   * inject a deterministic schedule.
+   */
+  adoptRetryDelaysMs?: readonly number[]
+  /**
+   * Stylesheet loader seam (forwarded to the controller). Production uses the
+   * default <link> loader; tests inject a controllable one so the boot adopt
+   * retry (issue #2085) can be driven deterministically without dispatching
+   * link events by hand.
+   */
+  loadStylesheet?: (href: string) => Promise<void>
   /**
    * External stand-down (issue #39): true while the delegated wallpaper plugin
    * owns the visual, which withholds the skin entirely (its CSS, background
@@ -120,6 +143,7 @@ export function bootSkinRuntime(options: BootOptions = {}): SkinRuntimeStore {
     ledger,
     apiBase,
     fetchImpl,
+    loadStylesheet: options.loadStylesheet,
     suppressSkin: options.suppressSkin,
     // Switches fail closed to the previous skin; failures must still be
     // observable in the console (they are never thrown to the card).
@@ -182,6 +206,9 @@ export function bootSkinRuntime(options: BootOptions = {}): SkinRuntimeStore {
       }
     },
     shutdown() {
+      disposed = true
+      for (const timer of [...retryTimers]) store.window.clearTimeout(timer)
+      retryTimers.clear()
       adapter.stop()
       disposeShellRendering()
       controller.shutdown()
@@ -196,6 +223,64 @@ export function bootSkinRuntime(options: BootOptions = {}): SkinRuntimeStore {
   {
     const root = doc.defaultView as { __skinRuntime?: SkinRuntimeStore } & Window
     root.__skinRuntime = store
+  }
+
+  // The single skin this package ships; the official default look a lost
+  // selection falls back to. Kept as a literal (not imported from
+  // active-state.ts) so this browser module never pulls node:fs into the bundle.
+  const DEFAULT_SKIN_ID = 'blue-fantasy'
+
+  // Boot adopt-retry bookkeeping (issue #2085): the first cold-start
+  // stylesheet request can land on a cold CSS-safety worker and answer 500
+  // while it warms up. Failing the persisted skin's adopt once used to reset
+  // the page to the official default until the next restart. Retries reuse the
+  // same controller and stand down when the page is no longer the boot
+  // activation's: the user picked a skin, a newer selection was adopted, or the
+  // runtime was disposed.
+  const retryDelays = options.adoptRetryDelaysMs ?? DEFAULT_ADOPT_RETRY_DELAYS_MS
+  let disposed = false
+  const retryTimers = new Set<number>()
+
+  /** Await one backoff window through the store's own window timer. */
+  const waitForRetry = (ms: number): Promise<void> => new Promise((resolve) => {
+    const timer = store.window.setTimeout(() => {
+      retryTimers.delete(timer)
+      resolve()
+    }, ms)
+    retryTimers.add(timer)
+  })
+
+  /**
+   * Whether the page moved on from the boot adopt: a disposed runtime, or an
+   * activation that boot itself did not perform (a bump of the controller's
+   * activation counter past the baseline). A failed adopt never bumps it, so a
+   * changed counter is exactly a user pick or a newer adopted selection that
+   * now owns the page.
+   */
+  const pageMovedOn = (baseline: number): boolean =>
+    disposed || controller.activationCount !== baseline
+
+  /**
+   * Adopt the persisted skin with backoff (issue #2085). Each attempt reuses
+   * the one controller; a settled activation of THIS adopt is success, and the
+   * last failure falls back to the official default. Boot only ever ADOPTS here
+   * (issue #54) - it never writes the selection back.
+   */
+  async function adoptPersistedWithRetry(id: string, entry: ControllerSkinEntry): Promise<void> {
+    const baseline = controller.activationCount
+    for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
+      if (pageMovedOn(baseline)) return
+      if ((await controller.adopt(id, entry)) === id) return
+      if (pageMovedOn(baseline)) return
+      if (attempt === retryDelays.length) break
+      await waitForRetry(retryDelays[attempt]!)
+    }
+    if (pageMovedOn(baseline)) return
+    // Every attempt failed: fall back to the official default (the stock look),
+    // exactly what the old single-attempt catch did - now only after the retries
+    // have ridden out the cold-start window. The controller logs this attempt
+    // truthfully as a fallback to the official default (no previous skin kept).
+    await controller.adopt(null, null)
   }
 
   // Initial activation: apply the persisted selection from the snapshot.
@@ -217,21 +302,21 @@ export function bootSkinRuntime(options: BootOptions = {}): SkinRuntimeStore {
         active = payload.ok && typeof payload.active === 'string' ? payload.active : null
       }
       if (active === null) return
-      let entry = store.find(active)
+      const entry = store.find(active)
       if (entry === null) {
         // A selection no catalog row answers for: its files are gone, or it
         // names a delegated skin this build does not know. A delegated row is
         // listed whether or not its plugin is installed, so it resolves here
         // and only a truly unknown id lands on this fallback.
-        const defaultEntry = store.find('blue-fantasy')
+        const defaultEntry = store.find(DEFAULT_SKIN_ID)
         if (defaultEntry !== null) {
-          await controller.adopt('blue-fantasy', defaultEntry as ControllerSkinEntry)
+          await controller.adopt(DEFAULT_SKIN_ID, defaultEntry as ControllerSkinEntry)
         } else {
           await controller.adopt(null, null)
         }
         return
       }
-      await controller.adopt(active, entry as ControllerSkinEntry)
+      await adoptPersistedWithRetry(active, entry as ControllerSkinEntry)
     } catch {
       // Fail-closed: boot into the stock look; the card surfaces catalog
       // errors through diagnostics().
