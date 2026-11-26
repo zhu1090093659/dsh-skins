@@ -1,0 +1,160 @@
+{
+  "generator": "ChatGPT / OpenAI image generation",
+  "date": "2026-10-21",
+  "character": "Whale-chan / DeepSeek 鲸鱼娘（大肥鱼）",
+  "reference": "https://www.bilibili.com/video/BV16qhJ6qEHG/",
+  "images": [
+    {
+      "id": "home",
+      "region": "主界面",
+      "theme": "云海里的鲸鱼娘",
+      "sha256": "9bbddbbe67d5a9a732441ec1ec5c3f614e65c2f88a55a52d9af03e2f1c2e50a6",
+      "path": "assets/diy-generated/home.svg",
+      "packagedSha256": "b7bf192abb3a51da7446505e2800606baff7fe63db58461d16379d4638a90b02",
+      "status": "retained-reference-not-active-home"
+    },
+    {
+      "id": "account",
+      "region": "设置-账号与余额",
+      "theme": "鲸鱼存钱罐",
+      "sha256": "2adbf91eff529c103d89645a37adbb23dfc6f5d6cbef77992145420d69aabcd7",
+      "path": "assets/diy-generated/account.svg",
+      "packagedSha256": "413068ac27223d67eb9256b84962b2746d652c967a8c7a4298cfb09c6ed2a24b",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "general",
+      "region": "设置-通用设置",
+      "theme": "整理晨间小屋",
+      "sha256": "2623db5f49c2b5f887e8b8e91cab8efb3b6c9df6d04e2c822b093222b44eec2a",
+      "path": "assets/diy-generated/general.svg",
+      "packagedSha256": "e7e51c55664d70140d586bf40f0c43dc1fa6829c7466a29259cdbbebb497548a",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "models",
+      "region": "设置-模型",
+      "theme": "星图学习时间",
+      "sha256": "08b45b42b0d533006193a74e0d226d320ec3ae2b1a8f13fd371c3957c566befd",
+      "path": "assets/diy-generated/models.svg",
+      "packagedSha256": "bbe2766cc0d042fe450c83e2fa9f0dcf8ba74fd7c1613f7da9c2363a0898378c",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "plugins",
+      "region": "设置-内置插件",
+      "theme": "拼好一只小鲸鱼",
+      "sha256": "10abb847b17591b2fda5fad9e5e2dd75ecfcba357406ecbf1379244d5e2b8ff7",
+      "path": "assets/diy-generated/plugins.svg",
+      "packagedSha256": "577c8d9bba22f760fb1b1e169ff6e9d14cf5ebea41c780ae934aa31a2b2c6a25",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "presets",
+      "region": "设置-Agent预设",
+      "theme": "准备下一次冒险",
+      "sha256": "b9447cf111ba63c39ff84c08ca26865d0db3fdf59a787998b7af726d0229074b",
+      "path": "assets/diy-generated/presets.svg",
+      "packagedSha256": "c6cd143e1100a30200ac63187b82b1e47174464044801d50b31be4f65fe05ce7",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "archive",
+      "region": "设置-已归档会话",
+      "theme": "收藏温柔回忆",
+      "sha256": "6691e4358ad0f6dd8c6e608abbe4777b5a148c38d05c4e6a280fcb5187cbed72",
+      "path": "assets/diy-generated/archive.svg",
+      "packagedSha256": "9b569f2119b7be904ddf7e1af7be0604dc1bee932b8c3562fd3f921ee5590bd2",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "web",
+      "region": "设置-Web插件",
+      "theme": "海边电话",
+      "sha256": "bd225dae35b1fe7d9067a5d6db1a977afd23df811934d5d2089662d9cc9db154",
+      "path": "assets/diy-generated/web.svg",
+      "packagedSha256": "b7a560082100564fd193c77507420afeede8cbce9adac963f7db4abf6570f50d",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "skins",
+      "region": "设置-皮肤",
+      "theme": "挑选今日配色",
+      "sha256": "c80b1c754762405d9ba6340c4817011e95ce76d530b9ec9cccc89ca67477c2a5",
+      "path": "assets/diy-generated/skins.svg",
+      "packagedSha256": "04ce57d6d841d878041c42ca8803eb107fdf9e529ac5dd86bc78306aaa975281",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "pets",
+      "region": "设置-宠物",
+      "theme": "草地上的小伙伴",
+      "sha256": "4b20c13159e468edd245ce93a57bda55f9c80f666fe3dbf12ff0ef3335f69477",
+      "path": "assets/diy-generated/pets.svg",
+      "packagedSha256": "e953be474e1fd56695aeca7c305fff09b473592ab8fa2246c579a8387f30bebe",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "workshop",
+      "region": "设置-创意工坊",
+      "theme": "手账文具小摊",
+      "sha256": "e0b5877a642a743e58fc991a2140fa82111e8e23ccf19886e521e2634be3735a",
+      "path": "assets/diy-generated/workshop.svg",
+      "packagedSha256": "bdd0e7f800eabde7aec33a9eb331aa8650e91401f728fe76d49546337063d654",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "usage",
+      "region": "设置-使用统计",
+      "theme": "数一数今日星光",
+      "sha256": "8ab28c7ddace0fe4ec03d8658fc52bcdf5acda0f40f738b2300c2e28fd1dc849",
+      "path": "assets/diy-generated/usage.svg",
+      "packagedSha256": "9d0e374bcbb40a9b1232ba58a919474d4499c7443ef1a0a041f2f5b06a629a25",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "settings-sidebar",
+      "region": "设置界面左栏",
+      "theme": "拿手账招手的透明贴纸",
+      "sha256": "07de11b68167d7c7c0018847472a81b2a6f84ba3f0e5015358c33a5e97436aa9",
+      "path": "assets/diy-generated/settings-sidebar.svg",
+      "packagedSha256": "8c60ec789a556c1da611ecf33097eef971f834304f698aa3dc239a09691ca7fb",
+      "status": "retained-illustration-adapted-frame"
+    },
+    {
+      "id": "main-sidebar",
+      "region": "主界面左栏",
+      "theme": "休息一小会",
+      "sha256": "ab37c2c93eee8c04f47fe323619ee7390a15739937accfbe9aa2de1b1a80d06c",
+      "path": "assets/diy-generated/main-sidebar.svg",
+      "packagedSha256": "bdc7a4d771a4972ae20aeaaff3c347e761179e26bebde78e70de5c009e02ea68",
+      "status": "retained-illustration-adapted-frame"
+    }
+  ],
+  "usage": {
+    "en": "The illustrations and character artwork bundled with this skin are for personal, non-commercial use only. Character and other third-party rights remain with their respective holders; this notice grants no third-party rights or official authorization.",
+    "zh": "本皮肤随附的插画及角色画面仅限个人非商业使用；角色及其他第三方权利仍归相应权利人，本声明不授予第三方权利或官方授权。"
+  },
+  "upstream": {
+    "repository": "https://github.com/Alphazerolan/diy-journal-skin",
+    "commit": "e68820404ee7183b0f9b15d7dd444b9f48e03071",
+    "version": "1.14.1"
+  },
+  "hashMeaning": "For inherited images, upstream sha256 records embedded raster bytes; packagedSha256 records the adapted SVG file.",
+  "customImages": [
+    {
+      "path": "assets/desk/home.png",
+      "theme": "奶油暖木书桌、鲸鱼娘与鲸鱼玩偶",
+      "generator": "OpenAI image generation",
+      "date": "2026-10-21",
+      "sha256": "52a987e55ae93e5c8ccbf60468528a13b183ffc8b597e2ea5954accf4d750b10"
+    },
+    {
+      "path": "assets/desk/watercolor-vignette.png",
+      "theme": "透明水彩鲸鱼、雏菊和文具",
+      "generator": "OpenAI image generation",
+      "date": "2026-10-21",
+      "sha256": "9b82c84e1b426624a188bc603f0643ce19b913de5afe349b163b3c149d839436"
+    }
+  ]
+}

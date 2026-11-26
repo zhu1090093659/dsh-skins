@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+<defs>
+<linearGradient id="blue" x1="0" x2="1"><stop stop-color="#a1809e"/><stop offset=".2" stop-color="#caafc8"/><stop offset=".58" stop-color="#ba99b7"/><stop offset="1" stop-color="#a482a1"/></linearGradient>
+<linearGradient id="turn" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#886684"/><stop offset=".45" stop-color="#977594"/><stop offset=".72" stop-color="#be9fbb"/><stop offset="1" stop-color="#d4bed2"/></linearGradient>
+<linearGradient id="roll"><stop stop-color="#866282"/><stop offset=".23" stop-color="#cfb6cd"/><stop offset=".48" stop-color="#bd9cba"/><stop offset=".75" stop-color="#a382a0"/><stop offset=".9" stop-color="#6e4f6b"/><stop offset="1" stop-color="#c8b4c6"/></linearGradient>
+<pattern id="grain" width="7" height="9" patternUnits="userSpaceOnUse"><path d="M1 2l1-.5m3 4 1 1M1 8l2-.5" stroke="#f6f0f5" stroke-opacity=".19" stroke-width=".7"/><path d="M4 1v1M1 5h1" stroke="#664363" stroke-opacity=".12" stroke-width=".6"/></pattern>
+</defs>
+<!-- The front cover bends around the spine and returns underneath the pages. -->
+<path d="M45 6C21 1 5 8 5 28C2 164 8 408 6 549C-2 577 9 597 41 598L863 595Q896 594 897 564L894 40Q893 17 873 17Z" fill="url(#blue)" stroke="#9e829c" stroke-width="1"/>
+<path d="M45 6C21 1 5 8 5 28C2 164 8 408 6 549C-2 577 9 597 41 598L863 595Q896 594 897 564L894 40Q893 17 873 17Z" fill="url(#grain)"/>
+<path d="M28 17C13 12 10 23 11 40C9 194 17 397 12 546C2 563 5 582 24 589Q35 595 56 592L860 588Q884 587 888 567L885 551Q879 572 857 574L48 577Q25 577 24 562L30 40Z" fill="url(#turn)"/>
+<path d="M30 9C16 7 10 17 11 34C7 166 17 408 12 542Q9 554 8 563Q12 580 29 580L40 574Q24 573 25 557C31 396 26 181 28 35Q27 18 41 17Z" fill="url(#roll)"/>
+<path d="M16 32C12 194 21 401 17 538Q5 566 18 581Q27 591 48 590L857 586Q885 584 889 562" fill="none" stroke="#e8dce7" stroke-opacity=".8" stroke-width="1.5" stroke-dasharray="5 4" stroke-linecap="round"/>
+<path d="M9 555Q4 582 31 590Q41 594 61 592L857 589Q886 586 891 566" fill="none" stroke="#deccdc" stroke-width="1.3"/>
+<path d="M25 554Q17 570 37 578L853 578Q878 578 884 563" fill="none" stroke="#7a5877" stroke-opacity=".6" stroke-width="2"/>
+<path d="M35 23C30 174 38 411 31 548Q26 568 44 577" fill="none" stroke="#6f516c" stroke-opacity=".48" stroke-width="2"/><path d="M37 24C33 190 40 403 34 548" fill="none" stroke="#ece6ec" stroke-opacity=".65" stroke-width="1.2"/></svg>
