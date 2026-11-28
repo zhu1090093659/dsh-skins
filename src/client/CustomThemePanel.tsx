@@ -1,5 +1,5 @@
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react'
-import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
+import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots/client'
 
 import type { CustomThemeController, CustomThemeScheme } from './custom-theme-controller.ts'
 import { SegmentGroup } from './SegmentGroup.tsx'

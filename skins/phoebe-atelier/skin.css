@@ -2506,7 +2506,9 @@ body [data-phase='active'] [data-composer-card]:has(+ *) {
 }
 
 body:not([data-ds-dark-theme])
-  [data-slot='conversation.composer.dock'] > * {
+  [data-slot='conversation.composer.dock'] > *:not([data-slot-item]),
+body:not([data-ds-dark-theme])
+  [data-slot='conversation.composer.dock'] > [data-slot-item] > * {
   color: #4a5d82;
   background:
     repeating-linear-gradient(90deg, rgba(207, 169, 104, 0.09) 0 1px, transparent 1px 9px),
@@ -2521,12 +2523,16 @@ body:not([data-ds-dark-theme])
 }
 
 body:not([data-ds-dark-theme])
-  [data-slot='conversation.composer.dock'] > * [class*='sep'] {
+  [data-slot='conversation.composer.dock'] > *:not([data-slot-item]) [class*='sep'],
+body:not([data-ds-dark-theme])
+  [data-slot='conversation.composer.dock'] > [data-slot-item] > * [class*='sep'] {
   color: rgba(74, 93, 130, 0.55);
 }
 
 body[data-ds-dark-theme]
-  [data-slot='conversation.composer.dock'] > * {
+  [data-slot='conversation.composer.dock'] > *:not([data-slot-item]),
+body[data-ds-dark-theme]
+  [data-slot='conversation.composer.dock'] > [data-slot-item] > * {
   color: #aebdde;
   background:
     repeating-linear-gradient(90deg, rgba(207, 169, 104, 0.08) 0 1px, transparent 1px 9px),
@@ -2541,7 +2547,9 @@ body[data-ds-dark-theme]
 }
 
 body[data-ds-dark-theme]
-  [data-slot='conversation.composer.dock'] > * [class*='sep'] {
+  [data-slot='conversation.composer.dock'] > *:not([data-slot-item]) [class*='sep'],
+body[data-ds-dark-theme]
+  [data-slot='conversation.composer.dock'] > [data-slot-item] > * [class*='sep'] {
   color: rgba(174, 189, 222, 0.5);
 }
 

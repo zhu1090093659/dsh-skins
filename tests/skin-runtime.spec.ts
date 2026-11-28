@@ -194,8 +194,10 @@ describe('shared shell rendering adapter (#954)', () => {
 
   it('themes task and statistics docks from one skin-driven accessory contract', () => {
     const css = shellRenderingCss()
-    expect(css).toContain('[data-slot="conversation.input.dock"] > *')
-    expect(css).toContain('[data-slot="conversation.composer.dock"] > *')
+    expect(css).toContain('[data-slot="conversation.input.dock"] > *:not([data-slot-item])')
+    expect(css).toContain('[data-slot="conversation.input.dock"] > [data-slot-item] > *')
+    expect(css).toContain('[data-slot="conversation.composer.dock"] > *:not([data-slot-item])')
+    expect(css).toContain('[data-slot="conversation.composer.dock"] > [data-slot-item] > *')
     expect(css).toContain('var(--dsh-composer-accessory-bg, var(--dsw-specific-tip, var(--dsw-alias-bg-layer-1)))')
     expect(css).toContain('var(--dsh-composer-accessory-color, var(--dsw-alias-label-tertiary))')
     expect(css).toContain('var(--dsh-composer-accessory-radius, 12px)')
@@ -248,6 +250,7 @@ describe('shared shell rendering adapter (#954)', () => {
   it('keeps the wide goal dock transparent and lets its compact inner bar paint', () => {
     const css = shellRenderingCss()
     expect(css).toContain('[data-slot="conversation.input.dock"] > [data-goal-bar="true"][data-goal-bar="true"][data-goal-bar="true"]')
+    expect(css).toContain('[data-slot="conversation.input.dock"] > [data-slot-item] > [data-goal-bar="true"][data-goal-bar="true"][data-goal-bar="true"]')
     expect(css).toMatch(/\[data-goal-bar="true"\](?:\[data-goal-bar="true"\]){2}[^{]*\{[^}]*background: transparent !important;/s)
     expect(css).toMatch(/\[data-goal-bar="true"\](?:\[data-goal-bar="true"\]){2}[^{]*\{[^}]*box-shadow: none !important;/s)
     expect(css).not.toContain('[data-goal-bar="true"] > *')
@@ -256,6 +259,7 @@ describe('shared shell rendering adapter (#954)', () => {
   it('lets the native queue dock keep its own single surface (issue #1572)', () => {
     const css = shellRenderingCss()
     expect(css).toContain('[data-slot="conversation.input.dock"] > [data-queue-dock]')
+    expect(css).toContain('[data-slot="conversation.input.dock"] > [data-slot-item] > [data-queue-dock]')
     expect(css).toMatch(/\[data-queue-dock\][^{]*\{[^}]*background: transparent !important;/s)
     expect(css).toMatch(/\[data-queue-dock\][^{]*\{[^}]*box-shadow: none !important;/s)
     expect(css).toMatch(/\[data-queue-dock\][^{]*\{[^}]*backdrop-filter: none !important;/s)

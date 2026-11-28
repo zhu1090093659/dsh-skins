@@ -57,7 +57,7 @@
  * @module @linxin666/dsh-client-ui-skin-center/DelegatedSkinCard
  */
 import { useState, useSyncExternalStore, type ReactNode } from 'react'
-import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
+import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots/client'
 
 import type { SkinCenterKey } from './locales.ts'
 

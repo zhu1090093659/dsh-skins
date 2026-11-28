@@ -15,7 +15,7 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import type { DelegatedThemeState } from './runtime/delegated-theme.ts'
-import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
+import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots/client'
 import type { ThemeSnapshot } from '@deepseek-ai/dsh-client-ui-theme/client'
 import type { SkinActivationOptions } from './runtime/skin-controller.ts'
 import type { CatalogSkin, SkinRuntimeStore } from './runtime/boot.ts'

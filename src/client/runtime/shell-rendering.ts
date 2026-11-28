@@ -95,8 +95,10 @@ export function shellRenderingCss(): string {
       -webkit-text-fill-color: var(--dsw-alias-label-secondary, var(--dsw-alias-label-caption)) !important;
       opacity: 1 !important;
     }
-    ${scoped('[data-phase="active"] [data-slot="conversation.input.dock"] > *')},
-    ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] > *')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.input.dock"] > *:not([data-slot-item])')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.input.dock"] > [data-slot-item] > *')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] > *:not([data-slot-item])')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] > [data-slot-item] > *')},
     ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] + *')} {
       /* One skin-driven accessory surface for task and statistics docks. Skins
          automatically follow their existing semantic theme tokens and may
@@ -122,7 +124,8 @@ export function shellRenderingCss(): string {
       backdrop-filter: blur(var(--dsh-composer-accessory-blur, var(--dsh-input-card-blur, 10px))) !important;
       -webkit-backdrop-filter: blur(var(--dsh-composer-accessory-blur, var(--dsh-input-card-blur, 10px))) !important;
     }
-    ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] > *')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] > *:not([data-slot-item])')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] > [data-slot-item] > *')},
     ${scoped('[data-phase="active"] [data-slot="conversation.composer.dock"] + *')} {
       /* Same metrics for a dock child and for the sibling seat beside the dock
          slot host, so the two accessories of one row end up the same height:
@@ -132,7 +135,8 @@ export function shellRenderingCss(): string {
       padding-top: 2px;
       padding-bottom: 2px;
     }
-    ${scoped('[data-slot="conversation.input.dock"] > [data-goal-bar="true"][data-goal-bar="true"][data-goal-bar="true"]')} {
+    ${scoped('[data-slot="conversation.input.dock"] > [data-goal-bar="true"][data-goal-bar="true"][data-goal-bar="true"]')},
+    ${scoped('[data-slot="conversation.input.dock"] > [data-slot-item] > [data-goal-bar="true"][data-goal-bar="true"][data-goal-bar="true"]')} {
       /* The host goal dock spans the full composer seat and contains its own
          centered compact bar. Do not paint the outer dock as an accessory: that
          creates a viewport-wide veil behind the active-goal chip. The repeated
@@ -145,7 +149,8 @@ export function shellRenderingCss(): string {
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
     }
-    ${scoped('[data-phase="active"] [data-slot="conversation.input.dock"] > [data-queue-dock]')} {
+    ${scoped('[data-phase="active"] [data-slot="conversation.input.dock"] > [data-queue-dock]')},
+    ${scoped('[data-phase="active"] [data-slot="conversation.input.dock"] > [data-slot-item] > [data-queue-dock]')} {
       /* The native queue dock stacks two boxes inside the input dock: a root
          wrapper that only supplies the shared dock inset, and the panel inside
          it that paints its own --dsw-specific-tip fill. Painting the wrapper as

@@ -21,7 +21,7 @@
  * shows a false "not installed" prompt.
  */
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react'
-import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
+import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots/client'
 import {
   getWallpaperInstallFaces,
   installPluginSpec,

@@ -480,7 +480,8 @@ body[data-we-wallpaper] [class*="centerCol"] {
   backdrop-filter: none !important;
 }
 
-[data-slot="conversation.input.dock"] > [class*="_dock"] {
+[data-slot="conversation.input.dock"] > [class*="_dock"],
+[data-slot="conversation.input.dock"] > [data-slot-item] > [class*="_dock"] {
   background-color: var(--dsw-wallpaper-glass-fill) !important;
   border-radius: 8px !important;
   -webkit-backdrop-filter: blur(var(--dsw-wallpaper-glass-blur, 10px)) !important;
@@ -491,7 +492,8 @@ body[data-we-wallpaper] [class*="centerCol"] {
    root-level glass reads as a halo and the panel paints its own opaque tip
    fill plus an ::after bottom highlight (the bright seam above the composer).
    Move the input-card material onto the panel itself and silence the rest. */
-[data-slot="conversation.input.dock"] > [data-queue-dock][data-queue-dock] {
+[data-slot="conversation.input.dock"] > [data-queue-dock][data-queue-dock],
+[data-slot="conversation.input.dock"] > [data-slot-item] > [data-queue-dock][data-queue-dock] {
   background-color: rgba(0, 0, 0, 0) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
@@ -514,8 +516,9 @@ body[data-we-wallpaper] [class*="centerCol"] {
    fill and shadow from a later-injected stylesheet, so the second selector
    carries doubled attributes to outrank it. Anchor on the queue attribute so
    plugin docks that legitimately keep the input-card material are untouched. */
-body:has([data-slot="conversation.input.dock"] > [data-queue-dock]) [data-composer-card],
-[data-slot="conversation.input.dock"] > [data-queue-dock] ~ [data-slot="conversation.composer.bar"] [data-composer-card][data-composer-card] {
+body:has([data-slot="conversation.input.dock"] > [data-queue-dock], [data-slot="conversation.input.dock"] > [data-slot-item] > [data-queue-dock]) [data-composer-card],
+[data-slot="conversation.input.dock"] > [data-queue-dock] ~ [data-slot="conversation.composer.bar"] [data-composer-card][data-composer-card],
+[data-slot="conversation.input.dock"]:has(> [data-slot-item] > [data-queue-dock]) ~ [data-slot="conversation.composer.bar"] [data-composer-card][data-composer-card] {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -526,7 +529,7 @@ body:has([data-slot="conversation.input.dock"] > [data-queue-dock]) [data-compos
 /* Belt and braces: the shell card paints through the specific-input and lv2
    shadow tokens; neutralize the tokens themselves so even a lost cascade
    battle computes to nothing while the queue dock is mounted. */
-body:has([data-slot="conversation.input.dock"] > [data-queue-dock]) {
+body:has([data-slot="conversation.input.dock"] > [data-queue-dock], [data-slot="conversation.input.dock"] > [data-slot-item] > [data-queue-dock]) {
   --dsw-specific-input-major: transparent;
   --dsw-shadow-lv2: none;
 }
@@ -539,7 +542,8 @@ body:has([data-slot="conversation.input.dock"] > [data-queue-dock]) {
   to { opacity: 1; }
 }
 
-[data-slot="conversation.input.dock"] > [data-queue-dock] {
+[data-slot="conversation.input.dock"] > [data-queue-dock],
+[data-slot="conversation.input.dock"] > [data-slot-item] > [data-queue-dock] {
   animation: we-qd-appear 160ms ease 180ms backwards;
 }
 
@@ -557,7 +561,7 @@ body:has([data-slot="conversation.input.dock"] > [data-queue-dock]) {
    still requires an actual *_dock card, so the idle drag-inlay never
    triggers it. */
 [data-slot="conversation.input.dock"] > [class*="_dock"] + [data-slot="conversation.composer.bar"] [data-composer-card],
-body:has([data-slot="conversation.input.dock"] > [class*="_dock"]) [data-composer-card] {
+body:has([data-slot="conversation.input.dock"] > [class*="_dock"], [data-slot="conversation.input.dock"] > [data-slot-item] > [class*="_dock"]) [data-composer-card] {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -734,13 +738,16 @@ body:has([data-slot="conversation.input.dock"] > [class*="_dock"]) [data-compose
    expanded. The wrapper is a direct child of the footer.action slot mount,
    so the slot-attribute boundary is provably scoped; wrappers are
    transparent at rest, so clear unconditionally. */
-[data-slot="sidebar.footer.action"] > *:has(button[class*="trigger"][aria-expanded]) {
+[data-slot="sidebar.footer.action"] > *:not([data-slot-item]):has(button[class*="trigger"][aria-expanded]),
+[data-slot="sidebar.footer.action"] > [data-slot-item] > *:has(button[class*="trigger"][aria-expanded]) {
   background-color: rgba(0, 0, 0, 0) !important;
   background-image: none !important;
   box-shadow: none !important;
 }
 
-[data-slot="sidebar.footer.action"] > *:has(button[class*="trigger"][aria-expanded])::before,
-[data-slot="sidebar.footer.action"] > *:has(button[class*="trigger"][aria-expanded])::after {
+[data-slot="sidebar.footer.action"] > *:not([data-slot-item]):has(button[class*="trigger"][aria-expanded])::before,
+[data-slot="sidebar.footer.action"] > *:not([data-slot-item]):has(button[class*="trigger"][aria-expanded])::after,
+[data-slot="sidebar.footer.action"] > [data-slot-item] > *:has(button[class*="trigger"][aria-expanded])::before,
+[data-slot="sidebar.footer.action"] > [data-slot-item] > *:has(button[class*="trigger"][aria-expanded])::after {
   background: none !important;
 }

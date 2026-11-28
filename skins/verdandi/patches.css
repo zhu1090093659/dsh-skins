@@ -1974,7 +1974,8 @@ body[data-ds-dark-theme] [data-slot="conversation.chat.node"] > [class*="_userRo
   width: auto !important;
 }
 
-[data-slot="conversation.composer.dock"] > :not([role="tooltip"]) {
+[data-slot="conversation.composer.dock"] > :not([role="tooltip"], [data-slot-item]),
+[data-slot="conversation.composer.dock"] > [data-slot-item] > :not([role="tooltip"]) {
   z-index: 2;
   min-width: 0;
   color: inherit;
@@ -1987,13 +1988,15 @@ body[data-ds-dark-theme] [data-slot="conversation.chat.node"] > [class*="_userRo
   white-space: nowrap;
 }
 
-[data-slot="conversation.composer.dock"] > :not(:first-child, [role="tooltip"]) {
+[data-slot="conversation.composer.dock"] > :not(:first-child, [role="tooltip"], [data-slot-item]),
+[data-slot="conversation.composer.dock"] > [data-slot-item]:not(:first-child) > :not([role="tooltip"]) {
   text-align: left;
   border-left: 1px solid color-mix(in srgb, var(--vd-gold) 30%, transparent) !important;
   padding-left: 14px !important;
 }
 
-[data-slot="conversation.composer.dock"] > [role="tooltip"] {
+[data-slot="conversation.composer.dock"] > [role="tooltip"],
+[data-slot="conversation.composer.dock"] > [data-slot-item] > [role="tooltip"] {
   z-index: 30;
   max-width: min(720px, 100vw - 32px);
 }
@@ -2236,7 +2239,8 @@ body[data-ds-dark-theme] [data-slot="sidebar.settings"] [role="dialog"][aria-mod
     gap: 6px;
   }
 
-  [data-slot="conversation.composer.dock"] > :not(:first-child, [role="tooltip"]) {
+  [data-slot="conversation.composer.dock"] > :not(:first-child, [role="tooltip"], [data-slot-item]),
+  [data-slot="conversation.composer.dock"] > [data-slot-item]:not(:first-child) > :not([role="tooltip"]) {
     text-align: center;
   }
 

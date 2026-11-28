@@ -36,7 +36,7 @@ declare module '@deepseek-ai/cordis' {
   }
 }
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@deepseek-ai/dsh-client-ui-slots/client' {
   interface SlotMap {
     /** One keyed installed-item page inside the family Web Extensions section. */
     'web-ui.extension': {

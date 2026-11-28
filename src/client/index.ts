@@ -63,7 +63,7 @@ export { bootSkinRuntime } from './runtime/boot.ts'
 /** Locale namespace owned by this plugin. */
 export const NS = 'skinCenter'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@deepseek-ai/dsh-client-ui-slots/client' {
   interface LocaleNamespaceMap {
     /** The skin-center card's copy. */
     skinCenter: SkinCenterKey

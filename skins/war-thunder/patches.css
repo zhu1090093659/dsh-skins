@@ -58,12 +58,14 @@ body[data-ds-dark-theme] [data-pane="details"] > div {
 /* 输入座自身（strip / composerStack）保留官方 token 底色（近不透明），
    只为最外层的 dock 做透明，让输入卡稳定浮在列面上。 */
 [data-dsh-surface="composer"] > div,
-[data-slot="conversation.input.dock"] > * > * {
+[data-slot="conversation.input.dock"] > *:not([data-slot-item]) > *,
+[data-slot="conversation.input.dock"] > [data-slot-item] > * > * {
   background: transparent;
 }
 
 body[data-ds-dark-theme] [data-dsh-surface="composer"] > div,
-body[data-ds-dark-theme] [data-slot="conversation.input.dock"] > * > * {
+body[data-ds-dark-theme] [data-slot="conversation.input.dock"] > *:not([data-slot-item]) > *,
+body[data-ds-dark-theme] [data-slot="conversation.input.dock"] > [data-slot-item] > * > * {
   background: transparent;
 }
 
@@ -178,7 +180,8 @@ html body[data-ds-dark-theme][data-dsh-wt-peek] [class*="overlay"] {
 [data-pane="conversation"] > div > div,
 [data-pane="details"] > div > div,
 [data-slot="conversation.input.dock"],
-[data-slot="conversation.input.dock"] > *,
+[data-slot="conversation.input.dock"] > *:not([data-slot-item]),
+[data-slot="conversation.input.dock"] > [data-slot-item] > *,
 [role="dialog"] {
   transition: background-color 0.4s ease, background 0.4s ease;
 }
